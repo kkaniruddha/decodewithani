@@ -1,461 +1,250 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DecodeAI with Ani — AI Writer & Educator</title>
-  <meta name="description" content="Making AI simple for everyone. No jargon. No fear."/>
+  <title>DecodeAI with Ani — Making AI Simple for Everyone</title>
+  <meta name="description" content="No jargon. No fear. No PhD required. 90 days of honest, clear writing about AI — for every kind of person. By Aniruddha."/>
   <style>
-    :root {
-      --purple:#a78bfa; --purple-d:#7c3aed; --purple-dd:#5b21b6;
-      --blue:#60a5fa; --blue-d:#2563eb;
-      --green:#6ee7b7; --green-d:#059669;
-      --amber:#fcd34d; --red:#fca5a5;
-      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
-      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
-    }
+    :root{--purple:#a78bfa;--purple-d:#7c3aed;--blue:#60a5fa;--blue-d:#2563eb;--green:#6ee7b7;--green-d:#059669;--amber:#fcd34d;--bg:#0d0d1a;--bg3:#1a1a2e;--bg4:#1e1e3a;--border:#2a2a4a;--white:#ffffff;--grey:#9ca3af;--lgrey:#d1d5db;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.7}
-    ::-webkit-scrollbar{width:6px}
-    ::-webkit-scrollbar-track{background:var(--bg)}
-    ::-webkit-scrollbar-thumb{background:var(--purple-d);border-radius:3px}
-
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px}
-    .nav-brand{font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
-    .nav-links{display:flex;gap:1.8rem;list-style:none}
-    .nav-links a{color:var(--grey);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s}
-    .nav-links a:hover{color:var(--purple)}
-    .nav-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white!important;padding:0.4rem 1.2rem;border-radius:20px;font-weight:600!important}
-    @media(max-width:900px){.nav-links{display:none}}
-
-    /* HERO */
-    #home{min-height:100vh;display:flex;align-items:center;padding:100px 5% 60px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,58,237,0.15) 0%,transparent 70%)}
-    .hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--purple);padding:0.4rem 1rem;border-radius:20px;font-size:0.8rem;font-weight:600;margin-bottom:1.5rem}
-    .hero-badge::before{content:'●';font-size:0.6rem;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-    .hero-name{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;line-height:1.1;color:var(--white);margin-bottom:0.5rem}
-    .hero-name span{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero-title{font-size:1.1rem;color:var(--purple);font-weight:600;margin-bottom:1.2rem}
-    .hero-desc{font-size:1rem;color:var(--grey);margin-bottom:2rem;line-height:1.8}
-    .hero-desc strong{color:var(--lgrey)}
-    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-    .btn-primary{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.75rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.95rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.4)}
-    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--lgrey);padding:0.75rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:border-color 0.2s,color 0.2s}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.8}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple-d);border-radius:3px}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+    .nav-brand{font-size:1.05rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.5rem}
+    .nav-right a{color:var(--grey);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
+    .nav-right a:hover{color:var(--purple)}
+    .nav-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white!important;padding:0.35rem 1.1rem;border-radius:20px;font-weight:600!important;font-size:0.82rem!important}
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden;background:radial-gradient(ellipse 100% 70% at 50% 0%,rgba(124,58,237,0.22) 0%,transparent 65%),var(--bg)}
+    .hero-grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black,transparent)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--purple);padding:0.4rem 1.2rem;border-radius:30px;font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem}
+    .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--purple);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+    .hero-icon{font-size:86px;margin-bottom:22px;filter:drop-shadow(0 0 36px rgba(167,139,250,0.45));animation:float 3.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+    .hero h1{font-size:clamp(2.4rem,7vw,5rem);font-weight:900;color:var(--white);line-height:1.05;max-width:860px;margin-bottom:0.6rem;letter-spacing:-2px}
+    .hero h1 .grad{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-tagline{font-size:1.15rem;font-weight:600;color:var(--purple);margin-bottom:1.2rem}
+    .hero-desc{font-size:1.05rem;color:var(--grey);max-width:580px;line-height:1.85;margin-bottom:2.5rem}
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+    .btn-primary{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.85rem 2.2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(124,58,237,0.35)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(124,58,237,0.5)}
+    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--lgrey);padding:0.85rem 2.2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;transition:border-color 0.2s,color 0.2s}
     .btn-secondary:hover{border-color:var(--purple);color:var(--purple)}
-    .hero-stats{display:flex;gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap}
-    .stat-num{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .stat-label{font-size:0.75rem;color:var(--grey);margin-top:4px}
-    .hero-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden}
-    .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
-    .card-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white}
-    .card-header{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem}
-    .card-name{font-weight:700;color:var(--white)}
-    .card-role{font-size:0.8rem;color:var(--purple)}
-    .card-content{font-size:0.88rem;color:var(--grey);line-height:1.7;margin-bottom:1rem;font-style:italic}
-    .card-tags{display:flex;flex-wrap:wrap;gap:6px}
-    .ctag{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:var(--purple);padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600}
-    .ctag.b{background:rgba(96,165,250,0.1);border-color:rgba(96,165,250,0.2);color:var(--blue)}
-    .ctag.g{background:rgba(110,231,183,0.1);border-color:rgba(110,231,183,0.2);color:var(--green)}
-    @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-card{display:none}}
-
-    /* SECTIONS */
-    section{padding:90px 5%}
-    .si{max-width:1100px;margin:0 auto}
-    .stag{display:inline-block;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:var(--purple);padding:4px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem}
-    .stitle{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:var(--white);line-height:1.2;margin-bottom:1rem}
-    .stitle span{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .ssub{color:var(--grey);font-size:1rem;max-width:560px;line-height:1.8}
-
-    /* ABOUT */
-    #about{background:var(--bg2)}
-    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
-    .about-text p{color:var(--grey);margin-bottom:1rem;line-height:1.9;font-size:0.98rem}
-    .about-text p strong{color:var(--lgrey)}
-    .val-item{display:flex;align-items:flex-start;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.8rem}
-    .val-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
-    .val-title{font-weight:700;color:var(--white);font-size:0.95rem;margin-bottom:2px}
-    .val-desc{font-size:0.83rem;color:var(--grey);line-height:1.6}
-    .acard{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem;position:relative;overflow:hidden}
-    .acard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--purple-d),var(--blue-d))}
-    .acard-label{font-size:0.72rem;color:var(--grey);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
-    .acard-val{font-size:0.95rem;color:var(--white);font-weight:600;line-height:1.5}
-    .acard-sub{font-size:0.8rem;color:var(--purple);margin-top:3px}
-    @media(max-width:900px){.about-grid{grid-template-columns:1fr}}
-
-    /* PILLARS */
-    #pillars{background:var(--bg)}
-    .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-    .pcard{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:transform 0.2s,border-color 0.2s;position:relative;overflow:hidden}
-    .pcard:hover{transform:translateY(-4px);border-color:var(--purple)}
-    .pcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d));opacity:0;transition:opacity 0.2s}
-    .pcard:hover::after{opacity:1}
-    .p-icon{font-size:2rem;margin-bottom:0.8rem}
-    .p-title{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:0.4rem}
-    .p-desc{font-size:0.87rem;color:var(--grey);line-height:1.7}
-    .p-count{margin-top:0.8rem;font-size:0.78rem;color:var(--purple);font-weight:700}
-    @media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:580px){.pgrid{grid-template-columns:1fr}}
-
-    /* BLOG */
-    #blog{background:var(--bg2)}
-    .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-    .bcard{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform 0.2s,border-color 0.2s;display:flex;flex-direction:column}
-    .bcard:hover{transform:translateY(-4px);border-color:var(--purple)}
-    .bcard-top{padding:1.2rem 1.2rem 0;display:flex;align-items:center;justify-content:space-between}
-    .btype{font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
-    .ts{background:rgba(167,139,250,0.15);color:var(--purple)}
-    .te{background:rgba(96,165,250,0.15);color:var(--blue)}
-    .tn{background:rgba(252,211,77,0.15);color:var(--amber)}
-    .tg{background:rgba(110,231,183,0.15);color:var(--green)}
-    .to{background:rgba(252,165,165,0.15);color:var(--red)}
-    .bplat{font-size:0.75rem;color:var(--grey)}
-    .bcard-body{padding:1rem 1.2rem 1.2rem;flex:1;display:flex;flex-direction:column}
-    .b-title{font-size:0.97rem;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:0.5rem}
-    .b-desc{font-size:0.84rem;color:var(--grey);line-height:1.7;flex:1;margin-bottom:0.8rem}
-    .b-foot{display:flex;align-items:center;justify-content:space-between;padding-top:0.7rem;border-top:1px solid var(--border)}
-    .b-status{font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:10px}
-    .sr{background:rgba(110,231,183,0.15);color:var(--green)}
-    .sc{background:rgba(167,139,250,0.15);color:var(--purple)}
-    .b-read{font-size:0.75rem;color:var(--grey)}
-    .blog-more{text-align:center;margin-top:2rem}
-    @media(max-width:900px){.bgrid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:580px){.bgrid{grid-template-columns:1fr}}
-
-    /* TOOLS */
-    #tools{background:var(--bg)}
-    .tfeat{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden}
-    .tfeat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d),var(--green-d))}
-    .tf-label{font-size:0.75rem;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.8rem}
-    .tf-title{font-size:1.8rem;font-weight:800;color:var(--white);line-height:1.3;margin-bottom:0.8rem}
-    .tf-desc{color:var(--grey);font-size:0.93rem;line-height:1.8;margin-bottom:1.5rem}
-    .tstats{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.5rem}
-    .tstat{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center}
-    .tstat-n{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .tstat-l{font-size:0.72rem;color:var(--grey);margin-top:3px}
-    .tprev{background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:1.2rem;font-size:0.82rem}
-    .trow{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)}
-    .trow:last-child{border-bottom:none}
-    .tname{color:var(--white);font-weight:600}
-    .tcat{color:var(--grey);font-size:0.73rem}
-    .tbadge{font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:8px}
-    .bf{background:rgba(110,231,183,0.15);color:var(--green)}
-    .bp{background:rgba(252,165,165,0.15);color:var(--red)}
-    .bfm{background:rgba(96,165,250,0.15);color:var(--blue)}
-    @media(max-width:900px){.tfeat{grid-template-columns:1fr}}
-
-    /* NEWSLETTER */
-    #newsletter{background:var(--bg2)}
-    .nbox{background:linear-gradient(135deg,rgba(124,58,237,0.12) 0%,rgba(37,99,235,0.12) 100%);border:1px solid var(--border);border-radius:24px;padding:3rem;margin-top:3rem;text-align:center;position:relative;overflow:hidden}
-    .nbox::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
-    .n-emoji{font-size:3rem;margin-bottom:1rem}
-    .n-title{font-size:2rem;font-weight:800;color:var(--white);margin-bottom:0.8rem}
-    .n-desc{color:var(--grey);font-size:1rem;max-width:460px;margin:0 auto 1.5rem;line-height:1.8}
-    .n-perks{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
-    .perk{display:flex;align-items:center;gap:8px;font-size:0.87rem;color:var(--lgrey)}
-    .perk::before{content:'✓';color:var(--green);font-weight:700}
-    .nbtn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.9rem 2.5rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
-    .nbtn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.5)}
-    .nnote{font-size:0.78rem;color:var(--grey);margin-top:1rem}
-
-    /* PORTFOLIO */
-    #portfolio{background:var(--bg)}
-    .pogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-    .pocard{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:transform 0.2s,border-color 0.2s}
-    .pocard:hover{transform:translateY(-4px);border-color:var(--purple)}
-    .po-icon{font-size:2rem;margin-bottom:0.8rem}
-    .po-title{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:0.4rem}
-    .po-desc{font-size:0.85rem;color:var(--grey);line-height:1.7;margin-bottom:1rem}
-    .po-link{display:inline-flex;align-items:center;gap:6px;color:var(--purple);font-size:0.85rem;font-weight:600;text-decoration:none;transition:gap 0.2s}
-    .po-link:hover{gap:10px}
-    @media(max-width:900px){.pogrid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:580px){.pogrid{grid-template-columns:1fr}}
-
-    /* CONTACT */
-    #contact{background:var(--bg2)}
-    .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
-    .citem{display:flex;align-items:flex-start;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-decoration:none;transition:border-color 0.2s;margin-bottom:1rem}
-    .citem:hover{border-color:var(--purple)}
-    .c-icon{font-size:1.4rem;flex-shrink:0}
-    .c-title{font-weight:700;color:var(--white);font-size:0.93rem;margin-bottom:2px}
-    .c-val{font-size:0.83rem;color:var(--purple)}
-    .c-desc{font-size:0.78rem;color:var(--grey);margin-top:2px}
-    .cform{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:2rem}
-    .cform h3{font-size:1.15rem;font-weight:700;color:var(--white);margin-bottom:1.5rem}
-    .fg{margin-bottom:1.1rem}
-    .fg label{display:block;font-size:0.78rem;color:var(--grey);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px}
-    .fg input,.fg textarea,.fg select{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1rem;color:var(--lgrey);font-family:inherit;font-size:0.9rem;transition:border-color 0.2s;outline:none}
-    .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--purple)}
-    .fg textarea{height:100px;resize:vertical}
-    .fg select option{background:var(--bg4)}
-    .csub{width:100%;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;border:none;padding:0.85rem;border-radius:8px;font-size:0.93rem;font-weight:700;cursor:pointer;transition:transform 0.2s;font-family:inherit}
-    .csub:hover{transform:translateY(-2px)}
-    .fnote{font-size:0.75rem;color:var(--grey);margin-top:0.7rem;text-align:center}
-    @media(max-width:900px){.cgrid{grid-template-columns:1fr}}
-
-    /* FOOTER */
-    footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 5% 2rem}
-    .fi{max-width:1100px;margin:0 auto}
-    .ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
-    .fbname{font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.5rem}
-    .fbdesc{font-size:0.83rem;color:var(--grey);line-height:1.7;max-width:260px}
-    .fct{font-size:0.78rem;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.8rem}
-    .flinks{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
-    .flinks a{color:var(--grey);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
-    .flinks a:hover{color:var(--purple)}
-    .fbot{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-    .fcopy{font-size:0.8rem;color:var(--grey)}
-    .fcopy span{color:var(--purple)}
-    .fsocs{display:flex;gap:0.8rem}
-    .fsoc{width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--grey);text-decoration:none;font-size:0.8rem;font-weight:700;transition:border-color 0.2s,color 0.2s}
-    .fsoc:hover{border-color:var(--purple);color:var(--purple)}
-    @media(max-width:900px){.ftop{grid-template-columns:1fr 1fr}}
-    @media(max-width:580px){.ftop{grid-template-columns:1fr}}
-
-    /* ANIMATIONS */
-    .fu{opacity:0;transform:translateY(30px);transition:opacity 0.6s,transform 0.6s}
-    .fu.vis{opacity:1;transform:translateY(0)}
+    .hero-stats{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;padding-top:2.5rem;border-top:1px solid var(--border)}
+    .hero-stat .num{font-size:2rem;font-weight:900;display:block;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-stat .lbl{font-size:0.7rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase}
+    .scroll-arrow{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:rgba(167,139,250,0.4);font-size:20px;animation:bounce 1.8s infinite}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    .promise-strip{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .promise-item{flex:1;padding:24px 20px;text-align:center;border-right:1px solid var(--border)}
+    .promise-item:last-child{border-right:none}
+    .pi-icon{font-size:1.6rem;margin-bottom:8px;display:block}
+    .pi-title{font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:4px}
+    .pi-desc{font-size:0.75rem;color:var(--grey);line-height:1.5}
+    .section{max-width:1100px;margin:0 auto;padding:80px 28px}
+    .section-header{text-align:center;margin-bottom:48px}
+    .section-eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;display:block}
+    .section-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:0.8rem}
+    .section-title span{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .section-desc{font-size:1rem;color:var(--grey);max-width:520px;margin:0 auto;line-height:1.8}
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+    .blog-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:16px;transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;position:relative;overflow:hidden}
+    .blog-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d));opacity:0;transition:opacity 0.25s}
+    .blog-card:hover{transform:translateY(-5px);border-color:rgba(167,139,250,0.4);box-shadow:0 12px 40px rgba(124,58,237,0.15)}
+    .blog-card:hover::before{opacity:1}
+    .card-top{display:flex;align-items:center;justify-content:space-between}
+    .card-day{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);padding:4px 12px;border-radius:20px}
+    .card-type{font-size:0.68rem;font-weight:600;color:var(--grey);background:var(--bg4);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+    .card-icon{font-size:2.8rem;filter:drop-shadow(0 0 12px rgba(167,139,250,0.3))}
+    .card-title{font-size:1.1rem;font-weight:800;color:var(--white);line-height:1.3}
+    .card-desc{font-size:0.88rem;color:var(--grey);line-height:1.7;flex:1}
+    .card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border)}
+    .card-chapters{font-size:0.75rem;color:var(--grey)}
+    .card-read{font-size:0.78rem;font-weight:700;color:var(--purple)}
+    .blog-card.featured{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+    .blog-card.featured .card-icon{font-size:4rem}
+    .blog-card.featured .card-title{font-size:1.35rem}
+    .tools-banner{background:linear-gradient(135deg,rgba(5,150,105,0.1),rgba(16,185,129,0.05));border:1px solid rgba(110,231,183,0.2);border-radius:20px;padding:36px;display:flex;align-items:center;gap:28px;text-decoration:none;transition:border-color 0.2s,transform 0.2s;max-width:1100px;margin:0 auto 80px}
+    .tools-banner:hover{border-color:var(--green);transform:translateY(-3px)}
+    .tb-icon{font-size:3rem;flex-shrink:0}
+    .tb-badge{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;display:block}
+    .tb-title{font-size:1.2rem;font-weight:800;color:var(--white);margin-bottom:6px}
+    .tb-desc{font-size:0.88rem;color:var(--grey);line-height:1.7;margin-bottom:10px}
+    .tb-link{font-size:0.83rem;font-weight:700;color:var(--green)}
+    .tb-btn{background:linear-gradient(135deg,var(--green-d),#10b981);color:white;padding:0.75rem 1.6rem;border-radius:10px;font-weight:700;font-size:0.88rem;white-space:nowrap;margin-left:auto;flex-shrink:0}
+    .about-strip{background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px 28px}
+    .about-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center}
+    .about-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:white;flex-shrink:0}
+    .about-name{font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:2px}
+    .about-role{font-size:0.78rem;color:var(--purple);font-weight:600;margin-bottom:8px}
+    .about-bio{font-size:0.88rem;color:var(--grey);line-height:1.7;max-width:540px}
+    .about-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.75rem 1.8rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.88rem;white-space:nowrap;transition:transform 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+    .about-cta:hover{transform:translateY(-2px)}
+    .subscribe-section{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(37,99,235,0.12));border-top:1px solid rgba(167,139,250,0.15);padding:80px 28px;text-align:center}
+    .subscribe-section h2{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:900;color:var(--white);margin-bottom:1rem}
+    .subscribe-section p{color:var(--grey);max-width:480px;margin:0 auto 2rem;font-size:1rem;line-height:1.8}
+    .sub-platforms{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+    .sub-plat{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:12px 24px;font-size:0.85rem;font-weight:600;color:var(--lgrey);text-decoration:none;transition:border-color 0.2s,color 0.2s}
+    .sub-plat:hover{border-color:var(--purple);color:var(--purple)}
+    .sub-note{font-size:0.78rem;color:var(--grey)}
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2.5rem 5%;text-align:center}
+    .footer-brand{font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .footer-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin:1rem 0}
+    .footer-links a{color:var(--grey);text-decoration:none;font-size:0.83rem;transition:color 0.2s}
+    .footer-links a:hover{color:var(--purple)}
+    .footer-copy{font-size:0.75rem;color:var(--grey);margin-top:0.5rem}
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
+    .fade-up.vis{opacity:1;transform:translateY(0)}
+    @media(max-width:700px){.blog-card.featured{grid-column:auto;display:flex;flex-direction:column}.tools-banner{flex-direction:column;text-align:center}.about-inner{grid-template-columns:1fr;text-align:center}.about-avatar{margin:0 auto}.about-cta{margin:0 auto;display:inline-block}.promise-strip{flex-direction:column}.promise-item{border-right:none;border-bottom:1px solid var(--border)}.promise-item:last-child{border-bottom:none}.nav-right a:not(.nav-cta){display:none}.hero-stats{gap:1.5rem}}
   </style>
 </head>
 <body>
-
 <nav>
-  <a href="#home" class="nav-brand">DecodeAI with Ani</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#blog">Blog</a></li>
-    <li><a href="#tools">AI Tools</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#newsletter" class="nav-cta">Subscribe Free</a></li>
-  </ul>
+  <a href="/" class="nav-brand">DecodeAI with Ani</a>
+  <div class="nav-right">
+    <a href="#blog">Blog</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+    <a href="#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section id="home">
-  <div class="hero-inner">
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-badge"><div class="dot"></div>90 Days · AI For Everyone · Starting Now</div>
+  <div class="hero-icon">✨</div>
+  <h1>Making <span class="grad">AI Simple</span><br/>for Everyone</h1>
+  <div class="hero-tagline">No jargon. No fear. No PhD required.</div>
+  <p class="hero-desc">Just honest, clear writing about the technology that is changing everything — for every kind of person. 90 days. One post a day. All free.</p>
+  <div class="hero-btns">
+    <a href="#blog" class="btn-primary">📚 Read the Blog</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="btn-secondary">🛠️ Free AI Tools Guide</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">90</span><span class="lbl">Days of Posts</span></div>
+    <div class="hero-stat"><span class="num">40+</span><span class="lbl">AI Tools Covered</span></div>
+    <div class="hero-stat"><span class="num">0</span><span class="lbl">Jargon Used</span></div>
+    <div class="hero-stat"><span class="num">Free</span><span class="lbl">Forever</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<div class="promise-strip">
+  <div class="promise-item"><span class="pi-icon">💡</span><div class="pi-title">Plain English Always</div><div class="pi-desc">Every term explained before moving on</div></div>
+  <div class="promise-item"><span class="pi-icon">🚫</span><div class="pi-title">Zero Hype</div><div class="pi-desc">Honest writing — not a sales pitch</div></div>
+  <div class="promise-item"><span class="pi-icon">🌍</span><div class="pi-title">For Everyone</div><div class="pi-desc">Students, parents, professionals, retirees</div></div>
+  <div class="promise-item"><span class="pi-icon">🆓</span><div class="pi-title">Always Free</div><div class="pi-desc">No paywall. No subscription required</div></div>
+</div>
+
+<section class="section" id="blog">
+  <div class="section-header fade-up">
+    <span class="section-eyebrow">📚 The Blog</span>
+    <h2 class="section-title">90 Days of <span>Decoding AI</span></h2>
+    <p class="section-desc">One post every day. Starting from absolute basics and going all the way to the future of AI — in plain English.</p>
+  </div>
+  <div class="blog-grid">
+    <a href="day1-welcome-decodeai.html" class="blog-card featured fade-up">
+      <div class="card-icon">🚀</div>
+      <div>
+        <div class="card-top" style="margin-bottom:12px"><span class="card-day">Day 1</span><span class="card-type">🎉 Launch Post</span></div>
+        <div class="card-title">Welcome to DecodeAI with Ani — Your Plain English Guide to AI</div>
+        <p class="card-desc" style="margin-top:8px">The launch post. Who this is for, what you'll learn, and why understanding AI matters more right now than at any other point in history. Start here.</p>
+        <div class="card-meta" style="margin-top:14px"><span class="card-chapters">The beginning of everything</span><span class="card-read">Read Day 1 →</span></div>
+      </div>
+    </a>
+    <a href="day2-history-of-ai-decodeai.html" class="blog-card fade-up">
+      <div class="card-top"><span class="card-day">Day 2</span><span class="card-type">📖 History</span></div>
+      <div class="card-icon">⏳</div>
+      <div class="card-title">The History of AI — A Decade-by-Decade Thriller</div>
+      <p class="card-desc">From Alan Turing's impossible question in 1950 to ChatGPT in 2022. Two AI winters. A chess match that shook the world. The most dramatic story in tech.</p>
+      <div class="card-meta"><span class="card-chapters">8 decades · 8 parts</span><span class="card-read">Read Day 2 →</span></div>
+    </a>
+    <a href="day3-what-is-ai-decodeai.html" class="blog-card fade-up">
+      <div class="card-top"><span class="card-day">Day 3</span><span class="card-type">💡 Explainer</span></div>
+      <div class="card-icon">🤖</div>
+      <div class="card-title">What Is Artificial Intelligence? No Jargon, I Promise.</div>
+      <p class="card-desc">The chai shop owner, the toddler and the dog, the stove analogy. 10 chapters of the clearest explanation of AI you've ever read. Zero assumptions. Zero jargon.</p>
+      <div class="card-meta"><span class="card-chapters">10 chapters · 0 jargon</span><span class="card-read">Read Day 3 →</span></div>
+    </a>
+    <a href="day4-machine-learning-decodeai.html" class="blog-card fade-up">
+      <div class="card-top"><span class="card-day">Day 4</span><span class="card-type">💡 Explainer</span></div>
+      <div class="card-icon">🧠</div>
+      <div class="card-title">What Is Machine Learning? The Full, Real Story.</div>
+      <p class="card-desc">From a man playing checkers alone in a lab in 1952 to ChatGPT and Claude. How both AI giants were trained differently. The complete story of how machines learned to learn.</p>
+      <div class="card-meta"><span class="card-chapters">7 chapters · ChatGPT vs Claude</span><span class="card-read">Read Day 4 →</span></div>
+    </a>
+    <div class="blog-card fade-up" style="opacity:0.45;cursor:default;pointer-events:none">
+      <div class="card-top"><span class="card-day">Day 5</span><span class="card-type">⏳ Coming Soon</span></div>
+      <div class="card-icon">💬</div>
+      <div class="card-title">What Is ChatGPT and Why Did the World Go Crazy About It?</div>
+      <p class="card-desc">The 100 million user story. What ChatGPT actually is, how it works, and why its launch was one of the most significant moments in tech history.</p>
+      <div class="card-meta"><span class="card-chapters">Publishing soon...</span><span class="card-read" style="color:var(--grey);-webkit-text-fill-color:var(--grey)">Coming Soon</span></div>
+    </div>
+    <div class="blog-card fade-up" style="opacity:0.45;cursor:default;pointer-events:none">
+      <div class="card-top"><span class="card-day">Day 6+</span><span class="card-type">⏳ Coming Soon</span></div>
+      <div class="card-icon">🔮</div>
+      <div class="card-title">86 More Posts Coming — Follow Along</div>
+      <p class="card-desc">Tools, news, opinions, deep dives and more. Every day for 90 days. Subscribe below to never miss a post.</p>
+      <div class="card-meta"><span class="card-chapters">90 days total</span><span class="card-read" style="color:var(--grey);-webkit-text-fill-color:var(--grey)">Subscribe ↓</span></div>
+    </div>
+  </div>
+</section>
+
+<div style="padding:0 28px">
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="tools-banner fade-up">
+    <div class="tb-icon">🛠️</div>
     <div>
-      <div class="hero-badge">🚀 AI Writer & Educator</div>
-      <h1 class="hero-name">Decode<span>AI</span><br/>with Ani</h1>
-      <p class="hero-title">Making AI Simple for Everyone</p>
-      <p class="hero-desc">No jargon. No fear. Just <strong>clear, honest AI education</strong> for curious people who want to understand the technology shaping our world — without needing a computer science degree.</p>
-      <div class="hero-btns">
-        <a href="#blog" class="btn-primary">📖 Read the Blog</a>
-        <a href="#newsletter" class="btn-secondary">📬 Subscribe Free</a>
-      </div>
-      <div class="hero-stats">
-        <div><div class="stat-num">40+</div><div class="stat-label">AI Tools Covered</div></div>
-        <div><div class="stat-num">90</div><div class="stat-label">Days of Content</div></div>
-        <div><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
-        <div><div class="stat-num">0</div><div class="stat-label">Jargon Used</div></div>
-      </div>
+      <span class="tb-badge">🌐 Free Resource</span>
+      <div class="tb-title">Interactive AI Tools Cheat Sheet — 40+ Tools</div>
+      <p class="tb-desc">Real pricing, pros, cons and use cases for every major AI tool. ChatGPT, Claude, Midjourney, Notion AI and 40 more. The resource I wish had existed when I started.</p>
+      <div class="tb-link">kkaniruddha.github.io/ai-tools-cheatsheet →</div>
     </div>
+    <div class="tb-btn">Open Free Guide →</div>
+  </a>
+</div>
+
+<div class="about-strip">
+  <div class="about-inner">
+    <div class="about-avatar">A</div>
     <div>
-      <div class="hero-card">
-        <div class="card-header">
-          <div class="card-avatar">A</div>
-          <div><div class="card-name">Ani</div><div class="card-role">AI Writer & Educator</div></div>
-        </div>
-        <div class="card-content">"I explain AI the way I wish someone had explained it to me — like a smart friend who actually knows the subject but never makes you feel stupid for asking."</div>
-        <div class="card-tags">
-          <span class="ctag">Storytelling</span>
-          <span class="ctag b">Explainers</span>
-          <span class="ctag g">Tool Reviews</span>
-          <span class="ctag">News Breakdowns</span>
-          <span class="ctag b">Beginner Guides</span>
-        </div>
-      </div>
+      <div class="about-name">Aniruddha</div>
+      <div class="about-role">Founder · DecodeAI with Ani</div>
+      <p class="about-bio">I'm not a computer scientist. I'm someone who got deeply curious about AI and spent a lot of time making sense of it. I write about AI the way an honest, informed friend would explain it — no jargon, no hype, just the truth.</p>
     </div>
+    <a href="day1-welcome-decodeai.html" class="about-cta">Read My Story →</a>
   </div>
+</div>
+
+<section class="subscribe-section" id="subscribe">
+  <h2>📬 Never Miss a Post</h2>
+  <p>90 days of honest AI education — delivered wherever you already are. No spam. No paywall. Just one post a day.</p>
+  <div class="sub-platforms">
+    <a href="#" class="sub-plat">💼 Follow on LinkedIn</a>
+    <a href="#" class="sub-plat">✍️ Follow on Medium</a>
+    <a href="#" class="sub-plat">📬 Subscribe on Substack</a>
+  </div>
+  <p class="sub-note">Join readers learning AI in plain English — one day at a time.</p>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="si">
-    <div class="stag">About Me</div>
-    <h2 class="stitle">The person behind<br/><span>DecodeAI with Ani</span></h2>
-    <div class="about-grid fu">
-      <div class="about-text">
-        <p>Hey! I'm Ani — an AI writer and educator on a mission to make artificial intelligence understandable for <strong>everyone</strong>, not just engineers and tech bros.</p>
-        <p>I got tired of reading AI content that was either too technical to follow or too shallow to be useful. So I started <strong>DecodeAI with Ani</strong> — a space where real people can learn about AI through storytelling, plain-English explainers, honest tool reviews, and grounded opinions.</p>
-        <p>I've spent months researching AI company histories, testing tools, following the news, and translating all of it into content that <strong>doesn't require a PhD to understand</strong>. My interactive AI Tools Cheat Sheet has already helped thousands of people navigate the AI landscape.</p>
-        <p>Whether you're a student, a professional, a business owner, or simply a curious human — <strong>you belong here.</strong></p>
-        <div style="margin-top:1.5rem">
-          <div class="val-item"><div class="val-icon">🎯</div><div><div class="val-title">Clarity over complexity</div><div class="val-desc">If I can't explain it simply, I don't understand it well enough yet.</div></div></div>
-          <div class="val-item"><div class="val-icon">🤝</div><div><div class="val-title">Honesty over hype</div><div class="val-desc">AI is powerful AND overhyped. I'll tell you both sides.</div></div></div>
-          <div class="val-item"><div class="val-icon">🌍</div><div><div class="val-title">AI for everyone</div><div class="val-desc">This technology belongs to all of us. So does the knowledge.</div></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="acard"><div class="acard-label">Writing Style</div><div class="acard-val">Storytelling-first. Like a smart friend explaining big ideas over coffee.</div></div>
-        <div class="acard"><div class="acard-label">Topics I Cover</div><div class="acard-val">AI History · Tool Reviews · News Breakdowns · Ethics · Beginner Guides · Future of AI</div></div>
-        <div class="acard"><div class="acard-label">Publishing Platforms</div><div class="acard-val">LinkedIn Articles · Medium · Substack Newsletter</div><div class="acard-sub">Daily content across all three</div></div>
-        <div class="acard"><div class="acard-label">My Promise to You</div><div class="acard-val">Every piece I publish will pass the "could my mum understand this?" test.</div></div>
-        <div class="acard"><div class="acard-label">Currently Working On</div><div class="acard-val">90-Day AI Content Series — from the history of AI to the tools of 2026</div><div class="acard-sub">🔥 New post every single day</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PILLARS -->
-<section id="pillars">
-  <div class="si">
-    <div class="stag">Content Pillars</div>
-    <h2 class="stitle">What I write about</h2>
-    <p class="ssub">Every piece of content falls into one of these five pillars — each designed to give you a different kind of value.</p>
-    <div class="pgrid fu">
-      <div class="pcard"><div class="p-icon">📖</div><div class="p-title">Storytelling & History</div><div class="p-desc">The dramatic human stories behind AI companies, founders, betrayals, and the billion-dollar decisions shaping our world.</div><div class="p-count">→ OpenAI, Anthropic, Google, Meta & more</div></div>
-      <div class="pcard"><div class="p-icon">💡</div><div class="p-title">Simple Explainers</div><div class="p-desc">What is ChatGPT? What is AGI? One concept per post, explained so clearly even your grandparents would get it.</div><div class="p-count">→ No jargon. Ever.</div></div>
-      <div class="pcard"><div class="p-icon">📰</div><div class="p-title">News Breakdowns</div><div class="p-desc">AI is moving fast. Every week I take the biggest stories and explain what actually happened and why it matters for you.</div><div class="p-count">→ Weekly roundups every Thursday</div></div>
-      <div class="pcard"><div class="p-icon">🛠️</div><div class="p-title">Tool Reviews & Guides</div><div class="p-desc">Honest, hands-on reviews of AI tools with real examples. I test them so you know which ones are worth your time and money.</div><div class="p-count">→ 40+ tools covered in the cheat sheet</div></div>
-      <div class="pcard"><div class="p-icon">🔮</div><div class="p-title">Opinion & The Future</div><div class="p-desc">Bold predictions, honest opinions, and the big questions: jobs, ethics, power, safety. I think out loud with you.</div><div class="p-count">→ Every Saturday — the hot take</div></div>
-      <div class="pcard"><div class="p-icon">📚</div><div class="p-title">Beginner Guides</div><div class="p-desc">Step-by-step practical guides for people new to AI. How to use it at work, at home, in your studies — without the overwhelm.</div><div class="p-count">→ Every Friday — actionable & practical</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- BLOG -->
-<section id="blog">
-  <div class="si">
-    <div class="stag">Latest Content</div>
-    <h2 class="stitle">From the <span>Blog</span></h2>
-    <p class="ssub">Fresh AI content every single day. Stories, explainers, tool reviews and honest opinions — all in plain English.</p>
-    <div class="bgrid fu">
-      <div class="bcard"><div class="bcard-top"><span class="btype ts">Storytelling</span><span class="bplat">All Platforms</span></div><div class="bcard-body"><div class="b-title">The Full Story: OpenAI & Anthropic — From One Dinner to the AI Wars of 2026</div><div class="b-desc">The definitive account of how two rival AI companies born from the same vision ended up on opposite sides of the most important tech battle of our time.</div><div class="b-foot"><span class="b-status sr">✓ Published</span><span class="b-read">15 min read</span></div></div></div>
-      <div class="bcard"><div class="bcard-top"><span class="btype tn">News Breakdown</span><span class="bplat">All Platforms</span></div><div class="bcard-body"><div class="b-title">Trump vs Anthropic: The AI Ethics Showdown of 2026</div><div class="b-desc">What really happened when the Trump administration banned Anthropic's AI from government use — and what it means for safe AI.</div><div class="b-foot"><span class="b-status sr">✓ Published</span><span class="b-read">8 min read</span></div></div></div>
-      <div class="bcard"><div class="bcard-top"><span class="btype te">Explainer</span><span class="bplat">LinkedIn</span></div><div class="bcard-body"><div class="b-title">What Is Artificial Intelligence? (No Jargon, I Promise)</div><div class="b-desc">Starting from zero. AI explained like you're talking to a curious friend — no maths, no code, no intimidating technical terms.</div><div class="b-foot"><span class="b-status sc">Coming Day 2</span><span class="b-read">5 min read</span></div></div></div>
-      <div class="bcard"><div class="bcard-top"><span class="btype tg">Beginner Guide</span><span class="bplat">Medium</span></div><div class="bcard-body"><div class="b-title">5 Things You Can Do With AI Starting Today — No Tech Skills Needed</div><div class="b-desc">Practical and immediately actionable. Real examples of how AI tools can save you hours every week.</div><div class="b-foot"><span class="b-status sc">Coming Day 6</span><span class="b-read">6 min read</span></div></div></div>
-      <div class="bcard"><div class="bcard-top"><span class="btype to">Opinion</span><span class="bplat">Substack</span></div><div class="bcard-body"><div class="b-title">Is AI Going to Take Your Job? The Honest Answer Nobody Is Giving You</div><div class="b-desc">The real threat isn't robots. It's people who use AI versus people who don't. Here's what you need to know.</div><div class="b-foot"><span class="b-status sc">Coming Day 7</span><span class="b-read">7 min read</span></div></div></div>
-      <div class="bcard"><div class="bcard-top"><span class="btype ts">Storytelling</span><span class="bplat">Medium</span></div><div class="bcard-body"><div class="b-title">The Man Who Got Fired and Rehired in 5 Days: The Sam Altman Story</div><div class="b-desc">The most dramatic week in tech history — a boardroom coup, a mass mutiny, and a stunning reversal that changed everything.</div><div class="b-foot"><span class="b-status sc">Coming Day 9</span><span class="b-read">10 min read</span></div></div></div>
-    </div>
-    <div class="blog-more"><a href="https://medium.com" target="_blank" class="btn-secondary">Read All Posts on Medium →</a></div>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<section id="tools">
-  <div class="si">
-    <div class="stag">AI Tools Cheat Sheet</div>
-    <h2 class="stitle">Your complete <span>AI toolkit</span></h2>
-    <p class="ssub">An interactive guide to 40+ AI tools — click any card for full pricing, pros & cons, and use cases.</p>
-    <div class="tfeat fu">
-      <div>
-        <div class="tf-label">🌐 Live Interactive Resource</div>
-        <div class="tf-title">40+ AI Tools.<br/>One Place.<br/>Fully Interactive.</div>
-        <div class="tf-desc">The most comprehensive plain-English guide to AI tools in 2026. Covers chatbots, image generation, coding assistants, video tools, productivity apps and more.</div>
-        <div class="tstats">
-          <div class="tstat"><div class="tstat-n">40+</div><div class="tstat-l">Tools Covered</div></div>
-          <div class="tstat"><div class="tstat-n">7</div><div class="tstat-l">Categories</div></div>
-          <div class="tstat"><div class="tstat-n">Free</div><div class="tstat-l">To Access</div></div>
-          <div class="tstat"><div class="tstat-n">2026</div><div class="tstat-l">Edition</div></div>
-        </div>
-        <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="btn-primary">🚀 Open Interactive Cheat Sheet</a>
-      </div>
-      <div class="tprev">
-        <div class="trow"><span class="tname">ChatGPT</span><span class="tcat">Chatbot / LLM</span><span class="tbadge bfm">Freemium</span></div>
-        <div class="trow"><span class="tname">Claude</span><span class="tcat">Chatbot / LLM</span><span class="tbadge bfm">Freemium</span></div>
-        <div class="trow"><span class="tname">Midjourney</span><span class="tcat">Image Generation</span><span class="tbadge bp">Paid</span></div>
-        <div class="trow"><span class="tname">Meta Llama 3</span><span class="tcat">Open Source LLM</span><span class="tbadge bf">Free</span></div>
-        <div class="trow"><span class="tname">GitHub Copilot</span><span class="tcat">AI Coding</span><span class="tbadge bfm">Freemium</span></div>
-        <div class="trow"><span class="tname">ElevenLabs</span><span class="tcat">Voice / Audio</span><span class="tbadge bfm">Freemium</span></div>
-        <div class="trow"><span class="tname">Stable Diffusion</span><span class="tcat">Image Gen</span><span class="tbadge bf">Free & Open</span></div>
-        <div style="text-align:center;padding-top:10px;font-size:0.78rem;color:var(--purple);font-weight:700">+ 33 more tools → Click to explore all</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section id="newsletter">
-  <div class="si">
-    <div class="nbox fu">
-      <div class="n-emoji">📬</div>
-      <h2 class="n-title">Join the <span style="background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent">AI Decoded</span> Newsletter</h2>
-      <p class="n-desc">Every Sunday — one email with the week's biggest AI stories, a tool recommendation, and an honest opinion. No spam. No fluff. Just signal.</p>
-      <div class="n-perks">
-        <span class="perk">Weekly AI news breakdown</span>
-        <span class="perk">Tool of the week</span>
-        <span class="perk">Exclusive content</span>
-        <span class="perk">Completely free</span>
-      </div>
-      <a href="https://substack.com" target="_blank" class="nbtn">📬 Subscribe on Substack — It's Free</a>
-      <p class="nnote">Join curious people learning AI every week. Unsubscribe anytime.</p>
-    </div>
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="si">
-    <div class="stag">Portfolio</div>
-    <h2 class="stitle">Things I've <span>built</span></h2>
-    <p class="ssub">A growing collection of AI resources, research, and content that anyone can use for free.</p>
-    <div class="pogrid fu">
-      <div class="pocard"><div class="po-icon">🛠️</div><div class="po-title">Interactive AI Tools Cheat Sheet</div><div class="po-desc">A fully interactive guide to 40+ AI tools in 2026. Click any card for pricing, pros & cons, and use cases. Built in HTML, hosted free.</div><a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="po-link">View Live →</a></div>
-      <div class="pocard"><div class="po-icon">📖</div><div class="po-title">The Full OpenAI & Anthropic Story</div><div class="po-desc">A 9-chapter deep dive into the most dramatic corporate rivalry in tech history — from a dinner in 2015 to the AI wars of 2026.</div><a href="https://medium.com" target="_blank" class="po-link">Read on Medium →</a></div>
-      <div class="pocard"><div class="po-icon">📰</div><div class="po-title">Trump vs Anthropic: The AI Ethics Showdown</div><div class="po-desc">How Anthropic lost a $200M government contract for refusing to remove AI safety restrictions — and what it means for all of us.</div><a href="https://medium.com" target="_blank" class="po-link">Read on Medium →</a></div>
-      <div class="pocard"><div class="po-icon">🃏</div><div class="po-title">AI Tools Flashcard PDF Carousel</div><div class="po-desc">42 professionally designed flashcards — one per AI tool — with pricing, pros & cons and use cases. Built for LinkedIn carousels.</div><a href="#" class="po-link">Download PDF →</a></div>
-      <div class="pocard"><div class="po-icon">📅</div><div class="po-title">90-Day AI Content Calendar</div><div class="po-desc">A complete content strategy and calendar for building an AI writing brand from zero — brand strategy, monetization roadmap included.</div><a href="https://github.com/kkaniruddha" target="_blank" class="po-link">View on GitHub →</a></div>
-      <div class="pocard"><div class="po-icon">🐙</div><div class="po-title">GitHub Profile</div><div class="po-desc">All my projects, resources and code live here. Follow along as I build more AI tools and open content for the community.</div><a href="https://github.com/kkaniruddha" target="_blank" class="po-link">View GitHub →</a></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="si">
-    <div class="stag">Get in Touch</div>
-    <h2 class="stitle">Let's <span>connect</span></h2>
-    <p class="ssub">Have a question, collaboration idea, or just want to say hi? I'd love to hear from you.</p>
-    <div class="cgrid fu">
-      <div>
-        <a href="https://linkedin.com/in/kkaniruddha" target="_blank" class="citem"><div class="c-icon">💼</div><div><div class="c-title">LinkedIn</div><div class="c-val">linkedin.com/in/kkaniruddha</div><div class="c-desc">Connect professionally & read my LinkedIn Articles</div></div></a>
-        <a href="https://medium.com" target="_blank" class="citem"><div class="c-icon">✍️</div><div><div class="c-title">Medium</div><div class="c-val">medium.com/@kkaniruddha</div><div class="c-desc">Follow for daily AI articles and deep dives</div></div></a>
-        <a href="https://substack.com" target="_blank" class="citem"><div class="c-icon">📬</div><div><div class="c-title">Substack Newsletter</div><div class="c-val">DecodeAI with Ani on Substack</div><div class="c-desc">Weekly newsletter — subscribe free</div></div></a>
-        <a href="https://github.com/kkaniruddha" target="_blank" class="citem"><div class="c-icon">🐙</div><div><div class="c-title">GitHub</div><div class="c-val">github.com/kkaniruddha</div><div class="c-desc">All my projects and open resources</div></div></a>
-        <div class="citem" style="border-color:rgba(167,139,250,0.3)"><div class="c-icon">🤝</div><div><div class="c-title">Open for Collaborations</div><div class="c-val" style="color:var(--purple)">Guest posts · Sponsored content · Speaking</div><div class="c-desc">Let's create something valuable together</div></div></div>
-      </div>
-      <div class="cform">
-        <h3>Send a Message</h3>
-        <div class="fg"><label>Your Name</label><input type="text" placeholder="e.g. Priya Sharma"/></div>
-        <div class="fg"><label>Email Address</label><input type="email" placeholder="your@email.com"/></div>
-        <div class="fg"><label>Reason for Contact</label><select><option>Collaboration / Guest Post</option><option>Sponsored Content</option><option>Just saying hi!</option><option>Question about AI</option><option>Speaking / Event</option><option>Other</option></select></div>
-        <div class="fg"><label>Your Message</label><textarea placeholder="Tell me what's on your mind..."></textarea></div>
-        <button class="csub" onclick="handleSubmit()">Send Message 🚀</button>
-        <p class="fnote">I read every message and reply within 48 hours.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <div class="fi">
-    <div class="ftop">
-      <div><div class="fbname">DecodeAI with Ani</div><div class="fbdesc">Making artificial intelligence simple, honest and accessible for everyone — one post at a time. No jargon. No fear.</div></div>
-      <div><div class="fct">Content</div><ul class="flinks"><li><a href="#blog">Latest Posts</a></li><li><a href="#pillars">Topics</a></li><li><a href="https://medium.com" target="_blank">Medium</a></li><li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li><li><a href="https://substack.com" target="_blank">Newsletter</a></li></ul></div>
-      <div><div class="fct">Resources</div><ul class="flinks"><li><a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Cheat Sheet</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="https://github.com/kkaniruddha" target="_blank">GitHub</a></li><li><a href="#newsletter">Free Newsletter</a></li></ul></div>
-      <div><div class="fct">Connect</div><ul class="flinks"><li><a href="https://linkedin.com/in/kkaniruddha" target="_blank">LinkedIn</a></li><li><a href="https://github.com/kkaniruddha" target="_blank">GitHub</a></li><li><a href="https://medium.com" target="_blank">Medium</a></li><li><a href="https://substack.com" target="_blank">Substack</a></li><li><a href="#contact">Contact Me</a></li></ul></div>
-    </div>
-    <div class="fbot">
-      <div class="fcopy">© 2026 <span>DecodeAI with Ani</span> · Built with ❤️ and hosted free on GitHub Pages</div>
-      <div class="fsocs">
-        <a href="https://linkedin.com/in/kkaniruddha" target="_blank" class="fsoc">in</a>
-        <a href="https://github.com/kkaniruddha" target="_blank" class="fsoc">gh</a>
-        <a href="https://medium.com" target="_blank" class="fsoc">M</a>
-        <a href="https://substack.com" target="_blank" class="fsoc">S</a>
-      </div>
-    </div>
+  <div class="footer-brand">DecodeAI with Ani</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day2-history-of-ai-decodeai.html">Day 2</a>
+    <a href="day3-what-is-ai-decodeai.html">Day 3</a>
+    <a href="day4-machine-learning-decodeai.html">Day 4</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
   </div>
+  <p class="footer-copy">© 2026 DecodeAI with Ani · decodewithani.com · Making AI simple for everyone</p>
 </footer>
 
 <script>
-  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('vis'); }), {threshold:0.1});
-  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
-  function handleSubmit(){ alert('Thanks for your message! I\'ll reply within 48 hours. 🙌'); }
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
