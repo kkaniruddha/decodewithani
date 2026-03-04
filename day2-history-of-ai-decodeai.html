@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 2 – History of AI: A Decade-by-Decade Thriller | DecodeAI with Ani</title>
+  <meta name="description" content="From Alan Turing's impossible question in 1950 to ChatGPT in 2022 — the unbelievable true story of the machines we built to think. By DecodeAI with Ani."/>
+  <style>
+    :root{
+      --purple:#a78bfa;--purple-d:#7c3aed;--purple-dd:#5b21b6;
+      --blue:#60a5fa;--blue-d:#2563eb;
+      --green:#6ee7b7;--green-d:#059669;
+      --amber:#fcd34d;--red:#fca5a5;
+      --bg:#0d0d1a;--bg2:#13131f;--bg3:#1a1a2e;--bg4:#1e1e3a;
+      --border:#2a2a4a;--white:#ffffff;--grey:#9ca3af;--lgrey:#d1d5db;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.8}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--purple-d);border-radius:3px}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+    .nav-brand{font-size:1.05rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.5rem}
+    .nav-right a{color:var(--grey);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
+    .nav-right a:hover{color:var(--purple)}
+    .nav-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white!important;padding:0.35rem 1.1rem;border-radius:20px;font-weight:600!important;font-size:0.82rem!important}
+
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,58,237,0.2) 0%,transparent 70%),var(--bg);position:relative;overflow:hidden}
+    .hero-grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--purple);padding:0.35rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem}
+    .hero-badge::before{content:'●';font-size:0.55rem;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+    .hero-icon{font-size:80px;margin-bottom:20px;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(167,139,250,0.4))}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    .hero h1{font-size:clamp(2.2rem,6vw,4.4rem);font-weight:900;color:var(--white);line-height:1.1;max-width:860px;margin-bottom:1.2rem;letter-spacing:-1px}
+    .hero h1 span{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-desc{font-size:1.05rem;color:var(--grey);max-width:580px;line-height:1.8;margin-bottom:2.5rem}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;padding-top:2rem;border-top:1px solid var(--border)}
+    .hero-stat .num{font-size:1.9rem;font-weight:900;display:block;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-stat .lbl{font-size:0.7rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase}
+    .scroll-arrow{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:rgba(167,139,250,0.4);font-size:20px;animation:bounce 1.8s infinite}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+    /* HOW TO READ */
+    .how-to-read{background:rgba(37,99,235,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:14px;padding:20px 24px;max-width:780px;margin:0 auto 3rem;text-align:left}
+    .how-to-read .htr-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:block}
+    .how-to-read p{font-size:0.92rem;color:var(--lgrey);margin:0;line-height:1.7}
+
+    /* DECADE CHAPTER HEADER */
+    .decade-header{margin:60px 0 0;padding:48px 0 32px;text-align:center;border-top:1px solid var(--border);position:relative}
+    .decade-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
+    .decade-part{font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+    .decade-year{font-size:clamp(3rem,8vw,6rem);font-weight:900;color:var(--white);line-height:1;margin-bottom:8px;letter-spacing:-2px}
+    .decade-subtitle{font-size:1.1rem;font-weight:700;margin-bottom:0}
+
+    /* Color variations per decade */
+    .d1950 .decade-year{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d1950 .decade-subtitle{color:var(--purple)}
+    .d1960 .decade-year{background:linear-gradient(135deg,var(--blue),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d1960 .decade-subtitle{color:var(--blue)}
+    .d1970 .decade-year{background:linear-gradient(135deg,#6b7280,#9ca3af);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d1970 .decade-subtitle{color:var(--grey)}
+    .d1980 .decade-year{background:linear-gradient(135deg,var(--green),var(--green-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d1980 .decade-subtitle{color:var(--green)}
+    .d1990 .decade-year{background:linear-gradient(135deg,var(--red),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d1990 .decade-subtitle{color:var(--red)}
+    .d2000 .decade-year{background:linear-gradient(135deg,var(--amber),#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d2000 .decade-subtitle{color:var(--amber)}
+    .d2010 .decade-year{background:linear-gradient(135deg,var(--purple),var(--purple-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d2010 .decade-subtitle{color:var(--purple)}
+    .d2020 .decade-year{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .d2020 .decade-subtitle{color:var(--blue)}
+
+    .article{max-width:780px;margin:0 auto;padding:60px 28px 120px}
+
+    .section-title{font-size:1.2rem;font-weight:800;color:var(--white);margin:2.5rem 0 1rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border)}
+
+    p{font-size:1rem;margin-bottom:1.3rem;color:var(--lgrey);line-height:1.85}
+    strong{color:var(--white);font-weight:600}
+
+    .story-block{background:linear-gradient(145deg,#12122a 0%,#0d0d1e 100%);border:1px solid var(--border);border-radius:20px;padding:36px 32px;margin:2rem 0;position:relative;overflow:hidden}
+    .story-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
+    .story-block .block-label{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:14px;display:block;font-weight:700}
+    .story-block p{color:rgba(255,255,255,0.82);font-style:italic;font-size:1rem;line-height:1.95;margin-bottom:12px}
+    .story-block p:last-child{margin-bottom:0}
+    .story-block .dramatic{text-align:center;font-size:1.25rem;font-style:normal;font-weight:800;color:var(--white);margin:1.2rem 0}
+
+    .callout{border-radius:14px;padding:18px 22px;margin:1.5rem 0;border-left:4px solid}
+    .callout.purple{background:rgba(124,58,237,0.08);border-color:var(--purple-d)}
+    .callout.blue{background:rgba(37,99,235,0.08);border-color:var(--blue-d)}
+    .callout.amber{background:rgba(217,119,6,0.08);border-color:#d97706}
+    .callout.red{background:rgba(220,38,38,0.08);border-color:#dc2626}
+    .callout.green{background:rgba(5,150,105,0.08);border-color:var(--green-d)}
+    .callout.grey{background:rgba(75,85,99,0.1);border-color:#4b5563}
+    .callout-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:block}
+    .callout.purple .callout-label{color:var(--purple)}
+    .callout.blue .callout-label{color:var(--blue)}
+    .callout.amber .callout-label{color:#fbbf24}
+    .callout.red .callout-label{color:var(--red)}
+    .callout.green .callout-label{color:var(--green)}
+    .callout.grey .callout-label{color:var(--grey)}
+    .callout p{margin:0;font-size:0.92rem;color:var(--lgrey);line-height:1.7}
+
+    .cliffhanger{text-align:center;padding:2rem 0 1rem;font-size:1rem;font-style:italic;color:var(--grey);border-top:1px solid var(--border);margin-top:2.5rem}
+    .cliffhanger strong{color:var(--white)}
+
+    .pull-quote{border-left:4px solid var(--purple-d);background:rgba(124,58,237,0.06);border-radius:0 14px 14px 0;padding:18px 26px;margin:2rem 0}
+    .pull-quote p{font-size:1.05rem;font-style:italic;color:var(--purple);margin:0;line-height:1.65;font-weight:500}
+
+    /* Epilogue */
+    .epilogue{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:44px 40px;margin:3rem 0;position:relative;overflow:hidden}
+    .epilogue::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d),var(--green-d))}
+    .epilogue h2{font-size:1.6rem;font-weight:800;color:var(--white);margin-bottom:1.2rem}
+    .epilogue p{color:var(--lgrey);margin-bottom:1rem;line-height:1.85}
+    .epilogue .final-line{font-size:1.1rem;font-weight:700;color:var(--white);text-align:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:2rem 0}
+    .tag{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:100px;padding:5px 14px;font-size:0.75rem;color:var(--purple);font-weight:600}
+
+    .closing{text-align:center;padding:64px 28px;background:linear-gradient(180deg,var(--bg) 0%,var(--bg3) 100%);border-top:1px solid var(--border)}
+    .close-badge{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:16px;display:block;font-weight:700}
+    .closing h3{font-size:1.5rem;color:var(--white);font-weight:800;margin-bottom:10px}
+    .closing p{color:var(--grey);font-size:0.95rem;max-width:440px;margin:0 auto 1.5rem;line-height:1.8}
+    .closing-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+    .closing-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.4)}
+
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 5%;text-align:center}
+    .footer-brand{font-size:1rem;font-weight:800;margin-bottom:0.4rem;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .footer-sub{font-size:0.8rem;color:var(--grey)}
+    .footer-sub a{color:var(--purple);text-decoration:none}
+
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
+    .fade-up.vis{opacity:1;transform:translateY(0)}
+
+    @media(max-width:620px){
+      .article{padding:40px 18px 80px}
+      .story-block,.epilogue{padding:24px 18px}
+      .decade-year{font-size:4rem}
+      .nav-right a:not(.nav-cta){display:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" class="nav-brand">DecodeAI with Ani</a>
+  <div class="nav-right">
+    <a href="#">Blog</a>
+    <a href="#">AI Tools</a>
+    <a href="#" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-badge">📅 Day 2 of 90 · DecodeAI with Ani</div>
+  <div class="hero-icon">⏳</div>
+  <h1>The History of <span>Artificial Intelligence</span><br/>A Decade-by-Decade Thriller</h1>
+  <p class="hero-desc">From a single question in 1950 to the AI revolution of today — the unbelievable true story of the machines we built to think.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">8</span><span class="lbl">Decades Covered</span></div>
+    <div class="hero-stat"><span class="num">1950</span><span class="lbl">Where It Begins</span></div>
+    <div class="hero-stat"><span class="num">2</span><span class="lbl">AI Winters Survived</span></div>
+    <div class="hero-stat"><span class="num">1</span><span class="lbl">Question That Started It All</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- INTRO -->
+  <div class="how-to-read fade-up">
+    <span class="htr-label">📖 How to Read This</span>
+    <p>Each Part covers one decade. Read them in order for the full story, or jump to any era that interests you. Every decade ends with a cliffhanger — because that's exactly what it felt like to live through it.</p>
+  </div>
+
+  <p class="fade-up">You've heard the names. ChatGPT. Claude. Gemini. Midjourney. Every week, it seems like a new AI tool arrives that either amazes or terrifies the world.</p>
+  <p>But here's what nobody tells you: the story of how we got here is one of the most dramatic, heartbreaking, thrilling stories in all of human history. It involves a British mathematician persecuted by his own government. A summer conference that launched a revolution. Decades-long winters where everyone gave up. A chess match that shook the world. And finally — an explosion of intelligence that nobody fully saw coming.</p>
+  <p>Ready? Let's go back to 1950 — where it all began with one impossible question.</p>
+
+  <!-- ── 1950s ── -->
+  <div class="decade-header d1950 fade-up">
+    <div class="decade-part">Part One</div>
+    <div class="decade-year">1950s</div>
+    <div class="decade-subtitle">The Question That Started Everything</div>
+  </div>
+
+  <div class="section-title">The Man With the Impossible Dream</div>
+  <p>It is 1950. The world is still recovering from the most devastating war in history. Computers — enormous, room-sized machines — have just helped the Allies crack enemy codes and win the war. But one man isn't thinking about what computers have done. He's obsessed with what they <em>could</em> do.</p>
+  <p>His name is <strong>Alan Turing</strong>. He is 38 years old, brilliant beyond measure, and quietly revolutionary. Working at the University of Manchester in England, Turing asks a question that will echo through history for the next 75 years:</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">🗞️ Breaking News — 1950</span>
+    <p class="dramatic">"Can machines think?"</p>
+    <p>In October 1950, he publishes a paper called 'Computing Machinery and Intelligence.' In it, he proposes what he calls 'The Imitation Game' — a test where a human judge has a conversation via text with both a human and a machine. If the judge cannot reliably tell which is which, the machine has passed. Today we call this the Turing Test, and we are still debating it.</p>
+  </div>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">🗞️ Breaking News — 1950</span>
+    <p>British mathematician Alan Turing publishes a paper asking if machines can think. Most of the world laughs. A small group of researchers takes it deadly seriously.</p>
+  </div>
+
+  <div class="section-title">The Summer That Changed History</div>
+  <p>Six years later, in the summer of 1956, something remarkable happens. A group of America's brightest minds gather at Dartmouth College in New Hampshire for what sounds like an academic conference. But what actually takes place that summer is <strong>the birth of an entirely new field of science.</strong></p>
+  <p>The organiser is a 29-year-old mathematician named <strong>John McCarthy</strong>. Bold, confident, and visionary, McCarthy has already decided what to call this new field before the conference even begins. He coins two words that will one day appear in every newspaper on earth: <strong>Artificial Intelligence.</strong></p>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">📌 Key Moment</span>
+    <p>The 1956 Dartmouth Conference is officially considered the founding of Artificial Intelligence as a field. John McCarthy is 29 years old. He has no idea what he has just unleashed.</p>
+  </div>
+
+  <div class="section-title">The Dark Side of the Dawn</div>
+  <p>But 1950 has a shadow that most AI histories skip past. Alan Turing — the man who arguably started it all — will never see the revolution he sparked. In 1952, the British government prosecutes Turing for being gay. He is subjected to chemical castration as 'treatment.' In 1954, aged just 41, he is found dead — a half-eaten apple beside him, the cause never officially confirmed.</p>
+  <p>The father of computer science and the man who first asked if machines could think is gone before the field he inspired is even officially named. <strong>The story of AI begins with a tragedy.</strong></p>
+
+  <div class="cliffhanger fade-up">The question had been asked. The field had been named.<br/><strong>Now someone had to actually build the thing.</strong></div>
+
+  <!-- ── 1960s ── -->
+  <div class="decade-header d1960 fade-up">
+    <div class="decade-part">Part Two</div>
+    <div class="decade-year">1960s</div>
+    <div class="decade-subtitle">The Age of Wild Promises</div>
+  </div>
+
+  <div class="section-title">The Machine That Fooled Therapists</div>
+  <p>The 1960s arrive and AI researchers are flying high. The government is pouring money into their labs. Researchers are making bold, sweeping predictions that machines will match human intelligence within a generation.</p>
+  <p>And then — something extraordinary happens in a basement at MIT. A computer scientist named <strong>Joseph Weizenbaum</strong> builds a program called <strong>ELIZA</strong>. It is designed to simulate a psychotherapist — one that responds to your statements by reflecting them back as questions. If you say "I feel sad," ELIZA responds: "Why do you feel sad?" Simple pattern matching. No real understanding whatsoever.</p>
+  <p>And yet — people fall for it completely.</p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">😲 The Shocking Part</span>
+    <p>Weizenbaum's own secretary — who knows ELIZA is a program — asks him to leave the room so she can have a private conversation with it. Real therapists begin suggesting it could replace human psychologists. Weizenbaum is horrified.</p>
+  </div>
+
+  <div class="section-title">The Overconfident Decade</div>
+  <p>Throughout the 1960s, the promises grow bigger and bigger. Marvin Minsky tells Life magazine in 1970 that "within a generation, the problem of creating artificial intelligence will be substantially solved." Herbert Simon predicts in 1965 that "machines will be capable, within twenty years, of doing any work a man can do."</p>
+  <p>These are not fringe voices. These are the most respected scientists in the field, speaking with total confidence. <strong>They are about to be spectacularly, catastrophically wrong.</strong></p>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">⚠️ What They Didn't Know</span>
+    <p>Language, common sense, physical movement, visual understanding — things humans do effortlessly — would turn out to be almost impossibly hard to recreate in machines. The "easy" problems were actually the hardest.</p>
+  </div>
+
+  <div class="cliffhanger fade-up">The promises had been made. The money was flowing.<br/><strong>Now came the reckoning.</strong></div>
+
+  <!-- ── 1970s ── -->
+  <div class="decade-header d1970 fade-up">
+    <div class="decade-part">Part Three</div>
+    <div class="decade-year">1970s</div>
+    <div class="decade-subtitle">The Winter Is Coming</div>
+  </div>
+
+  <div class="section-title">The Report That Froze Everything</div>
+  <p>It is 1973. The British government commissions a report to evaluate AI research. What Sir James Lighthill writes is devastating. After thoroughly reviewing all AI research, he concludes that virtually none of the grand promises of the 1950s and 1960s have been delivered.</p>
+  <p>The report lands like a bomb. The British government immediately cuts almost all AI funding. The American funding agencies follow. Researchers who have dedicated their careers to AI find their grants cancelled, their labs shuttered.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">❄️ The AI Winter Has Arrived</span>
+    <p>The brilliant young scientists who had gathered at Dartmouth with such hope are scattered. Some leave academia entirely. Others pivot to adjacent fields. The ones who stay find themselves working in near-total obscurity, defending their work to sceptical colleagues and hostile funding committees.</p>
+    <p>But not everyone gives up. In quiet corners of universities, a stubborn minority keeps working. They believe the winter is temporary. They believe the dream is real.</p>
+  </div>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">💡 The Survivors</span>
+    <p>A small group of researchers refuses to quit during the AI Winter. Many of the ideas they quietly develop during this dark period will form the foundation of the AI revolution decades later. The winter is not the end. It is incubation.</p>
+  </div>
+
+  <div class="cliffhanger fade-up">The field was frozen. The dream was buried.<br/><strong>But under the ice, something was quietly growing.</strong></div>
+
+  <!-- ── 1980s ── -->
+  <div class="decade-header d1980 fade-up">
+    <div class="decade-part">Part Four</div>
+    <div class="decade-year">1980s</div>
+    <div class="decade-subtitle">The False Spring</div>
+  </div>
+
+  <div class="section-title">The Machines That Knew Things</div>
+  <p>The 1980s bring a thaw — and this time it comes from an unexpected direction: <strong>Japan</strong>. The Japanese government announces the Fifth Generation Computer Project in 1982 — a ten-year, billion-dollar national programme to build intelligent computers. The announcement sends shockwaves through the United States and Britain. Suddenly, AI is a matter of national competitiveness.</p>
+  <p>The funding floods back in. This time, researchers focus on <strong>Expert Systems</strong> — programs that encode the knowledge of human experts in specific fields. MYCIN can diagnose blood infections better than most medical students. XCON saves DEC millions of dollars per year. For the first time, AI is delivering real, measurable business value.</p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">💰 Big Business</span>
+    <p>By the mid-1980s, Expert Systems are a billion-dollar industry. Companies are paying millions for AI programs that can replicate the decision-making of their best human experts. Silicon Valley starts paying attention.</p>
+  </div>
+
+  <div class="section-title">The Second Winter</div>
+  <p>And then — it happens again. Expert systems are extraordinarily expensive to build and maintain. The systems cannot learn. The systems cannot adapt. When the world changes, they have to be completely rebuilt. By 1987, the market for AI hardware collapses almost overnight. The second AI Winter begins.</p>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">🔬 Quietly Brewing</span>
+    <p>In 1986, a paper by Rumelhart, Hinton, and Williams revives interest in neural networks — computing systems loosely inspired by the human brain. Almost nobody notices. But a few stubborn believers see it as the key to everything.</p>
+  </div>
+
+  <div class="cliffhanger fade-up">Two winters survived. The dream refused to die.<br/><strong>And somewhere in the math — something extraordinary was waking up.</strong></div>
+
+  <!-- ── 1990s ── -->
+  <div class="decade-header d1990 fade-up">
+    <div class="decade-part">Part Five</div>
+    <div class="decade-year">1990s</div>
+    <div class="decade-subtitle">The Machine Beats the Champion</div>
+  </div>
+
+  <div class="section-title">The Match That Stopped the World</div>
+  <p><strong>May 11, 1997. New York City. The Equitable Center on 7th Avenue.</strong></p>
+  <p>On one side of the chessboard sits <strong>Garry Kasparov</strong> — arguably the greatest chess player who has ever lived. The reigning world champion. A man with an IQ estimated at 190 and an intensity that has terrified opponents for decades.</p>
+  <p>On the other side of the board is nothing. An empty chair. The moves arrive via a mechanical arm connected to a computer the size of a refrigerator. Its name is <strong>Deep Blue</strong>, and it belongs to IBM.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">♟️ Game Six — Less Than an Hour</span>
+    <p>The match is the sixth and final game of a rematch series. Kasparov is rattled. In the previous game, Deep Blue had made a move so strange, so seemingly illogical, that Kasparov became convinced the machine was being secretly guided by grandmasters. It wasn't — it had simply found a move that no human would have considered.</p>
+    <p>Game six lasts less than an hour. Kasparov, for the first time in his career, resigns after just 19 moves.</p>
+    <p class="dramatic">A machine has beaten the best human mind at the game humans believed defined intelligence.</p>
+  </div>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">🗞️ Front Page Everywhere</span>
+    <p>The New York Times. The Times of London. Le Monde. Every newspaper on earth runs the story. "The Brain's Last Stand" reads one headline. The question is no longer whether machines can match humans — but what humans are even for.</p>
+  </div>
+
+  <div class="section-title">The Internet Changes Everything</div>
+  <p>While the chess match captures the world's imagination, something even more transformative is happening. In 1991, Tim Berners-Lee publishes the first website. By 1999, there are over 3 million. And all of these websites are generating something AI researchers have always desperately needed but never had: <strong>data</strong>.</p>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">📊 The Data Revolution</span>
+    <p>Neural network researchers realise that their algorithms have always been fundamentally correct — they just lacked training data. The internet is about to give them more data than they could have dreamed of.</p>
+  </div>
+
+  <div class="cliffhanger fade-up">The champion had fallen. The internet was filling up with data.<br/><strong>The pieces were moving into place for something nobody was fully prepared for.</strong></div>
+
+  <!-- ── 2000s ── -->
+  <div class="decade-header d2000 fade-up">
+    <div class="decade-part">Part Six</div>
+    <div class="decade-year">2000s</div>
+    <div class="decade-subtitle">The Quiet Revolution</div>
+  </div>
+
+  <div class="section-title">Google Learns to Read Your Mind</div>
+  <p>The year 2000 arrives and the dot-com bubble promptly bursts. Billions of dollars evaporate overnight. But in a modest office in Mountain View, California, two PhD students from Stanford — <strong>Larry Page and Sergey Brin</strong> — are quietly building a search engine that uses a primitive form of machine learning to rank web pages. They call it <strong>Google</strong>.</p>
+  <p>Google's PageRank algorithm is one of the first AI systems that most ordinary people interact with, without ever knowing it. Over the following decade, Google will invest billions into machine learning research, becoming the company that quietly builds more AI infrastructure than any other organisation on earth.</p>
+
+  <div class="section-title">The Smartphone Puts AI in Your Pocket</div>
+  <p><strong>January 9, 2007.</strong> Steve Jobs takes the stage at Macworld in San Francisco and announces the iPhone. He calls it "a revolutionary product that changes everything." He has no idea how right he is — but for reasons beyond what he can see that day.</p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">📱 The AI Implication</span>
+    <p>By 2010, there are 500 million smartphones in the world. By 2015, that number hits 2 billion. Each one is a data collection device feeding AI systems with richer, more detailed information about human behaviour than anything previously imaginable.</p>
+  </div>
+
+  <div class="section-title">The Paper That Changed Everything</div>
+  <p>In 2006, a 59-year-old British-Canadian researcher named <strong>Geoffrey Hinton</strong> publishes a paper that almost nobody reads at the time. He has been working on deep neural networks for over twenty years, through both AI winters, through scepticism and ridicule. The paper shows that deep neural networks can be trained efficiently if you start them in the right way. It is the key that unlocks a door that has been jammed shut for decades.</p>
+
+  <div class="cliffhanger fade-up">The data was pouring in. The algorithms were ready.<br/><strong>One competition was about to prove to the world that everything had changed.</strong></div>
+
+  <!-- ── 2010s ── -->
+  <div class="decade-header d2010 fade-up">
+    <div class="decade-part">Part Seven</div>
+    <div class="decade-year">2010s</div>
+    <div class="decade-subtitle">The Deep Learning Explosion</div>
+  </div>
+
+  <div class="section-title">The Competition That Rewrote History</div>
+  <p><strong>September 2012.</strong> A global image recognition competition called ImageNet Challenge is held. For years, the best error rate has been improving slowly. The best in 2011 is around 26 percent.</p>
+  <p>Then Geoffrey Hinton's team from the University of Toronto enters. Their system — a deep neural network called <strong>AlexNet</strong> — achieves an error rate of <strong>15.3 percent</strong>. Not a small improvement. Not a modest step forward. A halving of the error rate in a single year. The AI research community is stunned.</p>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">💥 The Aftermath</span>
+    <p>Within two years, every serious AI research lab in the world has abandoned its previous approaches and pivoted to deep learning. Google, Facebook, Microsoft, Baidu — all of them begin restructuring their entire AI research strategy around neural networks.</p>
+  </div>
+
+  <div class="section-title">AlphaGo and the Move That Made Experts Cry</div>
+  <p><strong>March 2016. Seoul, South Korea.</strong> The world's best Go player, Lee Sedol, sits across from a screen displaying the moves of a program called <strong>AlphaGo</strong>, built by DeepMind — a small British AI company acquired by Google for $500 million.</p>
+  <p>AlphaGo wins the first game. Then the second. Then the third. In Game 2, it makes a move — <strong>Move 37</strong> — that no human would ever have considered. The commentators go silent. One expert starts to cry.</p>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">😢 Move 37</span>
+    <p>Professional Go players later describe Move 37 as "a move from God." It is so unexpected, so creative, so strategically profound that it forces a complete rethinking of the game that humans have played for 2,500 years. A machine has taught the masters something new.</p>
+  </div>
+
+  <div class="section-title">The Transformer That Transformed Everything</div>
+  <p><strong>June 2017.</strong> Eight researchers at Google publish a paper titled: <em>"Attention Is All You Need."</em> They introduce a new neural network architecture called the <strong>Transformer</strong>. At the time it seems like another incremental improvement. In reality, it is the moment that makes everything you are reading about today — ChatGPT, Claude, Gemini — possible.</p>
+  <p>The authors don't fully appreciate what they have created. They go off to found their own AI companies. Nobody calls it a revolution. But it is one.</p>
+
+  <div class="cliffhanger fade-up">The architecture was in place. The data was flowing. The computing power was ready.<br/><strong>All that was needed was someone willing to scale it beyond anything ever attempted.</strong></div>
+
+  <!-- ── 2020s ── -->
+  <div class="decade-header d2020 fade-up">
+    <div class="decade-part">Part Eight</div>
+    <div class="decade-year">2020s</div>
+    <div class="decade-subtitle">The World Changes Overnight</div>
+  </div>
+
+  <div class="section-title">The Night Everything Changed</div>
+  <p><strong>November 30, 2022. San Francisco.</strong></p>
+  <p>A company called OpenAI quietly releases a product called <strong>ChatGPT</strong>. No press conference. No advertising campaign. Just a link posted on the internet. Within five days, one million people have tried it. Within two months, <strong>100 million people</strong> have signed up — the fastest-growing consumer application in history.</p>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">🚀 The Numbers</span>
+    <p>100 million users in 60 days. For context: Instagram took 2.5 years to reach 100 million. TikTok took 9 months. ChatGPT does it in 60 days. That is not a product launch. That is a cultural event.</p>
+  </div>
+
+  <div class="section-title">The Code Red at Google</div>
+  <p>At Google, the reaction is described internally as a <strong>"code red"</strong> — the most serious category of emergency. Google has spent fifteen years building the most sophisticated AI research operation in the world. And yet a 500-person startup in San Francisco has just demonstrated something so compelling it threatens Google's core business: search.</p>
+  <p>Why would you type keywords into a search engine and wade through ten blue links when you can just ask a question and get a direct answer? Google's founders are reportedly called back from retirement to help manage the crisis.</p>
+
+  <div class="section-title">The Rivalry That Shapes the Future</div>
+  <p>By 2023, the AI race has two main competitors at the frontier: <strong>OpenAI</strong>, backed by Microsoft with $13 billion invested, and <strong>Anthropic</strong> — founded by former OpenAI employees who left over concerns about safety. Anthropic's AI system, Claude, is seen as the most thoughtful and careful of the frontier models.</p>
+  <p>Both companies release increasingly powerful models at a pace that leaves the world breathless. GPT-4. Claude 2. Claude 3. GPT-4o. Each one more capable than the last. By 2025, these systems are embedded in businesses, used by hundreds of millions of people every day, and the subject of urgent debate in governments around the world.</p>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">🌍 Where We Are Now</span>
+    <p>In 2026, AI is not coming. It is here. The question is no longer "will machines be intelligent?" It is "what do we do now that they are?" The story that Alan Turing began with a single question in 1950 has arrived at an answer — and the answer raises ten thousand more questions.</p>
+  </div>
+
+  <!-- EPILOGUE -->
+  <div class="epilogue fade-up">
+    <h2>Epilogue: The Story Isn't Over</h2>
+    <p>In 1950, Alan Turing asked if machines could think. He was prosecuted by his government, stripped of his dignity, and driven to his death before he could see even the beginning of the answer.</p>
+    <p>Through two brutal winters, through failed promises and cancelled funding, through ridicule and despair, a stubborn band of believers kept the dream alive. Geoffrey Hinton worked for forty years in relative obscurity. The ideas he refused to abandon now power every major AI system on earth. In 2024, he was awarded the Nobel Prize in Physics.</p>
+    <p>In November 2022, a product called ChatGPT launched without fanfare and changed the world in sixty days.</p>
+    <p>The machines can see, hear, read, write, code, compose, and converse. They can beat the world champion at chess, at Go, at video games. They can diagnose diseases, write poetry, and hold conversations increasingly indistinguishable from a human's. What they cannot do — what no one has yet built — is truly understand. To feel. To care. To want.</p>
+    <p>The story of artificial intelligence is the story of human ambition, human stubbornness, and the ancient dream of creating something that thinks. It began with one man asking one question in 1950.</p>
+    <div class="final-line">It continues with you, reading this, right now.<br/>Welcome to the most important story ever told. 🚀</div>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeAI</span>
+    <span class="tag">#HistoryOfAI</span>
+    <span class="tag">#AlanTuring</span>
+    <span class="tag">#ChatGPT</span>
+    <span class="tag">#Claude</span>
+    <span class="tag">#Day2of90</span>
+    <span class="tag">#AIForEveryone</span>
+    <span class="tag">#AIThrillerSeries</span>
+    <span class="tag">#DeepBlue</span>
+    <span class="tag">#AlphaGo</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeAI with Ani</span>
+  <h3>Tomorrow on Day 3 👀</h3>
+  <p>We go back to basics — "What is Artificial Intelligence?" Explained with stories, not slides. No jargon. No fear. Just the clearest explanation you've ever read.</p>
+  <br/>
+  <a href="#" class="closing-btn">📬 Subscribe — Never Miss a Post</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeAI with Ani</div>
+  <p class="footer-sub">Making AI simple for everyone — No jargon. No fear. Just the truth.<br/>
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools Cheat Sheet</a> ·
+  <a href="#">Medium</a> · <a href="#">Substack</a> · <a href="#">LinkedIn</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if(x.isIntersecting) x.target.classList.add('vis'); });
+  }, {threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

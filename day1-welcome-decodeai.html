@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 1 – Welcome to DecodeAI with Ani | Your Plain English Guide to AI</title>
+  <meta name="description" content="No jargon. No fear. No PhD required. Just honest, clear writing about AI — for every kind of person. Welcome to DecodeAI with Ani."/>
+  <style>
+    :root{
+      --purple:#a78bfa;--purple-d:#7c3aed;--purple-dd:#5b21b6;
+      --blue:#60a5fa;--blue-d:#2563eb;
+      --green:#6ee7b7;--green-d:#059669;
+      --amber:#fcd34d;--red:#fca5a5;
+      --bg:#0d0d1a;--bg2:#13131f;--bg3:#1a1a2e;--bg4:#1e1e3a;
+      --border:#2a2a4a;--white:#ffffff;--grey:#9ca3af;--lgrey:#d1d5db;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.8}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--purple-d);border-radius:3px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+    .nav-brand{font-size:1.05rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.5rem}
+    .nav-right a{color:var(--grey);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
+    .nav-right a:hover{color:var(--purple)}
+    .nav-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white!important;padding:0.35rem 1.1rem;border-radius:20px;font-weight:600!important;font-size:0.82rem!important}
+
+    /* HERO — special launch treatment */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden;
+      background:radial-gradient(ellipse 100% 70% at 50% 0%,rgba(124,58,237,0.25) 0%,transparent 65%),
+                 radial-gradient(ellipse 60% 40% at 20% 100%,rgba(37,99,235,0.12) 0%,transparent 60%),
+                 radial-gradient(ellipse 60% 40% at 80% 100%,rgba(124,58,237,0.1) 0%,transparent 60%),
+                 var(--bg)}
+    .hero-grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.05) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black,transparent)}
+
+    .launch-badge{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(37,99,235,0.2));border:1px solid rgba(167,139,250,0.4);color:var(--purple);padding:0.5rem 1.4rem;border-radius:30px;font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;animation:fadeDown 0.8s forwards}
+    .launch-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--purple);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+    .hero-icon{font-size:90px;margin-bottom:24px;filter:drop-shadow(0 0 40px rgba(167,139,250,0.5));animation:float 3.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+    .hero-eyebrow{font-size:0.85rem;font-weight:600;color:var(--grey);letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase}
+
+    .hero h1{font-size:clamp(2.4rem,7vw,5.2rem);font-weight:900;color:var(--white);line-height:1.05;max-width:900px;margin-bottom:0.5rem;letter-spacing:-2px}
+    .hero h1 .grad{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    .hero-tagline{font-size:1.2rem;font-weight:600;color:var(--purple);margin-bottom:1.5rem;letter-spacing:0.5px}
+
+    .hero-promise{font-size:1.05rem;color:var(--grey);max-width:600px;line-height:1.85;margin-bottom:3rem}
+    .hero-promise strong{color:var(--lgrey)}
+
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+    .btn-primary{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.85rem 2.2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(124,58,237,0.35)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(124,58,237,0.5)}
+    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--lgrey);padding:0.85rem 2.2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;transition:border-color 0.2s,color 0.2s}
+    .btn-secondary:hover{border-color:var(--purple);color:var(--purple)}
+
+    .hero-stats{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;padding-top:2.5rem;border-top:1px solid var(--border)}
+    .hero-stat .num{font-size:2rem;font-weight:900;display:block;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-stat .lbl{font-size:0.7rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase}
+    .scroll-arrow{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:rgba(167,139,250,0.4);font-size:20px;animation:bounce 1.8s infinite}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+    /* ARTICLE */
+    .article{max-width:780px;margin:0 auto;padding:80px 28px 120px}
+
+    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;margin-top:3rem}
+    .section-label{font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);white-space:nowrap}
+    .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--purple-d),transparent)}
+
+    h2{font-size:clamp(1.5rem,3.2vw,2rem);font-weight:800;color:var(--white);line-height:1.2;margin-bottom:1.2rem}
+
+    p{font-size:1rem;margin-bottom:1.3rem;color:var(--lgrey);line-height:1.85}
+    strong{color:var(--white);font-weight:600}
+    em{color:var(--purple);font-style:italic}
+
+    /* FOR YOU checklist */
+    .for-you-grid{display:flex;flex-direction:column;gap:10px;margin:1.5rem 0}
+    .for-you-item{display:flex;align-items:flex-start;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px 20px;transition:border-color 0.2s}
+    .for-you-item:hover{border-color:var(--purple)}
+    .fy-check{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;margin-top:2px}
+    .for-you-item p{margin:0;font-size:0.93rem;color:var(--lgrey);line-height:1.6}
+
+    /* Promise box */
+    .promise-box{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(37,99,235,0.12));border:1px solid rgba(167,139,250,0.3);border-radius:18px;padding:32px;margin:2rem 0;position:relative;overflow:hidden}
+    .promise-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
+    .promise-box .pb-label{font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;display:block}
+    .promise-box p{margin:0;color:var(--lgrey);font-size:0.97rem;line-height:1.8}
+
+    /* About / identity card */
+    .identity-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:32px;margin:2rem 0;display:flex;gap:24px;align-items:flex-start}
+    .id-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;color:white;flex-shrink:0}
+    .id-name{font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:2px}
+    .id-role{font-size:0.78rem;color:var(--purple);font-weight:600;margin-bottom:10px;letter-spacing:0.5px}
+    .id-bio{font-size:0.9rem;color:var(--grey);line-height:1.75;margin:0}
+    @media(max-width:580px){.identity-card{flex-direction:column}.id-avatar{width:50px;height:50px}}
+
+    /* Cheat sheet callout */
+    .cheatsheet-box{background:linear-gradient(135deg,rgba(5,150,105,0.1),rgba(16,185,129,0.05));border:1px solid rgba(110,231,183,0.2);border-radius:16px;padding:24px 28px;margin:2rem 0;display:flex;align-items:center;gap:20px;text-decoration:none;transition:border-color 0.2s,transform 0.2s}
+    .cheatsheet-box:hover{border-color:var(--green);transform:translateY(-2px)}
+    .cs-icon{font-size:2.5rem;flex-shrink:0}
+    .cs-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:4px;display:block}
+    .cs-title{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:3px}
+    .cs-desc{font-size:0.83rem;color:var(--grey);margin:0}
+
+    /* Content pillars grid */
+    .pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:1.5rem 0}
+    .pillar-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;transition:border-color 0.2s,transform 0.2s}
+    .pillar-card:hover{border-color:var(--purple);transform:translateY(-3px)}
+    .p-icon{font-size:1.8rem;margin-bottom:8px;display:block}
+    .p-name{font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:4px}
+    .p-desc{font-size:0.75rem;color:var(--grey);line-height:1.5}
+    @media(max-width:580px){.pillars-grid{grid-template-columns:repeat(2,1fr)}}
+
+    /* Why it matters */
+    .matters-box{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:36px;margin:2rem 0;position:relative;overflow:hidden}
+    .matters-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--purple-d),var(--blue-d))}
+    .matters-box p{margin-bottom:1rem}
+    .matters-box p:last-child{margin:0}
+
+    /* Week preview */
+    .week-preview{display:flex;flex-direction:column;gap:10px;margin:1.5rem 0}
+    .day-item{display:flex;align-items:flex-start;gap:16px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 18px;transition:border-color 0.2s}
+    .day-item:hover{border-color:var(--purple)}
+    .day-num{font-size:0.68rem;font-weight:800;color:var(--purple);letter-spacing:1px;text-transform:uppercase;min-width:44px;padding-top:2px}
+    .day-title{font-size:0.9rem;color:var(--white);font-weight:600;margin-bottom:2px}
+    .day-type{font-size:0.72rem;color:var(--grey)}
+
+    /* Key insight */
+    .key-insight{background:linear-gradient(135deg,rgba(252,211,77,0.08),rgba(245,158,11,0.04));border:1px solid rgba(252,211,77,0.2);border-radius:16px;padding:28px;margin:2rem 0}
+    .ki-label{font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:10px;display:block}
+    .key-insight p{margin:0;font-size:1rem;color:var(--lgrey);line-height:1.8}
+    .key-insight strong{color:var(--amber)}
+
+    /* CTA subscribe */
+    .subscribe-box{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(37,99,235,0.15));border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:40px;margin:2.5rem 0;text-align:center;position:relative;overflow:hidden}
+    .subscribe-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
+    .subscribe-box h3{font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:0.8rem}
+    .subscribe-box p{color:var(--grey);max-width:480px;margin:0 auto 1.5rem;font-size:0.95rem;line-height:1.8}
+    .sub-platforms{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem}
+    .sub-plat{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-size:0.83rem;font-weight:600;color:var(--lgrey);text-decoration:none;transition:border-color 0.2s,color 0.2s}
+    .sub-plat:hover{border-color:var(--purple);color:var(--purple)}
+    .sub-note{font-size:0.78rem;color:var(--grey)}
+
+    /* See you tomorrow */
+    .see-you{background:var(--bg3);border:1px solid rgba(167,139,250,0.25);border-radius:16px;padding:28px;margin:2rem 0;text-align:center}
+    .see-you .sy-label{font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;display:block}
+    .see-you p{color:var(--lgrey);font-size:0.95rem;margin:0;line-height:1.8}
+
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:2rem 0}
+    .tag{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:100px;padding:5px 14px;font-size:0.75rem;color:var(--purple);font-weight:600}
+
+    hr.divider{border:none;border-top:1px solid var(--border);margin:48px 0}
+
+    .closing{text-align:center;padding:64px 28px;background:linear-gradient(180deg,var(--bg) 0%,var(--bg3) 100%);border-top:1px solid var(--border)}
+    .close-badge{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:16px;display:block;font-weight:700}
+    .closing h3{font-size:1.5rem;color:var(--white);font-weight:800;margin-bottom:10px}
+    .closing p{color:var(--grey);font-size:0.95rem;max-width:440px;margin:0 auto 1.5rem;line-height:1.8}
+    .closing-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+    .closing-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.4)}
+
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 5%;text-align:center}
+    .footer-brand{font-size:1rem;font-weight:800;margin-bottom:0.4rem;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .footer-sub{font-size:0.8rem;color:var(--grey)}
+    .footer-sub a{color:var(--purple);text-decoration:none}
+
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
+    .fade-up.vis{opacity:1;transform:translateY(0)}
+
+    @media(max-width:620px){
+      .article{padding:52px 18px 80px}
+      .nav-right a:not(.nav-cta){display:none}
+      .hero-stats{gap:1.5rem}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" class="nav-brand">DecodeAI with Ani</a>
+  <div class="nav-right">
+    <a href="#">Blog</a>
+    <a href="#">AI Tools</a>
+    <a href="#" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="launch-badge"><div class="dot"></div>🚀 Launch Post · Day 1 of 90 · All Platforms</div>
+  <div class="hero-icon">✨</div>
+  <div class="hero-eyebrow">Introducing</div>
+  <h1>Welcome to <span class="grad">DecodeAI</span><br/>with Ani</h1>
+  <div class="hero-tagline">Your Plain English Guide to AI</div>
+  <p class="hero-promise"><strong>No jargon. No fear. No PhD required.</strong> Just honest, clear writing about the technology that is changing everything — for every kind of person.</p>
+  <div class="hero-btns">
+    <a href="#start" class="btn-primary">✨ Start Reading</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="btn-secondary">🛠️ Free AI Tools Guide</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">90</span><span class="lbl">Days of Content</span></div>
+    <div class="hero-stat"><span class="num">40+</span><span class="lbl">AI Tools Covered</span></div>
+    <div class="hero-stat"><span class="num">0</span><span class="lbl">Jargon Used</span></div>
+    <div class="hero-stat"><span class="num">Free</span><span class="lbl">Forever</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article" id="start">
+
+  <!-- OPENING -->
+  <p class="fade-up" style="font-size:1.1rem;color:var(--white);font-weight:500">Let me guess.</p>
+  <p class="fade-up">You keep hearing about AI everywhere — at work, in the news, from your kids, on your phone. Everyone seems to have a strong opinion about it. Some people say it's going to change the world. Others say it's going to end it. A lot of people are using it every day without really understanding what it is.</p>
+  <p>And somewhere in the middle of all that noise, you're thinking: <em>I should probably understand this better. But where do I even start?</em></p>
+  <p><strong>That's exactly why I'm here.</strong></p>
+
+  <hr class="divider"/>
+
+  <!-- FOR YOU -->
+  <div class="section-header fade-up"><span class="section-label">🙋 This Is For You If...</span><div class="section-line"></div></div>
+
+  <div class="for-you-grid fade-up">
+    <div class="for-you-item"><div class="fy-check">✓</div><p>You've heard of ChatGPT but aren't sure exactly what it does or how to use it well</p></div>
+    <div class="for-you-item"><div class="fy-check">✓</div><p>You're worried AI might affect your job and want to understand what's really happening</p></div>
+    <div class="for-you-item"><div class="fy-check">✓</div><p>You want to use AI tools but don't know where to start or which ones are worth your time</p></div>
+    <div class="for-you-item"><div class="fy-check">✓</div><p>You've tried reading about AI but the articles feel like they're written for computer scientists</p></div>
+    <div class="for-you-item"><div class="fy-check">✓</div><p>You're curious, a little skeptical, and want someone to be honest with you — not just hype you up</p></div>
+  </div>
+
+  <div class="promise-box fade-up">
+    <span class="pb-label">💡 The Promise</span>
+    <p>I will never use unnecessary jargon. If a technical term comes up, I will always explain it in plain English before moving on. This blog is for everyone — students, parents, professionals, business owners, retirees, creators. <strong>If you're curious about AI, you belong here.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- WHO AM I -->
+  <div class="section-header fade-up"><span class="section-label">👋 Who Am I?</span><div class="section-line"></div></div>
+
+  <div class="identity-card fade-up">
+    <div class="id-avatar">A</div>
+    <div>
+      <div class="id-name">Aniruddha</div>
+      <div class="id-role">Founder · DecodeAI with Ani · AI Writer & Educator</div>
+      <p class="id-bio">I am not a computer scientist. I am not a researcher at a big AI lab. I am someone who got deeply, genuinely curious about AI — and spent a lot of time reading, researching, testing tools, and trying to make sense of what is actually happening in this space.</p>
+    </div>
+  </div>
+
+  <p>I've already built an interactive AI Tools Cheat Sheet that covers 40+ tools with real pricing, pros and cons, and use cases — and published it online for free. I've written in-depth research pieces on the history of OpenAI, the founding of Anthropic, the Trump administration's AI policy, and the ethics debate that is shaping the future of this technology.</p>
+  <p>What I've found is this: most AI content falls into one of two traps. It's either so technical that normal people switch off — or it's so breathlessly excited that it reads like a sales pitch.</p>
+  <p><strong>I want to do something different.</strong> I want to write about AI the way a genuinely informed, honest friend would explain it to you over coffee.</p>
+
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank" class="cheatsheet-box fade-up">
+    <div class="cs-icon">🛠️</div>
+    <div>
+      <span class="cs-label">🌐 Free Resource — Bookmark This Now</span>
+      <div class="cs-title">Interactive AI Tools Cheat Sheet — 40+ Tools</div>
+      <p class="cs-desc">kkaniruddha.github.io/ai-tools-cheatsheet · Real pricing, pros, cons & use cases · Click any tool for full details</p>
+    </div>
+  </a>
+
+  <hr class="divider"/>
+
+  <!-- WHAT THIS COVERS -->
+  <div class="section-header fade-up"><span class="section-label">📚 What This Blog Covers</span><div class="section-line"></div></div>
+  <p class="fade-up">I'm publishing every single day for 90 days. Here's what you can expect:</p>
+
+  <div class="pillars-grid fade-up">
+    <div class="pillar-card">
+      <span class="p-icon">📖</span>
+      <div class="p-name">Stories</div>
+      <div class="p-desc">The human drama behind the biggest AI companies and decisions in history</div>
+    </div>
+    <div class="pillar-card">
+      <span class="p-icon">💡</span>
+      <div class="p-name">Explainers</div>
+      <div class="p-desc">What is AI? What is ChatGPT? What is AGI? All explained simply</div>
+    </div>
+    <div class="pillar-card">
+      <span class="p-icon">📰</span>
+      <div class="p-name">News</div>
+      <div class="p-desc">Weekly breakdowns of what's happening in AI and why it matters to you</div>
+    </div>
+    <div class="pillar-card">
+      <span class="p-icon">🛠️</span>
+      <div class="p-name">Tools</div>
+      <div class="p-desc">Honest reviews and comparisons of AI tools worth your time and money</div>
+    </div>
+    <div class="pillar-card">
+      <span class="p-icon">🔮</span>
+      <div class="p-name">Future</div>
+      <div class="p-desc">Where is AI actually going? The honest, balanced view</div>
+    </div>
+    <div class="pillar-card">
+      <span class="p-icon">💬</span>
+      <div class="p-name">Opinion</div>
+      <div class="p-desc">My real take on the big questions — jobs, ethics, power, safety</div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- WHY IT MATTERS -->
+  <div class="section-header fade-up"><span class="section-label">🌍 Why This Matters Right Now</span><div class="section-line"></div></div>
+
+  <div class="matters-box fade-up">
+    <p>We are living through one of the most significant technological shifts in human history. Not since the internet — maybe not since the printing press — has a single technology had the potential to change how we work, learn, create, communicate, and govern ourselves as fundamentally as AI is about to.</p>
+    <p>And unlike the internet, this one is moving <strong>fast. Uncomfortably fast.</strong> ChatGPT went from launch to 100 million users in two months. That's not a product launch — that's a rupture. The companies building this technology are making decisions right now, in boardrooms and government offices, that will shape the world your children grow up in.</p>
+    <p>You deserve to understand what those decisions are. Not because you need to become a tech expert — but because <strong>informed people make better decisions</strong> about their own lives, their careers, their businesses, and the society they want to live in.</p>
+  </div>
+
+  <div class="key-insight fade-up">
+    <span class="ki-label">🔑 The Most Important Thing I've Learned</span>
+    <p>AI is not going to replace people who understand it. The real divide in the next decade won't be between smart people and less smart people. <strong>It will be between people who understand AI and people who don't.</strong> This blog is my contribution to closing that gap.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- WEEK PREVIEW -->
+  <div class="section-header fade-up"><span class="section-label">🗓️ What's Coming This Week</span><div class="section-line"></div></div>
+  <p class="fade-up">Here's a preview of the first 7 posts so you know exactly what to expect:</p>
+
+  <div class="week-preview fade-up">
+    <div class="day-item">
+      <div class="day-num">Day 2</div>
+      <div><div class="day-title">History of AI — A Decade-by-Decade Thriller</div><div class="day-type">📖 Storytelling · From 1950 to today</div></div>
+    </div>
+    <div class="day-item">
+      <div class="day-num">Day 3</div>
+      <div><div class="day-title">What Is Artificial Intelligence? No Jargon, I Promise</div><div class="day-type">💡 Explainer · 10 chapters, 0 jargon</div></div>
+    </div>
+    <div class="day-item">
+      <div class="day-num">Day 4</div>
+      <div><div class="day-title">What Is Machine Learning? The Full, Real Story</div><div class="day-type">💡 Explainer · From checkers to ChatGPT</div></div>
+    </div>
+    <div class="day-item">
+      <div class="day-num">Day 5</div>
+      <div><div class="day-title">What Is ChatGPT and Why Did the World Go Crazy About It?</div><div class="day-type">💡 Explainer · The 100M user story</div></div>
+    </div>
+    <div class="day-item">
+      <div class="day-num">Day 6</div>
+      <div><div class="day-title">5 Things You Can Do With AI Starting Today</div><div class="day-type">🛠️ Beginner Guide · No tech skills needed</div></div>
+    </div>
+    <div class="day-item">
+      <div class="day-num">Day 7</div>
+      <div><div class="day-title">Is AI Going to Take Your Job? The Honest Answer</div><div class="day-type">💬 Opinion · The answer nobody is giving you</div></div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- SUBSCRIBE CTA -->
+  <div class="section-header fade-up"><span class="section-label">🤝 One Thing I'd Love You to Do</span><div class="section-line"></div></div>
+
+  <p class="fade-up">If this sounds like something you've been looking for — welcome. I'm genuinely glad you're here.</p>
+  <p>The one thing I'd ask you to do right now is <strong>subscribe</strong>. Every subscriber tells me this work is worth continuing. And if you know someone — a friend, a parent, a colleague — who keeps saying "I should really understand AI better" but doesn't know where to start, please share this with them. That's the whole reason this exists.</p>
+
+  <div class="subscribe-box fade-up">
+    <h3>📬 Follow Along on Your Platform of Choice</h3>
+    <p>Choose where you want to read — same content, same quality, every single day for 90 days. All free.</p>
+    <div class="sub-platforms">
+      <a href="#" class="sub-plat">💼 LinkedIn</a>
+      <a href="#" class="sub-plat">✍️ Medium</a>
+      <a href="#" class="sub-plat">📬 Substack Newsletter</a>
+    </div>
+    <p class="sub-note">No spam. No paywall. Just 90 days of honest AI education — delivered wherever you already are.</p>
+  </div>
+
+  <div class="see-you fade-up">
+    <span class="sy-label">💜 See You Tomorrow</span>
+    <p>Tomorrow we start from the very beginning: <strong>What is AI?</strong> No jargon. No assumptions. Just a clear, honest, plain-English answer to the question that started all of this. I'll see you then.</p>
+    <p style="margin-top:1rem;font-size:0.9rem;color:var(--grey)">— Aniruddha · Founder, DecodeAI with Ani<br/>🌐 kkaniruddha.github.io/ai-tools-cheatsheet</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeAI</span>
+    <span class="tag">#AI</span>
+    <span class="tag">#ArtificialIntelligence</span>
+    <span class="tag">#Day1of90</span>
+    <span class="tag">#AIForEveryone</span>
+    <span class="tag">#NoJargon</span>
+    <span class="tag">#TechForEveryone</span>
+    <span class="tag">#BeginnerFriendly</span>
+    <span class="tag">#FutureOfWork</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeAI with Ani</span>
+  <h3>Tomorrow on Day 2 👀</h3>
+  <p>The History of AI — a decade-by-decade thriller. From Alan Turing's impossible question in 1950 to the ChatGPT explosion of 2022. The most dramatic story in tech, told the way it deserves.</p>
+  <br/>
+  <a href="#" class="closing-btn">📬 Subscribe — Never Miss a Post</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeAI with Ani</div>
+  <p class="footer-sub">Making AI simple for everyone — No jargon. No fear. Just the truth.<br/>
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools Cheat Sheet</a> ·
+  <a href="#">Medium</a> · <a href="#">Substack</a> · <a href="#">LinkedIn</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if(x.isIntersecting) x.target.classList.add('vis'); });
+  }, {threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
