@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 5 – Neural Networks Explained | DecodeAI with Ani</title>
+  <meta name="description" content="From a scientist's wild dream in 1943 to the technology powering ChatGPT and Claude — the full, real story of Neural Networks. By DecodeAI with Ani."/>
+  <style>
+    :root {
+      --purple:    #a78bfa;
+      --purple-d:  #7c3aed;
+      --purple-dd: #5b21b6;
+      --blue:      #60a5fa;
+      --blue-d:    #2563eb;
+      --green:     #6ee7b7;
+      --green-d:   #059669;
+      --amber:     #fcd34d;
+      --red:       #fca5a5;
+      --bg:        #0d0d1a;
+      --bg2:       #13131f;
+      --bg3:       #1a1a2e;
+      --bg4:       #1e1e3a;
+      --border:    #2a2a4a;
+      --white:     #ffffff;
+      --grey:      #9ca3af;
+      --lgrey:     #d1d5db;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple-d); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,13,26,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 60px;
+    }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--purple); }
+    .nav-cta { background: linear-gradient(135deg, var(--purple-d), var(--blue-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 100px 24px 60px;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.22) 0%, transparent 70%),
+                  radial-gradient(ellipse at 50% 100%, rgba(37,99,235,0.1) 0%, transparent 60%),
+                  var(--bg);
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .hero-series-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3);
+      color: var(--purple); padding: 0.35rem 1rem; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero-series-badge::before { content: '●'; font-size: 0.55rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-icon { font-size: 80px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 28px rgba(167,139,250,0.4)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 820px; margin-bottom: 1.2rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 1.05rem; color: var(--grey); max-width: 540px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(167,139,250,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--purple-d), transparent); }
+
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--purple); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.85; }
+    p em { color: var(--purple); font-style: italic; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* DARK STORY BLOCK */
+    .dark-block {
+      background: linear-gradient(145deg, #12122a 0%, #0d0d1e 100%);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 40px 36px; margin: 2.5rem 0;
+      position: relative; overflow: hidden;
+    }
+    .dark-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d)); }
+    .dark-block::after { content: ''; position: absolute; bottom: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%); pointer-events: none; }
+    .dark-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 16px; display: block; font-weight: 700; }
+    .dark-block p { color: rgba(255,255,255,0.82); font-style: italic; font-size: 1rem; line-height: 1.95; margin-bottom: 14px; }
+    .dark-block p:last-child { margin-bottom: 0; }
+    .dark-block .highlight { color: var(--amber); font-style: normal; font-weight: 600; }
+    .dark-block .person { color: var(--purple); font-style: normal; font-weight: 700; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--purple-d); background: rgba(124,58,237,0.06); border-radius: 0 14px 14px 0; padding: 20px 28px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.15rem; font-style: italic; color: var(--purple); margin: 0; line-height: 1.65; font-weight: 500; }
+
+    /* DEFINITION BOX */
+    .definition-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 36px; margin: 2.5rem 0; text-align: center; position: relative; overflow: hidden; }
+    .definition-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d), var(--green-d)); }
+    .definition-box .def-eyebrow { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 12px; display: block; font-weight: 700; }
+    .definition-box p { font-size: 1.15rem; font-style: italic; color: var(--white); margin: 0; line-height: 1.7; font-weight: 500; }
+
+    /* NEURON VISUAL */
+    .neuron-visual { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .neuron-visual::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d), var(--green-d)); }
+    .neuron-visual .nv-title { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 24px; display: block; font-weight: 700; text-align: center; }
+    .neuron-diagram { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .neuron-layer { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .neuron-layer-label { font-size: 0.65rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .neuron-node { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 2px solid; }
+    .neuron-node.input { background: rgba(96,165,250,0.15); border-color: rgba(96,165,250,0.4); }
+    .neuron-node.hidden { background: rgba(167,139,250,0.15); border-color: rgba(167,139,250,0.4); }
+    .neuron-node.output { background: rgba(110,231,183,0.15); border-color: rgba(110,231,183,0.4); }
+    .neuron-arrow { color: rgba(167,139,250,0.3); font-size: 1.4rem; align-self: center; }
+    .neuron-legend { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--grey); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .legend-dot.blue { background: var(--blue); }
+    .legend-dot.purple { background: var(--purple); }
+    .legend-dot.green { background: var(--green); }
+
+    /* USE CASE CARDS */
+    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 2rem 0; }
+    .usecase-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 22px 20px; transition: transform 0.25s, border-color 0.25s; position: relative; overflow: hidden; }
+    .usecase-card:hover { transform: translateY(-4px); border-color: var(--purple); }
+    .usecase-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d)); opacity: 0; transition: opacity 0.25s; }
+    .usecase-card:hover::after { opacity: 1; }
+    .usecase-card .uc-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .usecase-card h4 { font-weight: 700; font-size: 0.92rem; color: var(--white); margin-bottom: 6px; }
+    .usecase-card p { font-size: 0.83rem; color: var(--grey); margin: 0; line-height: 1.65; }
+
+    /* INNOVATION CARDS */
+    .innovation-grid { display: flex; flex-direction: column; gap: 16px; margin: 2rem 0; }
+    .innovation-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px; display: flex; gap: 20px; align-items: flex-start; transition: border-color 0.2s; }
+    .innovation-card:hover { border-color: var(--purple); }
+    .inno-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .inno-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 4px; display: block; }
+    .inno-title { font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .inno-desc { font-size: 0.88rem; color: var(--grey); line-height: 1.7; margin: 0; }
+
+    /* FACT STRIP */
+    .fact-strip { display: flex; gap: 0; margin: 2rem 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .fact-item { flex: 1; padding: 18px 14px; text-align: center; background: var(--bg3); border-right: 1px solid var(--border); }
+    .fact-item:last-child { border-right: none; }
+    .fact-item .fact-num { font-size: 1.5rem; font-weight: 800; display: block; margin-bottom: 4px; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .fact-item .fact-lbl { font-size: 0.68rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* TIMELINE */
+    .timeline { margin: 2rem 0; }
+    .timeline-item { display: flex; gap: 18px; margin-bottom: 24px; align-items: flex-start; }
+    .tl-year { font-weight: 700; font-size: 0.78rem; color: var(--purple); letter-spacing: 1px; min-width: 48px; padding-top: 3px; }
+    .tl-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--purple-d); flex-shrink: 0; margin-top: 6px; box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .tl-line-wrap { display: flex; flex-direction: column; align-items: center; }
+    .tl-vert { width: 2px; flex: 1; background: rgba(124,58,237,0.2); min-height: 22px; }
+    .tl-body p { font-size: 0.9rem; color: var(--grey); margin: 0; line-height: 1.7; }
+    .tl-body strong { color: var(--white); font-size: 0.92rem; display: block; margin-bottom: 3px; }
+
+    /* COMPARE CARDS */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 2rem 0; }
+    .compare-card { border-radius: 18px; padding: 28px 24px; border: 1px solid var(--border); background: var(--bg3); position: relative; overflow: hidden; }
+    .compare-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .compare-card.chatgpt::before { background: linear-gradient(90deg, var(--blue-d), var(--blue)); }
+    .compare-card.claude::before { background: linear-gradient(90deg, var(--purple-d), var(--purple)); }
+    .compare-card .card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+    .compare-card .card-name { font-weight: 700; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .compare-card.chatgpt .card-name { color: var(--blue); }
+    .compare-card.claude .card-name { color: var(--purple); }
+    .compare-card p { font-size: 0.9rem; color: var(--grey); margin-bottom: 10px; line-height: 1.7; }
+    .tag-pill { display: inline-block; border-radius: 100px; padding: 3px 11px; font-size: 0.68rem; font-weight: 700; margin: 3px 3px 0 0; }
+    .compare-card.claude .tag-pill { background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.25); color: var(--purple); }
+    .compare-card.chatgpt .tag-pill { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); color: var(--blue); }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: #d97706; }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: #dc2626; }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.amber .callout-label { color: #fbbf24; }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.red .callout-label { color: var(--red); }
+    .callout p { margin: 0; font-size: 0.93rem; color: var(--lgrey); line-height: 1.7; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(167,139,250,0.3); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--purple); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--purple); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 440px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--purple-d), var(--blue-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--purple); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .dark-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .fact-strip { flex-direction: column; }
+      .fact-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .fact-item:last-child { border-bottom: none; }
+      .hero-stats { gap: 1.5rem; }
+      .nav-right a:not(.nav-cta) { display: none; }
+      .innovation-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecodeAI with Ani</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--purple);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">🧠 Day 5 of 90 · DecodeAI with Ani</div>
+  <div class="hero-icon">🕸️</div>
+  <h1>Neural Networks —<br/><span>The Brain That Isn't</span></h1>
+  <p class="hero-desc">From a wartime dream in 1943 to the engine powering ChatGPT and Claude — the full, human story of the most misunderstood idea in all of AI.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">1943</span><span class="lbl">Where it begins</span></div>
+    <div class="hero-stat"><span class="num">80+</span><span class="lbl">Years in the making</span></div>
+    <div class="hero-stat"><span class="num">3</span><span class="lbl">Inventors' stories</span></div>
+    <div class="hero-stat"><span class="num">2</span><span class="lbl">AI giants compared</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- CH 1 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 1</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Moment You Are Reading This — <em>Something Extraordinary Is Happening</em></h2>
+
+  <p class="fade-up">Right now, as your eyes scan these words, roughly 86 billion neurons inside your skull are firing tiny electrical signals at each other. Each one connects to thousands of its neighbours. They form patterns — patterns that become thoughts, memories, feelings, recognition, understanding.</p>
+
+  <p>You are not reading this sentence. Your brain is <em>reconstructing</em> it — letter by letter, word by word — pulling from decades of learned patterns about language, meaning, and context. You don't even notice it happening. It's effortless. It's instant. It's the most sophisticated information processing system ever known to exist.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">💡 The Question That Changed Everything</span>
+    <p>Somewhere in the 1940s, a group of scientists began asking a dangerous question. Not "how does the brain work?" — doctors had been asking that for centuries. Their question was more audacious, more reckless, more thrilling than that.</p>
+    <p><span class="highlight">"What if we could build one?"</span></p>
+    <p>Not a brain made of flesh and blood. A brain made of mathematics. A brain made of numbers, connections, and electricity. A brain that could learn — the way yours does — from experience, from mistakes, from repetition.</p>
+    <p>That question — asked in a world still at war, on typewriters, long before personal computers existed — is the reason ChatGPT can write poetry today.</p>
+  </div>
+
+  <p>This is the story of neural networks. And it is one of the strangest, most dramatic, most human stories in the history of science.</p>
+
+  <hr class="divider"/>
+
+  <!-- CH 2 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 2</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Is a Neural Network? <em>The Honest Explanation</em></h2>
+
+  <p class="fade-up">Before we get to the drama — let's get the definition right. Because most explanations either go too technical or wave their hands and say "it's like a brain!" without ever telling you what that actually means.</p>
+
+  <div class="definition-box fade-up">
+    <span class="def-eyebrow">The clearest possible definition</span>
+    <p>"A neural network is a system of connected mathematical nodes — loosely inspired by neurons in the brain — that learns to recognise patterns by processing lots of examples and adjusting its internal connections based on what it gets right and wrong."</p>
+  </div>
+
+  <p>Let's break that down with something everyone has experienced.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">📸 Learning to Recognise Your Best Friend's Face</span>
+    <p>Think about how you recognise your best friend's face. You don't run through a checklist: nose shape — check, eye colour — check, jaw line — check. You just <span class="highlight">know</span>. Instantly. Even from across a crowded room. Even if they've cut their hair. Even if they're wearing sunglasses.</p>
+    <p>That ability didn't come from a rulebook. It came from years of seeing your friend's face in thousands of different situations — laughing, crying, in sunlight, in shadows, in photos, in videos. Your brain built an internal <span class="person">model</span> of what your friend looks like. Not a description. A feeling. A pattern.</p>
+    <p>A neural network learns faces in almost exactly the same way — except it needs millions of photos instead of years, and it stores its model as numbers instead of memories.</p>
+  </div>
+
+  <p>The key word is <strong>connections</strong>. A neural network is made of layers of nodes — think of them like artificial neurons — and each node is connected to the nodes in the next layer. Those connections have <em>weights</em> — numbers that determine how strongly one node influences another.</p>
+  <p>When the network learns, it is doing one thing and one thing only: <strong>adjusting those weights</strong>. Getting better, little by little, at recognising the pattern it was built to find. That's it. That's the whole trick.</p>
+
+  <!-- NEURON VISUAL -->
+  <div class="neuron-visual fade-up">
+    <span class="nv-title">⚡ How a Neural Network Is Structured</span>
+    <div class="neuron-diagram">
+      <div class="neuron-layer">
+        <div class="neuron-layer-label">Input Layer</div>
+        <div class="neuron-node input">👁️</div>
+        <div class="neuron-node input">👁️</div>
+        <div class="neuron-node input">👁️</div>
+      </div>
+      <div class="neuron-arrow">→</div>
+      <div class="neuron-layer">
+        <div class="neuron-layer-label">Hidden Layer 1</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+      </div>
+      <div class="neuron-arrow">→</div>
+      <div class="neuron-layer">
+        <div class="neuron-layer-label">Hidden Layer 2</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+        <div class="neuron-node hidden">⚡</div>
+      </div>
+      <div class="neuron-arrow">→</div>
+      <div class="neuron-layer">
+        <div class="neuron-layer-label">Output Layer</div>
+        <div class="neuron-node output">✅</div>
+        <div class="neuron-node output">✅</div>
+      </div>
+    </div>
+    <div class="neuron-legend">
+      <div class="legend-item"><div class="legend-dot blue"></div>Receives raw data</div>
+      <div class="legend-item"><div class="legend-dot purple"></div>Finds patterns (hidden)</div>
+      <div class="legend-item"><div class="legend-dot green"></div>Gives the answer</div>
+    </div>
+  </div>
+
+  <p>The <strong>input layer</strong> receives raw data — pixels of an image, words of a sentence, numbers from a sensor. The <strong>hidden layers</strong> in the middle do the heavy lifting — finding patterns within patterns within patterns. The <strong>output layer</strong> gives the answer: cat or dog, spam or not spam, the next word in a sentence.</p>
+  <p>The more hidden layers you add, the deeper the network — and the more complex the patterns it can find. When people say <em>"deep learning"</em>, they simply mean a neural network with many hidden layers. Deep = many layers. That's it.</p>
+
+  <hr class="divider"/>
+
+  <!-- CH 3 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 3</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Inventors — <em>A Story That Begins in Wartime</em></h2>
+
+  <h3>1943 — Two Men and an Impossible Paper</h3>
+  <p class="fade-up">It is 1943. The world is at war. Scientists everywhere have been conscripted into the effort — building radar systems, cracking codes, designing weapons. In this atmosphere of urgency and invention, two men sit down and write a paper that has absolutely nothing to do with winning the war.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">👨‍🔬 The Odd Couple — McCulloch & Pitts</span>
+    <p><span class="person">Warren McCulloch</span> is a 44-year-old neurophysiologist — a doctor who studies how the brain's nerve cells work. He is intense, philosophical, and obsessed with one question: how does the physical structure of the brain produce thought?</p>
+    <p><span class="person">Walter Pitts</span> is 18 years old. He is a runaway — a homeless teenager from Detroit who taught himself logic, mathematics, and neuroscience by sneaking into the University of Chicago library. He has no degree, no institutional affiliation, nothing but a mind that older scientists describe as <span class="highlight">extraordinary beyond measure</span>.</p>
+    <p>Together, this unlikely pair — the established doctor and the homeless teenager — write a paper called "A Logical Calculus of the Ideas Immanent in Nervous Activity." In it, they propose something radical: that neurons in the brain work like simple logical switches — on or off, yes or no — and that a network of these switches could, in theory, compute anything.</p>
+    <p>It is the first mathematical model of a neural network. And almost no one reads it.</p>
+  </div>
+
+  <p>McCulloch and Pitts were right in principle but limited in execution — their model couldn't actually learn. It was hardwired, not trainable. The dream was planted, but the seed hadn't yet found its soil.</p>
+
+  <h3>1958 — The Man Who Built the First Learning Machine</h3>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🔬 Frank Rosenblatt and the Perceptron</span>
+    <p>Fifteen years later, a young psychologist at Cornell named <span class="person">Frank Rosenblatt</span> does something nobody has done before. He takes McCulloch and Pitts' theoretical model and makes it <span class="highlight">real</span>.</p>
+    <p>In 1958, Rosenblatt builds the <span class="highlight">Perceptron</span> — a physical machine, with wires, knobs, and motors — that can actually learn. He trains it to recognise simple shapes. Show it a square enough times, it learns square. Show it a circle, it learns circle.</p>
+    <p>The New York Times runs a story about it. The headline reads: "New Navy Device Learns by Doing." The US Navy — which funded his research — suggests it might one day be able to walk, talk, and reproduce itself. America is enchanted.</p>
+    <p>Rosenblatt gives interviews. He makes bold predictions. He believes, genuinely and passionately, that he has found the path to machine intelligence.</p>
+    <p>He is both right and heartbreakingly early.</p>
+  </div>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">⚠️ The Setback</span>
+    <p>In 1969, two MIT mathematicians — Marvin Minsky and Seymour Papert — publish a book called "Perceptrons" that mathematically proves the Perceptron cannot solve certain classes of problems. The AI funding dries up. Neural network research enters a decade-long winter. Frank Rosenblatt dies in a boating accident in 1971, aged 43 — just before the field he pioneered would eventually change the world.</p>
+  </div>
+
+  <h3>The Man Who Never Gave Up</h3>
+  <p class="fade-up">And then there is <strong>Geoffrey Hinton</strong>. We met him briefly in the History of AI post — but his role in neural networks deserves its own moment.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🏔️ 40 Years of Stubbornness</span>
+    <p>Hinton arrives at Cambridge in the 1970s, obsessed with neural networks at precisely the moment when the entire field has been declared dead. His colleagues think he is wasting his career. Funding is impossible. Journals reject his papers. At one point he is told, bluntly, that neural networks are a dead end and he should pick a more productive research area.</p>
+    <p>He doesn't. For <span class="highlight">four decades</span>, through two AI winters, through scepticism and rejection and near-total obscurity, Hinton keeps working. He co-develops a technique called <span class="highlight">backpropagation</span> in 1986 — a method for teaching neural networks to learn from their mistakes by passing error signals backwards through the network. It is the key that the field has been missing.</p>
+    <p>But the computers of 1986 are too slow. The datasets too small. The world isn't ready. Hinton has to wait — another 26 years — until 2012, when his student's neural network, AlexNet, halves the error rate of the best image recognition system in the world and sets off the deep learning revolution.</p>
+    <p>In 2024, Geoffrey Hinton is awarded the <span class="highlight">Nobel Prize in Physics</span>. He is 76 years old. He waited his whole career for this.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"The three inventors of neural networks were a wartime doctor, a homeless teenager, and a stubborn British professor who spent 40 years being told he was wrong. All three were right."</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 4 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 4</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Why Does Everyone Compare Them to the Brain? <em>The Truth</em></h2>
+
+  <p class="fade-up">Every article about neural networks says the same thing: <em>"They're inspired by the human brain!"</em> And then they show you a diagram of nodes and connections and expect you to feel enlightened. You probably don't. So let's actually answer this properly.</p>
+
+  <div class="fact-strip fade-up">
+    <div class="fact-item"><span class="fact-num">86B</span><span class="fact-lbl">Neurons in your brain</span></div>
+    <div class="fact-item"><span class="fact-num">100T</span><span class="fact-lbl">Synaptic connections</span></div>
+    <div class="fact-item"><span class="fact-num">175B</span><span class="fact-lbl">Parameters in GPT-3</span></div>
+    <div class="fact-item"><span class="fact-num">~3W</span><span class="fact-lbl">Power your brain uses</span></div>
+  </div>
+
+  <p>The comparison is real — but it's <strong>shallow</strong>. Here's what's actually similar, and what's wildly different:</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🧬 What's Actually Similar</span>
+    <p>Real neurons in your brain receive signals from other neurons. When those signals are strong enough, the neuron <span class="highlight">"fires"</span> — it sends its own signal on to the next set of neurons. The strength of those connections — called synapses — changes based on experience. When you learn something, what's physically changing in your brain is the strength of synaptic connections. Neurons that fire together, wire together.</p>
+    <p>Artificial neural networks do something structurally analogous. Each node receives inputs, applies a mathematical function, and passes a signal on. The <span class="highlight">weights</span> between nodes — like synapses — are adjusted during learning. When the network trains on data, what's changing are those weights. That's the similarity: <span class="person">connection strength adjusts based on experience, in both cases.</span></p>
+  </div>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">⚠️ But Here's What's Different</span>
+    <p>Your brain has 86 billion neurons. Even the largest AI models have nowhere near that complexity. Your brain runs on about 3 watts of power — roughly the same as a dim LED bulb. Training GPT-4 consumed enough electricity to power a small town. Your brain handles vision, language, emotion, movement, memory, creativity and consciousness simultaneously. A neural network does one specific thing. The "brain" comparison is inspirational, not literal.</p>
+  </div>
+
+  <p>The honest answer is this: neural networks borrowed the <em>idea</em> of connected nodes that learn through experience. Everything else — the architecture, the math, the training process — was invented from scratch by computer scientists and mathematicians. It's inspired by biology the way a plane is inspired by birds. Same idea. Very different machine.</p>
+
+  <hr class="divider"/>
+
+  <!-- CH 5 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Where Are We Using Neural Networks? <em>Everywhere You Look</em></h2>
+
+  <p class="fade-up">If you've used a smartphone today, you've used a neural network. Probably dozens of them. Here's where they're hiding in plain sight — and what they're actually doing.</p>
+
+  <div class="usecase-grid fade-up">
+    <div class="usecase-card">
+      <span class="uc-icon">📱</span>
+      <h4>Face Unlock</h4>
+      <p>The neural network in your phone maps 30,000+ invisible dots onto your face and learns your unique geometry. It recognises you in the dark, with glasses, even when you've aged.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🎵</span>
+      <h4>Spotify & Music AI</h4>
+      <p>Neural networks analyse the audio waveforms of every song — tempo, key, energy, mood — and match them to your listening patterns to predict what you'll love next.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🏥</span>
+      <h4>Medical Diagnosis</h4>
+      <p>Trained on millions of scans, neural networks can detect early-stage cancer in X-rays and MRIs — sometimes spotting what human radiologists miss. Already deployed in hospitals worldwide.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🚗</span>
+      <h4>Self-Driving Cars</h4>
+      <p>Tesla and Waymo use neural networks to process camera feeds in real time — identifying pedestrians, reading road signs, predicting the movement of other vehicles, all in milliseconds.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🌐</span>
+      <h4>Google Translate</h4>
+      <p>The neural network behind Google Translate was trained on hundreds of billions of words across 100+ languages. It doesn't translate word-by-word — it understands meaning and reconstructs it.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">💳</span>
+      <h4>Fraud Detection</h4>
+      <p>Every time you tap your card, a neural network checks your purchase against thousands of your past transactions in under 100 milliseconds — and flags anything that looks out of character.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🎮</span>
+      <h4>Video Games</h4>
+      <p>Game studios use neural networks to create realistic NPC behaviour, generate terrain, animate faces, and even write dialogue. The NPCs that feel alive — that's neural networks at work.</p>
+    </div>
+    <div class="usecase-card">
+      <span class="uc-icon">🌦️</span>
+      <h4>Weather Forecasting</h4>
+      <p>Google's GraphCast neural network outperforms traditional weather models — predicting 10-day forecasts in under 60 seconds with greater accuracy than decades-old systems.</p>
+    </div>
+  </div>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">💡 The Key Insight</span>
+    <p>Neural networks aren't just used in "AI products." They are the invisible infrastructure of modern life — running inside your phone, your bank, your hospital, your car, your music player, and the search engine you used five minutes ago. You're already living in the neural network age. You just didn't know the name for it.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 6 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 6</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Timeline — <em>80 Years in 8 Moments</em></h2>
+
+  <div class="timeline fade-up">
+    <div class="timeline-item">
+      <span class="tl-year">1943</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>McCulloch & Pitts — The First Model</strong><p>A doctor and a homeless teenager write the first mathematical model of a neural network. The world doesn't notice.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">1958</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>Rosenblatt — The Perceptron</strong><p>The first learning machine is built. The New York Times covers it. The Navy is excited. The dream feels close.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">1969</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>Minsky & Papert — The Crushing Blow</strong><p>"Perceptrons" proves the limits of single-layer networks. Funding collapses. The first AI winter begins.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">1986</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>Hinton — Backpropagation</strong><p>The missing key is found. Neural networks can now learn from their own mistakes. But computers are still too slow to make it work at scale.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">2012</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>AlexNet — The Revolution Begins</strong><p>Hinton's student's deep neural network halves the image recognition error rate. Every AI lab in the world pivots to deep learning overnight.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">2017</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>Transformer — The Architecture That Changes Everything</strong><p>Google researchers publish "Attention Is All You Need." The Transformer neural network architecture makes large language models possible.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">2022</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+      <div class="tl-body"><strong>ChatGPT — The World Notices</strong><p>A neural network with 175 billion parameters reaches 100 million users in 60 days. The technology of 1943 has finally arrived.</p></div>
+    </div>
+    <div class="timeline-item">
+      <span class="tl-year">2024</span>
+      <div class="tl-line-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-body"><strong>Nobel Prize — The Vindication</strong><p>Geoffrey Hinton wins the Nobel Prize in Physics for his work on neural networks. 40 years of stubborn belief, finally recognised by the world.</p></div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 7 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 7</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Current Innovations — <em>What's Happening Right Now</em></h2>
+
+  <p class="fade-up">Neural networks in 2025 are not the neural networks of 2012. The field is moving faster than at any point in its 80-year history. Here are the most exciting frontiers — explained in plain English.</p>
+
+  <div class="innovation-grid fade-up">
+    <div class="innovation-card">
+      <div class="inno-icon">🧬</div>
+      <div>
+        <span class="inno-label">Biology · 2024</span>
+        <div class="inno-title">AlphaFold 3 — Cracking the Code of Life</div>
+        <p class="inno-desc">Google DeepMind's neural network can now predict the 3D structure of virtually any protein in minutes — a problem that took biologists years to solve manually. In 2024, it was extended to predict how proteins interact with DNA, RNA, and drugs. Scientists believe this could compress decades of pharmaceutical research into years — potentially unlocking treatments for Alzheimer's, cancer, and antibiotic resistance.</p>
+      </div>
+    </div>
+    <div class="innovation-card">
+      <div class="inno-icon">👁️</div>
+      <div>
+        <span class="inno-label">Vision · 2024–2025</span>
+        <div class="inno-title">Multimodal Neural Networks — Seeing and Thinking Together</div>
+        <p class="inno-desc">The newest frontier is neural networks that process images, text, audio, and video simultaneously — the way humans do. GPT-4o and Claude 3 can look at a photo and describe it, read a handwritten note, analyse a chart, or watch a video and answer questions about it. This "multimodal" ability — combining different types of input — is the biggest leap in neural network architecture since the Transformer.</p>
+      </div>
+    </div>
+    <div class="innovation-card">
+      <div class="inno-icon">⚡</div>
+      <div>
+        <span class="inno-label">Efficiency · 2024–2025</span>
+        <div class="inno-title">Smaller, Faster, Cheaper — The Efficiency Revolution</div>
+        <p class="inno-desc">The race is no longer just about building bigger neural networks — it's about building smarter, more efficient ones. Microsoft's Phi-3 model performs at near-GPT-4 levels with a fraction of the parameters. Apple runs neural networks directly on your iPhone chip for Face ID, Siri, and autocorrect — without sending data to the cloud. The goal: neural network intelligence that runs on a laptop, or even a smartwatch.</p>
+      </div>
+    </div>
+    <div class="innovation-card">
+      <div class="inno-icon">🤖</div>
+      <div>
+        <span class="inno-label">Robotics · 2025</span>
+        <div class="inno-title">Physical AI — Neural Networks That Move in the Real World</div>
+        <p class="inno-desc">Neural networks are leaving the screen and entering the physical world. Figure AI and Boston Dynamics are training robots using neural networks that learn by watching videos of humans performing tasks — then replicating them. Tesla's Optimus robot uses neural networks trained on data from millions of Tesla cars to navigate and manipulate objects. The next decade may see neural networks that don't just think — they act.</p>
+      </div>
+    </div>
+    <div class="innovation-card">
+      <div class="inno-icon">🧠</div>
+      <div>
+        <span class="inno-label">Neuroscience · 2024–2025</span>
+        <div class="inno-title">Brain-Computer Interfaces — Neural Networks Meet Real Neurons</div>
+        <p class="inno-desc">Neuralink's brain chip uses neural networks to decode the electrical signals of real human neurons — translating thought into action. In 2024, their first patient — paralysed from the shoulders down — played chess and browsed the internet using only his mind. Neural networks are now the bridge between biological and artificial intelligence in the most literal possible sense.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 8 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 8</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">ChatGPT vs Claude — <em>Same Neural Network, Different Soul</em></h2>
+
+  <p class="fade-up">Both ChatGPT and Claude are built on the same fundamental neural network architecture — the Transformer. The difference isn't in the type of network. It's in <strong>how that network was trained</strong>, and what values were baked in during that training.</p>
+
+  <div class="compare-grid fade-up">
+    <div class="compare-card chatgpt">
+      <span class="card-icon">💬</span>
+      <div class="card-name">ChatGPT — OpenAI</div>
+      <p>Built on GPT-4 — a Transformer neural network with an estimated 1 trillion+ parameters. Trained on an enormous dataset of internet text, books, and code. Then refined using <strong>Reinforcement Learning from Human Feedback (RLHF)</strong> — human raters scored its responses, and the network adjusted to produce outputs humans preferred.</p>
+      <p>The neural network learned to be <strong>helpful and engaging</strong> — optimising for responses that humans rated highly. This makes it fluent, confident, and very easy to talk to.</p>
+      <span class="tag-pill">Transformer</span>
+      <span class="tag-pill">RLHF Training</span>
+      <span class="tag-pill">GPT-4 Architecture</span>
+      <span class="tag-pill">Optimised for Helpfulness</span>
+    </div>
+    <div class="compare-card claude">
+      <span class="card-icon">🤖</span>
+      <div class="card-name">Claude — Anthropic</div>
+      <p>Also a Transformer neural network — but trained with a different approach called <strong>Constitutional AI</strong>. Instead of relying purely on human raters, Claude was given a set of principles — a "constitution" — and trained to evaluate its own outputs against those principles before responding.</p>
+      <p>The neural network learned to be <strong>helpful AND safe AND honest</strong> — balancing multiple objectives rather than just optimising for what humans immediately liked. This makes it more cautious, more likely to say "I'm not sure," and less likely to confidently say something wrong.</p>
+      <span class="tag-pill">Transformer</span>
+      <span class="tag-pill">Constitutional AI</span>
+      <span class="tag-pill">Claude Architecture</span>
+      <span class="tag-pill">Optimised for Safety + Honesty</span>
+    </div>
+  </div>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">💡</span>
+    <h3>The Most Important Thing to Understand</h3>
+    <p>The neural network architecture — the Transformer — is the same fundamental technology behind both. What makes ChatGPT and Claude feel different isn't their structure. It's their <strong>training philosophy</strong> — the values and objectives that were built into them during learning.</p>
+    <p>Think of it like two students who both learned from the same textbooks — but one was taught "give the answer people want to hear" and the other was taught "give the most accurate and honest answer, even when it's uncomfortable." Same education. Very different graduates.</p>
+    <p>This is why the question <strong>"how do we train neural networks?"</strong> is one of the most important and contested debates in all of AI right now. The architecture is the body. The training is the character.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CLOSING REFLECTION -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Closing Thought</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">From a Homeless Teenager's Library to <em>Your Pocket</em></h2>
+
+  <p class="fade-up">Walter Pitts was a runaway teenager sneaking into a university library to read mathematics books he couldn't afford. Frank Rosenblatt was building learning machines with wires and motors while the world called it science fiction. Geoffrey Hinton was told for forty years that he was pursuing a dead end.</p>
+
+  <p>All three were building the same thing. All three were right. And the technology they imagined — in 1943, in 1958, in 1986 — now runs inside the phone in your pocket, the hospital scanning your X-rays, the car keeping you in your lane, and the AI you type questions to at midnight when you can't sleep.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🌍 The Bigger Picture</span>
+    <p>Neural networks are not magic. They are not thinking. They do not understand, in the way you understand, what they are doing. They are pattern-matching machines of extraordinary sophistication — trained on the accumulated output of human civilisation, calibrated to find and reproduce the patterns in that output.</p>
+    <p>But here is what is true: <span class="highlight">they work</span>. They diagnose diseases. They translate languages. They write code. They generate art. They answer your questions at 2am. They are, right now, the most capable tools humanity has ever built for processing and generating information.</p>
+    <p>And the story isn't over. Not even close. The researchers working on neural networks today are as certain that the biggest breakthroughs are still ahead as Rosenblatt was in 1958 — and unlike Rosenblatt, they have 80 years of progress behind them to prove it.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"A neural network learns the way you learned to walk — not from instructions, but from thousands of attempts, thousands of corrections, and the slow accumulation of something we can only call experience."</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#NeuralNetworks</span>
+    <span class="tag">#DecodeAI</span>
+    <span class="tag">#Day5of90</span>
+    <span class="tag">#DeepLearning</span>
+    <span class="tag">#AIForEveryone</span>
+    <span class="tag">#AIHistory</span>
+    <span class="tag">#ChatGPT</span>
+    <span class="tag">#Claude</span>
+    <span class="tag">#GeoffreyHinton</span>
+    <span class="tag">#MachineLearning</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeAI with Ani</span>
+  <h3>Tomorrow on Day 6 👀</h3>
+  <p>5 things you can do with AI starting today — no tech skills needed. Practical, honest, and immediately useful. See you then.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Post</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeAI with Ani</div>
+  <p class="footer-sub">Making AI simple for everyone — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
