@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 6 – Apple & Google: The Rivalry That Became a Partnership | DecodeWithAni</title>
+  <meta name="description" content="Two of the biggest rivals in tech history just announced they're working together. What does the Apple-Google Gemini deal mean for you? Decoded in plain English."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed; --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669; --amber:#fcd34d; --red:#fca5a5;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--purple); }
+    .nav-cta { background: linear-gradient(135deg, var(--purple-d), var(--blue-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.22) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(37,99,235,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); color: var(--purple); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '●'; font-size: 0.55rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-icon { font-size: 80px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 28px rgba(167,139,250,0.4)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 820px; margin-bottom: 1.2rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 1.05rem; color: var(--grey); max-width: 540px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(167,139,250,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--purple-d), transparent); }
+
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--purple); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.85; }
+    p em { color: var(--purple); font-style: italic; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* NEWS BANNER */
+    .news-banner { background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(239,68,68,0.05)); border: 1px solid rgba(248,113,113,0.3); border-radius: 16px; padding: 20px 24px; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 14px; }
+    .news-banner-dot { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; flex-shrink: 0; animation: pulse 1.2s infinite; }
+    .news-banner-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #f87171; margin-bottom: 2px; display: block; }
+    .news-banner-text { font-size: 0.9rem; color: var(--lgrey); margin: 0; font-weight: 500; }
+
+    /* DARK STORY BLOCK */
+    .dark-block { background: linear-gradient(145deg, #12122a 0%, #0d0d1e 100%); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .dark-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d)); }
+    .dark-block::after { content: ''; position: absolute; bottom: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%); pointer-events: none; }
+    .dark-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 16px; display: block; font-weight: 700; }
+    .dark-block p { color: rgba(255,255,255,0.82); font-style: italic; font-size: 1rem; line-height: 1.95; margin-bottom: 14px; }
+    .dark-block p:last-child { margin-bottom: 0; }
+    .dark-block .highlight { color: var(--amber); font-style: normal; font-weight: 600; }
+    .dark-block .person { color: var(--purple); font-style: normal; font-weight: 700; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--purple-d); background: rgba(124,58,237,0.06); border-radius: 0 14px 14px 0; padding: 20px 28px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.15rem; font-style: italic; color: var(--purple); margin: 0; line-height: 1.65; font-weight: 500; }
+
+    /* DEFINITION BOX */
+    .definition-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 36px; margin: 2.5rem 0; text-align: center; position: relative; overflow: hidden; }
+    .definition-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d), var(--green-d)); }
+    .definition-box .def-eyebrow { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 12px; display: block; font-weight: 700; }
+    .definition-box p { font-size: 1.15rem; font-style: italic; color: var(--white); margin: 0; line-height: 1.7; font-weight: 500; }
+
+    /* FACT STRIP */
+    .fact-strip { display: flex; gap: 0; margin: 2rem 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .fact-item { flex: 1; padding: 18px 14px; text-align: center; background: var(--bg3); border-right: 1px solid var(--border); }
+    .fact-item:last-child { border-right: none; }
+    .fact-item .fact-num { font-size: 1.5rem; font-weight: 800; display: block; margin-bottom: 4px; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .fact-item .fact-lbl { font-size: 0.68rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: #d97706; }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: #dc2626; }
+    .callout.blue { background: rgba(37,99,235,0.08); border-color: var(--blue-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.amber .callout-label { color: #fbbf24; }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.red .callout-label { color: var(--red); }
+    .callout.blue .callout-label { color: var(--blue); }
+    .callout p { margin: 0; font-size: 0.93rem; color: var(--lgrey); line-height: 1.7; }
+
+    /* COMPARE CARDS */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 2rem 0; }
+    .compare-card { border-radius: 18px; padding: 28px 24px; border: 1px solid var(--border); background: var(--bg3); position: relative; overflow: hidden; }
+    .compare-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .compare-card.apple::before { background: linear-gradient(90deg, #6b7280, #d1d5db); }
+    .compare-card.google::before { background: linear-gradient(90deg, #2563eb, #16a34a); }
+    .compare-card .card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+    .compare-card .card-name { font-weight: 700; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .compare-card.apple .card-name { color: #9ca3af; }
+    .compare-card.google .card-name { color: var(--blue); }
+    .compare-card p { font-size: 0.9rem; color: var(--grey); margin-bottom: 10px; line-height: 1.7; }
+    .tag-pill { display: inline-block; border-radius: 100px; padding: 3px 11px; font-size: 0.68rem; font-weight: 700; margin: 3px 3px 0 0; }
+    .compare-card.apple .tag-pill { background: rgba(156,163,175,0.12); border: 1px solid rgba(156,163,175,0.25); color: #9ca3af; }
+    .compare-card.google .tag-pill { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); color: var(--blue); }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(167,139,250,0.3); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-d), var(--blue-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--purple); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--purple); font-weight: 600; }
+
+    /* CLOSING */
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 440px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--purple-d), var(--blue-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--purple); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .dark-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .fact-strip { flex-direction: column; }
+      .fact-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .fact-item:last-child { border-bottom: none; }
+      .hero-stats { gap: 1.5rem; }
+      .nav-right a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--purple);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">📰 Day 6 of 90 · News Decode · DecodeWithAni</div>
+  <div class="hero-icon">🤝</div>
+  <h1>Apple + Google:<br/><span>The Rivalry That Became a Partnership</span></h1>
+  <p class="hero-desc">Two of tech's biggest rivals just announced they're working together. Here's what actually happened, why it matters — and what it means for the phone in your pocket.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">$1B</span><span class="lbl">Apple pays Google per year</span></div>
+    <div class="hero-stat"><span class="num">1.4B</span><span class="lbl">iPhones this will affect</span></div>
+    <div class="hero-stat"><span class="num">2026</span><span class="lbl">New Siri arrives</span></div>
+    <div class="hero-stat"><span class="num">Multi</span><span class="lbl">Year deal signed</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<!-- ARTICLE -->
+<article class="article">
+
+  <!-- BREAKING BANNER -->
+  <div class="news-banner fade-up">
+    <div class="news-banner-dot"></div>
+    <div>
+      <span class="news-banner-label">🚨 News Decode — January 2026</span>
+      <p class="news-banner-text">Apple and Google officially confirmed a multi-year AI partnership. Google's Gemini will now power the next generation of Siri.</p>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Story</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Picture This — <em>It's Your Monday Morning</em></h2>
+
+  <p class="fade-up">You wake up. You pick up your iPhone. You say — the way you've said a hundred times before, mostly out of habit and mild optimism — <em>"Hey Siri, what's the weather today?"</em></p>
+  <p>Siri tells you. You nod. You ask a follow-up question. Siri misunderstands it completely. You sigh. You open Google instead.</p>
+  <p>This has been the story of Siri for over a decade. Smart enough to set a timer. Hopeless at everything else. While ChatGPT was writing essays, debugging code, and having nuanced conversations, Siri was still struggling to understand that "call Mum" and "call mom" are the same thing.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">📅 January 12, 2026 — The Announcement</span>
+    <p>On a Monday morning in January 2026, two of the most powerful companies in human history issued a joint statement. Not a rumour. Not a leak. An <span class="highlight">official announcement</span>.</p>
+    <p><span class="person">Apple</span> and <span class="person">Google</span> — two companies that have spent the better part of two decades building competing ecosystems, suing each other over patents, and fighting for the same customers — announced they were teaming up.</p>
+    <p>The deal: Apple would use Google's <span class="highlight">Gemini AI</span> — Google's most powerful AI model — to power the next generation of Siri and Apple's broader AI features. A multi-year partnership. Worth approximately <span class="highlight">$1 billion per year</span>.</p>
+    <p>The tech world stopped and read it twice.</p>
+  </div>
+
+  <p>To understand why this is such a big deal, you need to understand what these two companies have been to each other — and what Siri was supposed to be.</p>
+
+  <hr class="divider"/>
+
+  <!-- PART 2 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Background</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Siri Was Supposed to Be <em>The Future</em></h2>
+
+  <p class="fade-up">When Apple introduced Siri in 2011, it wasn't just a new feature. It was a <strong>vision statement</strong>. The idea was simple and astonishing: you wouldn't need to tap buttons or type searches anymore. You'd just talk. Your phone would understand you — really understand you — and help you with your actual life.</p>
+  <p>The original demo was magical. People were genuinely stunned. A computer that could hold a conversation? In 2011? It felt like science fiction made real.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">⏩ What Happened Next</span>
+    <p>But then something went wrong. Siri stopped improving. Year after year, iOS updates came and went, and Siri remained frustratingly limited. It could set alarms. It could send texts. It could tell you the weather. But ask it something slightly complex — <span class="highlight">"What restaurants near me are open right now and also accept reservations?"</span> — and it would either get confused, give you a web search link, or both.</p>
+    <p>Meanwhile, Google Assistant got smarter. Amazon's Alexa got smarter. And then, in November 2022, <span class="person">ChatGPT</span> arrived — and made every other AI assistant on the market look like a toy.</p>
+    <p>Apple had a Siri problem. And it knew it.</p>
+  </div>
+
+  <div class="fact-strip fade-up">
+    <div class="fact-item"><span class="fact-num">2011</span><span class="fact-lbl">Siri launched</span></div>
+    <div class="fact-item"><span class="fact-num">15 yrs</span><span class="fact-lbl">Behind on AI</span></div>
+    <div class="fact-item"><span class="fact-num">150B</span><span class="fact-lbl">Apple's current model size</span></div>
+    <div class="fact-item"><span class="fact-num">1.2T</span><span class="fact-lbl">Gemini model Apple is getting</span></div>
+  </div>
+
+  <p>That last number is worth pausing on. Apple's current AI model has 150 billion parameters. The custom Gemini model Google is building for Apple has <strong>1.2 trillion parameters</strong>. That's not an upgrade. That's a completely different league.</p>
+
+  <hr class="divider"/>
+
+  <!-- PART 3 -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Plain English Decode</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Actually Happened — <em>No Jargon Version</em></h2>
+
+  <p class="fade-up">Let me decode exactly what was announced, because the headlines made it sound simpler — and more alarming — than it actually is.</p>
+
+  <div class="definition-box fade-up">
+    <span class="def-eyebrow">The One-Sentence Summary</span>
+    <p>"Apple couldn't build a good enough AI brain on its own, so it's renting Google's brain — while keeping your personal data locked inside Apple's walls."</p>
+  </div>
+
+  <p>Here's the more detailed version:</p>
+
+  <h3>What Apple is getting from Google</h3>
+  <p>Google is building a <strong>custom version of Gemini</strong> specifically for Apple — a 1.2 trillion parameter model. This model will power the "thinking" parts of the new Siri — understanding complex questions, reasoning through multi-step tasks, remembering context across a conversation, and integrating deeply with your apps.</p>
+  <p>For example: you'll be able to ask Siri <em>"What's Mum's flight time and is there enough time to make her lunch reservation?"</em> — and it will actually check your Messages app, your Calendar app, and give you a real answer. That's the new Siri.</p>
+
+  <h3>What Apple is NOT giving Google</h3>
+  <p>This is the part Apple wants you to know. <strong>Your personal data is not going to Google.</strong> The processing happens either directly on your iPhone or on Apple's own private cloud servers — not Google's. Google provides the AI model. Apple controls where it runs and what it can see.</p>
+  <p>Think of it like hiring a chef to cook in your kitchen. The chef brings the skills. But your fridge, your ingredients, your home — those stay yours.</p>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">✅ What This Means for Privacy</span>
+    <p>Apple has been very clear: Gemini runs inside Apple's infrastructure. Google supplies the model but does not receive your personal data, messages, or queries. Apple's privacy standards apply throughout. Whether you trust that promise is up to you — but the architecture is designed to keep your data Apple-side.</p>
+  </div>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">⚠️ The Part Nobody Is Sure About</span>
+    <p>Apple and Google have not fully explained how a Google-built AI model running inside Apple's system actually works at a technical level. Privacy researchers and tech journalists have raised questions. Apple says its industry-leading privacy standards apply throughout — but the full technical details have not been made public yet.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 4 — THE TWO COMPANIES -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Two Players</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Each Side Gets <em>From This Deal</em></h2>
+
+  <div class="compare-grid fade-up">
+    <div class="compare-card apple">
+      <span class="card-icon">🍎</span>
+      <div class="card-name">Apple</div>
+      <p>Gets access to one of the world's most powerful AI models — without having to spend a decade building it from scratch. Fixes Siri's reputation problem. Stays competitive with Google, Samsung, and every phone maker that has been racing ahead on AI.</p>
+      <p>Also gets to say: <strong>"We chose the best technology for our users"</strong> — framing the deal as a customer-first decision rather than an admission of failure.</p>
+      <span class="tag-pill">Better Siri</span>
+      <span class="tag-pill">AI catch-up</span>
+      <span class="tag-pill">Stays competitive</span>
+    </div>
+    <div class="compare-card google">
+      <span class="card-icon">🔍</span>
+      <div class="card-name">Google</div>
+      <p>Gets Gemini installed on 1.4 billion iPhones. This is an enormous validation of Gemini as the world's leading AI model — and a massive commercial win over OpenAI, which also bid for this contract.</p>
+      <p>Also earns roughly <strong>$1 billion per year</strong> — on top of the billions it already pays Apple to be the default search engine on Safari.</p>
+      <span class="tag-pill">1.4B iPhones</span>
+      <span class="tag-pill">~$1B/year</span>
+      <span class="tag-pill">Beats OpenAI</span>
+    </div>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"Apple needed a brain. Google had the best one available. Money changed hands. And a decade-long rivalry quietly became the most important partnership in consumer tech."</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 5 — WHY IT MATTERS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Why It Matters to You</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What This Actually Changes <em>In Your Daily Life</em></h2>
+
+  <p class="fade-up">Let's get practical. Here's what the new Gemini-powered Siri is expected to do when it arrives with iOS 26 later in 2026:</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">📱 The New Siri — What It Will Actually Do</span>
+    <p><span class="highlight">Understand your context across apps.</span> "What did Priya say about the dinner plans?" — Siri will check your Messages and give you the answer. Not a search link. An actual answer.</p>
+    <p><span class="highlight">Handle complex multi-step requests.</span> "Book the earliest available slot with my dentist and add it to my calendar with a 30-minute travel buffer." — Done. In one sentence.</p>
+    <p><span class="highlight">Know who you're talking about.</span> "Tell Mum I'll be late" — Siri will figure out who Mum is from your contacts, draft a natural-sounding message, and send it after you confirm.</p>
+    <p><span class="highlight">Remember what you were doing.</span> Mid-conversation follow-ups. "What about next Tuesday instead?" — Siri will know what appointment you're still talking about.</p>
+  </div>
+
+  <p>This is not a Siri update. This is a Siri replacement. The assistant that's been the butt of jokes since 2015 is about to become — if the demos are accurate — genuinely useful.</p>
+
+  <hr class="divider"/>
+
+  <!-- PART 6 — THE BIGGER PICTURE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Bigger Picture</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What This Really Tells Us About <em>Where AI Is Going</em></h2>
+
+  <p class="fade-up">Here's the thing about this deal that most news articles missed — it's not really about Siri. Siri is just the front door.</p>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🌍</span>
+    <h3>The Real Story: No Company Can Win AI Alone</h3>
+    <p>Apple is one of the wealthiest companies in human history. It employs some of the world's best engineers. It has spent billions on AI research. And even Apple couldn't build a large language model competitive enough on its own.</p>
+    <p>That tells you something important: <strong>building frontier AI is extraordinarily hard and expensive.</strong> So hard that even trillion-dollar companies are choosing to partner rather than compete head-to-head.</p>
+    <p>This is the new shape of AI — not every company building their own AI from scratch, but a handful of AI model providers (Google, OpenAI, Anthropic, Meta) whose models power hundreds of other products. Just like the electricity grid — you don't generate your own power, you plug into the grid. <strong>AI is becoming the new electricity grid.</strong></p>
+  </div>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">🔍 The Antitrust Question Nobody Can Ignore</span>
+    <p>Apple already pays Google billions every year to be the default search engine on iPhone — a deal that a US court ruled is part of an illegal search monopoly. Now they've added a second, deeper AI partnership on top of that. Regulators in the US and EU are watching. Whether this new deal faces legal scrutiny is one of the most important tech stories of 2026.</p>
+  </div>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">🤔 And What About OpenAI?</span>
+    <p>Apple had previously partnered with OpenAI to bring ChatGPT to iPhones. That deal is still in place — for now. But the Google partnership puts Gemini at the centre of Apple's AI strategy, which raises an obvious question: how long before ChatGPT gets quietly sidelined? OpenAI reportedly also bid for the Siri contract — and lost. That stings.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CLOSING THOUGHT -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Decode</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The One Thing to Remember <em>From All of This</em></h2>
+
+  <p class="fade-up">For years, buying an iPhone meant choosing Apple's world — Apple Maps, Apple Music, Apple Pay, Apple Intelligence. The whole point of the Apple ecosystem was that everything was built by Apple, for Apple devices, and it all worked seamlessly together.</p>
+  <p>This deal cracks that story open. The most important new feature of the iPhone — the AI brain powering Siri — isn't built by Apple. It's built by Google. Running on a custom model that Apple is paying $1 billion a year to access.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🎯 The Plain English Takeaway</span>
+    <p>Apple swallowed its pride and made the right call for its customers. Google won the biggest AI contract of the year. Your Siri is about to get dramatically smarter. And the two companies you probably think of as rivals are now, quietly, deeply intertwined.</p>
+    <p>The AI race isn't just about who builds the smartest model anymore. <span class="highlight">It's about whose model ends up inside the most devices.</span> With 1.4 billion iPhones about to run on Gemini — Google just took a very significant lead in that race.</p>
+    <p>Whether that's good for you, for competition, or for the future of tech — that's a question worth watching carefully as 2026 unfolds.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"The most revealing thing about this deal isn't what Apple and Google are building together. It's what Apple's decision to ask for help tells us about how hard building real AI actually is."</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day6of90</span>
+    <span class="tag">#Apple</span>
+    <span class="tag">#Google</span>
+    <span class="tag">#Gemini</span>
+    <span class="tag">#Siri</span>
+    <span class="tag">#AINews</span>
+    <span class="tag">#TechDecode</span>
+    <span class="tag">#iPhone</span>
+    <span class="tag">#AIForEveryone</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Tomorrow on Day 7 👀</h3>
+  <p>We go back to the AI series — decoding Large Language Models. What are they, how do they work, and why is everyone suddenly obsessed with them?</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
