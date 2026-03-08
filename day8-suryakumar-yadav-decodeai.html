@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 8 – Suryakumar Yadav: The Boy Who Was Born to Fly | DecodeWithAni</title>
+  <meta name="description" content="From the streets of Chembur to Captain of India. The full, real, emotional story of SKY — the cricketer who refused to stop believing."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --red:#fca5a5; --red-d:#dc2626;
+      --saffron:#fb923c; --saffron-d:#ea580c;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--saffron-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--saffron); }
+    .nav-cta { background: linear-gradient(135deg, var(--saffron-d), var(--amber-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(234,88,12,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 20% 100%, rgba(124,58,237,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(251,146,60,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(251,146,60,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.35); color: var(--saffron); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '🏏'; font-size: 0.8rem; }
+    .hero-icon { font-size: 90px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 32px rgba(251,146,60,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.6rem); font-weight: 900; color: var(--white); line-height: 1.05; max-width: 840px; margin-bottom: 1rem; letter-spacing: -1.5px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--saffron), var(--amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 1.15rem; font-weight: 600; color: var(--saffron); margin-bottom: 1rem; letter-spacing: 0.5px; }
+    .hero-desc { font-size: 1rem; color: var(--grey); max-width: 560px; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--saffron), var(--amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(251,146,60,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--saffron); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--saffron-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--saffron), var(--amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--saffron); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* DARK STORY BLOCK */
+    .dark-block { background: linear-gradient(145deg, #13100a, #0d0d1a); border: 1px solid rgba(251,146,60,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .dark-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--saffron-d), var(--amber), var(--saffron-d)); }
+    .dark-block::after { content: ''; position: absolute; bottom: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(251,146,60,0.06) 0%, transparent 70%); pointer-events: none; }
+    .dark-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--saffron); margin-bottom: 16px; display: block; font-weight: 700; }
+    .dark-block p { color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.95; margin-bottom: 14px; font-style: italic; }
+    .dark-block p:last-child { margin-bottom: 0; }
+    .dark-block .highlight { color: var(--amber); font-style: normal; font-weight: 600; }
+    .dark-block .person { color: var(--saffron); font-style: normal; font-weight: 700; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--saffron-d); background: rgba(234,88,12,0.06); border-radius: 0 14px 14px 0; padding: 22px 30px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.2rem; font-style: italic; color: var(--saffron); margin: 0; line-height: 1.65; font-weight: 500; }
+
+    /* DEFINITION / HIGHLIGHT BOX */
+    .definition-box { background: var(--bg3); border: 1px solid rgba(251,146,60,0.25); border-radius: 18px; padding: 36px; margin: 2.5rem 0; text-align: center; position: relative; overflow: hidden; }
+    .definition-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--saffron-d), var(--amber), var(--green-d)); }
+    .definition-box .def-eyebrow { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--saffron); margin-bottom: 12px; display: block; font-weight: 700; }
+    .definition-box p { font-size: 1.15rem; font-style: italic; color: var(--white); margin: 0; line-height: 1.7; font-weight: 500; }
+
+    /* TIMELINE */
+    .timeline { margin: 2rem 0; border-left: 2px solid rgba(251,146,60,0.2); padding-left: 28px; }
+    .tl-item { margin-bottom: 32px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -37px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--saffron-d); box-shadow: 0 0 0 3px rgba(234,88,12,0.2); }
+    .tl-year { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--saffron); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .tl-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.saffron { background: rgba(234,88,12,0.08); border-color: var(--saffron-d); }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.blue { background: rgba(37,99,235,0.08); border-color: var(--blue-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.saffron .callout-label { color: var(--saffron); }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.blue .callout-label { color: var(--blue); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.8; }
+
+    /* FACT STRIP */
+    .fact-strip { display: flex; gap: 0; margin: 2rem 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .fact-item { flex: 1; padding: 20px 14px; text-align: center; background: var(--bg3); border-right: 1px solid var(--border); }
+    .fact-item:last-child { border-right: none; }
+    .fact-item .fact-num { font-size: 1.55rem; font-weight: 800; display: block; margin-bottom: 4px; background: linear-gradient(135deg, var(--saffron), var(--amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .fact-item .fact-lbl { font-size: 0.65rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; line-height: 1.4; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: linear-gradient(145deg, #15100a, #0d0d1a); border: 1px solid rgba(251,146,60,0.3); border-radius: 18px; padding: 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--saffron-d), var(--amber)); }
+    .highlight-box .hl-icon { font-size: 44px; margin-bottom: 14px; display: block; }
+    .highlight-box h3 { font-size: 1.3rem; color: var(--white); margin-bottom: 12px; margin-top: 0; font-weight: 800; }
+    .highlight-box p { font-size: 0.97rem; color: var(--lgrey); margin-bottom: 12px; line-height: 1.85; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--saffron); }
+
+    /* INDIA FLAG BLOCK */
+    .india-block { background: linear-gradient(135deg, rgba(255,153,51,0.08), rgba(255,255,255,0.02), rgba(19,136,8,0.08)); border: 1px solid rgba(255,153,51,0.25); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; text-align: center; position: relative; overflow: hidden; }
+    .india-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF9933 33%, white 33% 66%, #138808 66%); }
+    .india-block .flag-text { font-size: 3rem; margin-bottom: 12px; display: block; }
+    .india-block p { font-size: 1.2rem; font-style: italic; color: var(--white); line-height: 1.75; margin: 0; font-weight: 500; }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--saffron); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 440px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--saffron-d), var(--amber-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(234,88,12,0.35); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(234,88,12,0.5); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--saffron); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s, transform 0.65s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .dark-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .fact-strip { flex-direction: column; }
+      .fact-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .fact-item:last-child { border-bottom: none; }
+      .hero-stats { gap: 1.5rem; }
+      .nav-right a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--saffron);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 8 of 90 · Inspiration Story · DecodeWithAni</div>
+  <div class="hero-icon">🏏</div>
+  <h1>Suryakumar Yadav:<br/><span>The Boy Who Was Born to Fly</span></h1>
+  <p class="hero-subtitle">From the Streets of Chembur to Captain of India 🇮🇳</p>
+  <p class="hero-desc">Eleven years of waiting. Zero India caps. Countless rejections. And one man who never stopped believing — because one woman never let him forget why he started.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">11</span><span class="lbl">Years to get India cap</span></div>
+    <div class="hero-stat"><span class="num">31</span><span class="lbl">Age at debut</span></div>
+    <div class="hero-stat"><span class="num">2×</span><span class="lbl">T20 World Cup winner</span></div>
+    <div class="hero-stat"><span class="num">SKY</span><span class="lbl">360° batter · Captain · Legend</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- CH 1 — OPENING -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Beginning</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Boy in the Street — <em>Chembur, Mumbai, 2000</em></h2>
+
+  <p class="fade-up">Picture a ten-year-old boy. A dusty lane in Chembur — one of Mumbai's quieter eastern suburbs, not the kind of neighbourhood that produces cricket stars. He has a bat that is slightly too big for his arms, a tennis ball wrapped in tape, and a wall chalked with three stumps.</p>
+  <p>Every morning, before school. Every evening, until his mother calls him in for dinner. Every weekend, until the sun disappears. He plays. He plays with a focus that is unusual in a child so young. He doesn't play to have fun. He plays because something inside him says: <em>this is what you were made to do.</em></p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">📍 Born 14 September 1990 · Mumbai, Maharashtra</span>
+    <p><span class="person">Suryakumar Ashok Yadav</span> was born to a family from Ghazipur, Uttar Pradesh — modest, hardworking, and deeply proud. His father, <span class="person">Ashok Kumar Yadav</span>, worked as a chief engineer at the Bhabha Atomic Research Centre — a government job, stable and respectable. His mother, <span class="person">Swapna Yadav</span>, ran the home with quiet, fierce dedication.</p>
+    <p>When Surya was ten, the family moved from Varanasi to Mumbai. His father had noticed something about his youngest child: the boy could not stop playing cricket. Even when hurt by a ball, <span class="highlight">he would get up and ask to face the next one.</span> No crying. No complaints. Just — again.</p>
+    <p>His father made a decision. He enrolled Surya in the cricket camp at the BARC colony in Chembur, coached by <span class="person">Ashok Kamat</span>. It was a modest facility, nothing like the gleaming academies of South Mumbai. But the coach recognised the boy immediately. "Even then," Kamat would later recall, <span class="highlight">"his natural talent was evident. He had this fearless approach — always eager to take on challenges and try new things."</span></p>
+  </div>
+
+  <p>There was a choice to be made. Young Surya was equally gifted at badminton. His father sat him down one evening: cricket or badminton — pick one, and go all the way. No second guessing. No looking back.</p>
+  <p>Suryakumar chose cricket. He was ten years old. And he never looked back.</p>
+
+  <hr class="divider"/>
+
+  <!-- CH 2 — THE LONG WAIT -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Wilderness Years</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Eleven Years, Zero Caps — <em>The Wait That Would Break Most Men</em></h2>
+
+  <p class="fade-up">This is the part of Suryakumar Yadav's story that cricket highlights reels never show. The part before the sixes. Before the number-one T20 ranking. Before the screaming crowds and the captain's armband.</p>
+  <p>The part where he just — waited. And scored. And waited some more.</p>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <span class="tl-year">2002–2009</span>
+      <div class="tl-title">Academy Years — Building the Foundation</div>
+      <p class="tl-desc">After Ashok Kamat's camp, Surya moved to the prestigious Elf Vengsarkar Academy — run by former India captain Dilip Vengsarkar. He trains every day with the intensity of someone who knows they have one shot. He plays age-group cricket across Mumbai, making himself impossible to ignore in every tournament he enters.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2010</span>
+      <div class="tl-title">Mumbai Debut — He Makes 73 on Day One</div>
+      <p class="tl-desc">List A debut for Mumbai against Gujarat. He scores 73 on debut. Not lucky runs — clean, commanding cricket. His Ranji Trophy debut follows later in December. The selectors take notice. Everyone does. Surely India is coming?</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2011–12</span>
+      <div class="tl-title">Best in Mumbai — Still Not Enough</div>
+      <p class="tl-desc">He scores 754 Ranji Trophy runs in just 9 games — the most of any Mumbai player that season. Including a double century against Odisha and back-to-back hundreds. He wins the MA Chidambaram Trophy for Best Under-22 Cricketer in India. He is clearly one of the country's most gifted batters. The India call still doesn't come.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2012</span>
+      <div class="tl-title">IPL — Mumbai Indians Sign Him</div>
+      <p class="tl-desc">His Ranji form earns him a spot with Mumbai Indians in the IPL. But he's a young gun on a star-studded squad. Opportunities are limited. He watches from the dugout more than he bats. He doesn't complain. He stays ready.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2014–17</span>
+      <div class="tl-title">Kolkata Knight Riders — And a Moment Nobody Forgot</div>
+      <p class="tl-desc">Released by MI, he's picked up by KKR. In IPL 2015, he plays an innings that stops India in its tracks — 46 runs off just 20 balls, five sixes, against Mumbai Indians. The cricketing world collectively asks: why isn't this man playing for India? He's made vice-captain of KKR. And still — no India call.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2018–2020</span>
+      <div class="tl-title">Mumbai Indians Return — 1700+ Runs and Two IPL Titles</div>
+      <p class="tl-desc">MI bring him back. He delivers with everything he has — over 1,700 runs across his MI comeback years, at a strike rate of 140+. Two IPL championship medals. He is now, without question, one of the most exciting T20 batters on the planet. India picks everyone around him. Not him.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-year">2021</span>
+      <div class="tl-title">The Call — Finally, at 31</div>
+      <p class="tl-desc">He is thirty-one years old when India finally picks him. Eleven years after his domestic debut. He walks out to bat in his first innings in international cricket — and hits the very first ball he faces for a six. The first Indian ever to do so in T20 Internationals. That was not an accident. That was a man who had been waiting eleven years and was ready for every single moment.</p>
+    </div>
+  </div>
+
+  <div class="callout saffron fade-up">
+    <span class="callout-label">💭 Think About This</span>
+    <p>Most people give up on their dreams after one or two rejections. Suryakumar Yadav was passed over for India selection — consistently, repeatedly, despite being one of the best T20 batters in the country — for <strong>eleven years</strong>. He kept scoring. He kept training. He kept showing up. That is not talent. That is character.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 3 — DEVISHA -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Woman Behind SKY</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Devisha — <em>The Dancer Who Became His Anchor</em></h2>
+
+  <p class="fade-up">In 2012, at R.A. Podar College of Commerce and Economics in Mumbai, a cricketer walked into a college program and saw a girl dancing.</p>
+  <p>She moved with the kind of grace that stops a room. A classically trained Bharatanatyam dancer, <strong>Devisha Shetty</strong> had dedicated her life to an art form just as demanding as cricket — one that required discipline, years of practice, and a willingness to be imperfect in public before you are perfect in private.</p>
+  <p>He was captivated. She noticed him too — this confident young cricketer who batted like nobody else she had seen. Two people from completely different worlds. Both of them devoted to something they loved completely.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">💛 A Love Story That Grew Quietly</span>
+    <p>Their love story was not a dramatic Bollywood moment. It grew slowly, through friendship and shared college life, through conversations that went long into the evening. Through the years when Suryakumar was spending more time at the crease than in class, missing lectures for matches, always chasing the next game.</p>
+    <p>Devisha understood dedication. She had lived it. So she understood him.</p>
+    <p>They got engaged in May 2016. On <span class="highlight">July 7, 2016</span>, they married in a traditional South Indian ceremony — Devisha radiant in a pink Kanjeevaram saree with temple gold jewellery, Suryakumar in a white kurta and dhoti. No celebrity spectacle. No filmy drama. Just family, close friends, and two people who had chosen each other.</p>
+  </div>
+
+  <h3>The Nudge That Changed Everything</h3>
+  <p>This is where Devisha's role in Suryakumar's story becomes more than just a love story. Shortly after their marriage, she noticed something about her husband: the talent was undeniable. The hard work was real. But the fire — the burning, desperate hunger to play for India — had started to dim under years of rejection.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🔥 "Friends Are Great, But Work Comes First"</span>
+    <p>On a talk show hosted by Harbhajan Singh, Devisha spoke honestly about what she saw when she first moved in with Suryakumar. "The urge was there in him to play for India, but it needed a stronger push. That was not coming from anywhere else, so I gave him that emotional support."</p>
+    <p>She was direct about it. <span class="highlight">"When I came, I noticed he needed a nudge. It took me a year to make him understand that friends are great, but work comes first. You need to stay focused and not let your time or energy be compromised."</span></p>
+    <p>It wasn't harsh. It was honest. And Suryakumar has said, publicly and repeatedly, that this period — after their marriage, with Devisha's quiet, steady insistence on focus and discipline — was the turning point in his career.</p>
+  </div>
+
+  <h3>The Fitness Revolution — 2019</h3>
+  <p>In 2019, Suryakumar decided to overhaul his fitness completely. He realised that to compete at the highest level — and to be ready when the India call finally came — his body needed to be a weapon. He was weighing around 93kg. He wanted to be leaner, faster, and more agile in the field.</p>
+  <p>Devisha was there for every step of this transformation. She helped him move away from crash diets and unsustainable quick fixes toward a genuine lifestyle change — consistent nutrition, disciplined sleep, structured training. She worked with his nutritionist and chef, ensuring the household routine supported his performance goals rather than competing with them.</p>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">💚 What Devisha Actually Did</span>
+    <p>Devisha wasn't just a supportive wife in the background. She actively changed the environment around Suryakumar — the food he ate, the way he spent his evenings, the friends he prioritised, the mindset he carried into training. That catch in the 2024 World Cup final? The one that required him to sprint, leap, toss the ball, step out of bounds, step back in, and complete the catch in under four seconds? That was possible because of the fitness he built — which started, in his own words, with the changes Devisha pushed him to make.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"Behind every SKY, there is a Devisha — quiet, steady, and absolutely certain that he could fly, even when he had forgotten how."</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 4 — THE RISE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Rise</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The World Discovers SKY — <em>And Cannot Look Away</em></h2>
+
+  <p class="fade-up">When Suryakumar Yadav finally got his India cap in March 2021, it felt like a dam breaking. All that talent, compressed for eleven years, suddenly had an outlet. And what flowed out was extraordinary.</p>
+
+  <div class="fact-strip fade-up">
+    <div class="fact-item"><span class="fact-num">57</span><span class="fact-lbl">Runs in first T20I innings</span></div>
+    <div class="fact-item"><span class="fact-num">1164</span><span class="fact-lbl">T20I runs in 2022 — world record</span></div>
+    <div class="fact-item"><span class="fact-num">2×</span><span class="fact-lbl">ICC T20I Cricketer of the Year 2022 & 2023</span></div>
+    <div class="fact-item"><span class="fact-num">#1</span><span class="fact-lbl">ICC T20I batter ranking — longest ever</span></div>
+  </div>
+
+  <p>He didn't just play T20 cricket for India. He reinvented what T20 batting could look like. The scoop over fine leg. The ramp off a 145 kmph bouncer. The switch hit. The paddle played over his own head. Shots that coaches don't teach — because coaches don't know how to teach them.</p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">🌟 The 360° Batter</span>
+    <p>There are 360 degrees around a cricket field. Most batters use perhaps 180 of them — hitting the ball in front of them in an arc from fine leg to cover. Suryakumar Yadav uses all 360. He can hit any ball, from any bowler, anywhere on the ground. He bats as if the laws of cricket geometry don't apply to him. Commentators ran out of superlatives. They just started using his initials — <strong>SKY</strong> — as if his name was too small to contain what he was doing.</p>
+  </div>
+
+  <p>In 2022, he scored 1,164 T20I runs in a single calendar year — the most ever by any batter in history in a single year. The world took notice. Then took notice again. Then stopped pretending they had seen anything like it before.</p>
+
+  <hr class="divider"/>
+
+  <!-- CH 5 — 2024 WORLD CUP CATCH -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Moment</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Barbados, June 29, 2024 — <em>The Catch That Stopped the World</em></h2>
+
+  <p class="fade-up">India vs South Africa. T20 World Cup Final. Kensington Oval, Barbados. The last over. The last real chance for South Africa.</p>
+  <p>India had set 177. South Africa needed 16 runs off the final 6 balls. A tall order — but not impossible, not with <strong>David Miller</strong> at the crease. Miller is one of the most destructive finishers in world cricket. One swing of his bat could change everything.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🎬 Last Over. First Ball. The Ball Leaves the Bat</span>
+    <p>Hardik Pandya runs in. He bowls a full toss — slightly wide. David Miller's eyes light up. His bat swings with everything he has. The ball launches off the bat like a rocket, heading straight to the long-off boundary. Six runs. And South Africa get back in the game.</p>
+    <p>Except — a figure appears from nowhere.</p>
+    <p>Suryakumar Yadav, fielding at long-off, has been watching. He has been watching the way Pandya has set his field, the way Miller has been positioning himself, the way the wind is blowing at Kensington Oval this evening. He has been thinking about all of this — and he has taken <span class="highlight">exactly this kind of catch in practice, at different grounds, accounting for different winds, hundreds of times.</span></p>
+    <p>He runs. He runs to his left, full sprint, tracking the ball. He gets there. He <span class="highlight">grabs it out of the air</span> — but his momentum is carrying him backwards, over the boundary rope. He is going to step outside the field. And if he does, it is a six.</p>
+    <p>In the fraction of a second before his feet cross the white line — he <span class="highlight">throws the ball straight up into the air.</span> Steps over the boundary. Steps back into the field. And catches the ball again.</p>
+    <p>David Miller — caught Suryakumar, bowled Pandya — for 21.</p>
+    <p>South Africa needed 16 off 6. They got 8. <span class="highlight">India won the 2024 T20 World Cup by 7 runs.</span></p>
+  </div>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">🤔 Was It a Fair Catch? The Controversy</span>
+    <p>The world watched the replay frame by frame. Social media exploded. South African fans pointed at a mark on the outfield — the original position of the boundary rope, which had been moved slightly back by broadcasters to accommodate a commentary screen, making the boundary marginally larger. Some argued Suryakumar's shoe had flicked the rope. Third umpire Richard Kettleborough reviewed every angle and gave it out. Surya himself said, quietly and without drama: <strong>"I knew I hadn't touched the rope."</strong> The catch stood. History was made.</p>
+  </div>
+
+  <p>Ian Smith, one of cricket's most respected commentators, called it <em>one of the greatest catches in the history of cricket.</em> Rohit Sharma called it <em>the moment of the entire tournament.</em> And if you know anything about Suryakumar Yadav, you know this — it was not luck. It was the reward of a thousand practice sessions, each one done with the full belief that this exact moment would come.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Yesterday's catch was the reward of hard work done over years. I have practised these kinds of catches during IPL, during bilateral series. When it comes in a game like this — you are ready." — Suryakumar Yadav</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 6 — CAPTAIN -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Captaincy</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Armband — <em>The Boy from Chembur Leads India</em></h2>
+
+  <p class="fade-up">After the 2024 World Cup triumph, the legendary Rohit Sharma stepped down from T20I captaincy. Virat Kohli retired from the format. India had won the world — now they needed someone to lead the next chapter.</p>
+  <p>The BCCI gave the T20I captaincy to Suryakumar Yadav in July 2024.</p>
+  <p>Think about that for a moment. The man who waited eleven years to just get into the team was now <strong>leading the team.</strong> The boy who played gully cricket in the streets of Chembur was now standing at the head of the most followed cricket team on earth.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🏆 What SKY Did as Captain</span>
+    <p>He didn't just hold the armband — he delivered with it. Under his leadership, India won the <span class="highlight">Asia Cup 2025</span>, adding another trophy to the cabinet he helped fill as a player. His captaincy style — aggressive, fearless, trusting his players completely — was a reflection of the batter everyone had come to love.</p>
+    <p>He brought the same energy to leadership that he brought to batting. He backed his bowlers. He set attacking fields. He made the game look fun again. And the squad — full of new, hungry young players — responded with the kind of cricket that made a billion people stop what they were doing and watch.</p>
+  </div>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">📲 Devisha at the Final — A Moment That Said Everything</span>
+    <p>When India won the 2024 World Cup, Devisha Shetty posted a picture on Instagram. It was simple and perfect: the T20 World Cup trophy — sitting on their bed at home. The caption: <strong>"It's going to be a good night's sleep."</strong> No grand speech. No fame-chasing. Just a woman who had believed in this man, quietly and completely, for over a decade — and the trophy that proved every moment of it was worth it.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CH 7 — 2026 WORLD CUP -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Summit</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">March 8, 2026 — <em>Captain SKY Leads India to the Top of the World</em></h2>
+
+  <p class="fade-up">Narendra Modi Stadium, Ahmedabad. The largest cricket stadium in the world. 132,000 people filling every seat — a sea of blue and saffron, as far as the eye can see. The T20 World Cup 2026 Final. India vs New Zealand.</p>
+  <p>India bat first. The crowd rises with every boundary. And at the end of 20 overs, the scoreboard reads: <strong>India 255/5.</strong> A total that sends electricity through the stadium. A total that says — this is our day.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🏟️ Ahmedabad, March 8, 2026 — The Day India Repeated History</span>
+    <p>New Zealand chase. They fight. They always do. But 255 is a mountain, and India's bowlers bowl like men who have climbed mountains before. The stadium roars on every wicket. 132,000 voices making a sound that shakes the earth.</p>
+    <p>When the final wicket falls, <span class="person">Suryakumar Yadav</span> — the Captain of India — raises both arms to the sky. Not in disbelief. Not in surprise. In pure, earned, patient, long-awaited joy. The players pile on. The stadium erupts. A billion people watching on their screens lose their minds completely.</p>
+    <p>The boy from Chembur — who played in the streets with a too-big bat, who waited eleven years for one India cap, who was carried to the peak by a dancing girl from a South Indian family — has just won the T20 World Cup as Captain of India.</p>
+    <p>Back home in Mumbai, <span class="person">Devisha Shetty</span> watches the screen. And smiles the smile of someone who always knew.</p>
+  </div>
+
+  <div class="india-block fade-up">
+    <span class="flag-text">🇮🇳</span>
+    <p>"From the streets of Chembur to the Captain's dressing room in Ahmedabad — Suryakumar Yadav proved that talent is what gets you noticed, but character is what makes you remembered."</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- FINAL CHAPTER -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Lesson</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Suryakumar Yadav's Story <em>Actually Teaches Us</em></h2>
+
+  <p class="fade-up">This is not just a cricket story. Suryakumar Yadav's life is a document — a real, lived document — of what it takes to reach the highest possible version of yourself.</p>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🌅</span>
+    <h3>The Three Things SKY's Life Actually Proves</h3>
+    <p><strong>1. Rejection is not the end of the story.</strong> He was passed over for eleven years. Not one year. Not two. Eleven. And he kept showing up, kept scoring, kept refusing to let the cricket board's silence become his story. Most people would have left. He stayed.</p>
+    <p><strong>2. The right person changes everything.</strong> Devisha Shetty did not make Suryakumar Yadav talented. He was already that. But she gave him the focus, the discipline, and the belief system he needed to let that talent reach its full height. Behind every person who flies — there is someone on the ground who told them they could.</p>
+    <p><strong>3. Preparation is what makes the impossible look effortless.</strong> That catch in Barbados looked like magic. It wasn't. It was a thousand practice catches in IPL training sessions, bilateral series warm-ups, and quiet gym sessions when nobody was watching. The moment of glory is always a fraction of the iceberg — the real story is everything underneath.</p>
+  </div>
+
+  <div class="definition-box fade-up">
+    <span class="def-eyebrow">The One Line That Sums Up SKY</span>
+    <p>"He waited eleven years to get one chance — and when it came, he was so ready that it looked like the whole world had been waiting for him."</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day8of90</span>
+    <span class="tag">#SuryakumarYadav</span>
+    <span class="tag">#SKY</span>
+    <span class="tag">#TeamIndia</span>
+    <span class="tag">#T20WorldCup2026</span>
+    <span class="tag">#CricketIndia</span>
+    <span class="tag">#InspirationStory</span>
+    <span class="tag">#DevishaAndSKY</span>
+    <span class="tag">#NeverGiveUp</span>
+    <span class="tag">#JaiHind</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Tomorrow on Day 9 👀</h3>
+  <p>We're back to the AI series — with a question everyone is afraid to ask out loud: Will AI take your job? The honest, no-panic, no-hype answer.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
