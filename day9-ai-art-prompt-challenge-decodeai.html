@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 9 – Create AI Art Right Now: The Beginner's Full Challenge | DecodeWithAni</title>
+  <meta name="description" content="No experience needed. No paid tools. Just you, a free AI tool, and a prompt you write yourself. By the end of this post — you will have created real AI art."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --pink:#f9a8d4; --pink-d:#db2777;
+      --red:#fca5a5; --red-d:#dc2626;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--pink-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--pink-d)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--pink); }
+    .nav-cta { background: linear-gradient(135deg, var(--pink-d), var(--purple-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(219,39,119,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.12) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(219,39,119,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(219,39,119,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(249,168,212,0.1); border: 1px solid rgba(249,168,212,0.3); color: var(--pink); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '🎨'; font-size: 0.85rem; }
+    .hero-icon { font-size: 88px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(219,39,119,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 820px; margin-bottom: 1.2rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 1.05rem; color: var(--grey); max-width: 560px; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-challenge-badge { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(219,39,119,0.15), rgba(124,58,237,0.15)); border: 1px solid rgba(249,168,212,0.3); border-radius: 14px; padding: 14px 24px; margin-bottom: 2rem; }
+    .hero-challenge-badge span { font-size: 0.82rem; color: var(--pink); font-weight: 700; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(249,168,212,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--pink); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--pink-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--pink); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* DARK BLOCK */
+    .dark-block { background: linear-gradient(145deg, #16101a, #0d0d1a); border: 1px solid rgba(219,39,119,0.2); border-radius: 20px; padding: 38px 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .dark-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-d), var(--purple-d)); }
+    .dark-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--pink); margin-bottom: 16px; display: block; font-weight: 700; }
+    .dark-block p { color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.95; margin-bottom: 12px; }
+    .dark-block p:last-child { margin-bottom: 0; }
+    .dark-block .highlight { color: var(--amber); font-weight: 600; }
+
+    /* STEP CHALLENGE BLOCK */
+    .challenge-step { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 32px 30px; margin: 1.6rem 0; position: relative; overflow: hidden; transition: border-color 0.2s; }
+    .challenge-step:hover { border-color: rgba(219,39,119,0.35); }
+    .challenge-step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-d), var(--purple-d)); }
+    .step-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .step-badge { background: linear-gradient(135deg, var(--pink-d), var(--purple-d)); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+    .step-title-wrap .step-eyebrow { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); font-weight: 700; display: block; margin-bottom: 2px; }
+    .step-title-wrap .step-name { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+    .challenge-step p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; line-height: 1.8; }
+    .challenge-step p:last-child { margin: 0; }
+
+    /* PROMPT BOX */
+    .prompt-box { background: #0a0a14; border: 1px solid rgba(249,168,212,0.25); border-radius: 14px; padding: 20px 22px; margin: 14px 0; position: relative; }
+    .prompt-box::before { content: '💬 PROMPT'; position: absolute; top: -10px; left: 16px; background: var(--pink-d); color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; padding: 2px 10px; border-radius: 20px; }
+    .prompt-box p { font-family: 'Courier New', monospace; font-size: 0.88rem; color: var(--pink); margin: 0; line-height: 1.75; }
+    .prompt-box .prompt-note { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.78rem; color: var(--grey); margin-top: 10px; margin-bottom: 0; font-style: italic; }
+
+    /* GOOD VS BAD */
+    .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.5rem 0; }
+    .compare-box { border-radius: 14px; padding: 20px; }
+    .compare-box.bad { background: rgba(220,38,38,0.07); border: 1px solid rgba(220,38,38,0.2); }
+    .compare-box.good { background: rgba(5,150,105,0.07); border: 1px solid rgba(5,150,105,0.2); }
+    .compare-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .compare-box.bad .compare-label { color: var(--red); }
+    .compare-box.good .compare-label { color: var(--green); }
+    .compare-box p { font-size: 0.87rem; color: var(--lgrey); margin: 0; line-height: 1.7; font-family: 'Courier New', monospace; }
+
+    /* TOOLS GRID */
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 1.8rem 0; }
+    .tool-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 22px 18px; text-align: center; transition: transform 0.2s, border-color 0.2s; text-decoration: none; display: block; }
+    .tool-card:hover { transform: translateY(-4px); border-color: rgba(249,168,212,0.35); }
+    .tool-card .tool-icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+    .tool-card .tool-name { font-weight: 800; font-size: 0.95rem; color: var(--white); margin-bottom: 4px; }
+    .tool-card .tool-cost { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .tool-card.free .tool-cost { color: var(--green); }
+    .tool-card.paid .tool-cost { color: var(--amber); }
+    .tool-card p { font-size: 0.82rem; color: var(--grey); margin: 0; line-height: 1.6; }
+
+    /* PROMPT BUILDER */
+    .prompt-builder { background: linear-gradient(145deg, #13101a, #0d0d1a); border: 1px solid rgba(249,168,212,0.25); border-radius: 20px; padding: 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .prompt-builder::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-d), var(--purple-d), var(--blue-d)); }
+    .prompt-builder .pb-title { font-size: 1.1rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .prompt-builder .pb-sub { font-size: 0.85rem; color: var(--grey); margin-bottom: 22px; }
+    .pb-formula { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 22px; }
+    .pb-part { background: rgba(249,168,212,0.1); border: 1px solid rgba(249,168,212,0.25); border-radius: 8px; padding: 8px 14px; font-size: 0.82rem; font-weight: 700; color: var(--pink); }
+    .pb-plus { color: var(--grey); font-size: 1.1rem; font-weight: 700; }
+    .pb-equals { color: var(--amber); font-size: 1.1rem; font-weight: 700; }
+    .pb-result { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); border-radius: 8px; padding: 8px 14px; font-size: 0.82rem; font-weight: 700; color: var(--purple); }
+    .pb-example { background: #0a0a14; border-radius: 12px; padding: 18px 20px; }
+    .pb-example .ex-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 8px; display: block; }
+    .pb-example p { font-family: 'Courier New', monospace; font-size: 0.87rem; color: var(--lgrey); margin: 0; line-height: 1.75; }
+    .pb-example p span { color: var(--pink); font-weight: 700; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.pink { background: rgba(219,39,119,0.08); border-color: var(--pink-d); }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.pink .callout-label { color: var(--pink); }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.8; }
+
+    /* EXAMPLE PROMPTS */
+    .example-prompts { display: flex; flex-direction: column; gap: 14px; margin: 1.8rem 0; }
+    .example-prompt-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+    .example-prompt-card:hover { border-color: rgba(249,168,212,0.3); }
+    .example-prompt-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--pink-d), var(--purple-d)); }
+    .ep-theme { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; display: block; }
+    .ep-prompt { font-family: 'Courier New', monospace; font-size: 0.87rem; color: var(--lgrey); line-height: 1.75; margin: 0; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--pink-d); background: rgba(219,39,119,0.06); border-radius: 0 14px 14px 0; padding: 20px 28px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.1rem; font-style: italic; color: var(--pink); margin: 0; line-height: 1.65; font-weight: 500; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(249,168,212,0.25); border-radius: 18px; padding: 32px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pink-d), var(--purple-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--pink); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(219,39,119,0.08); border: 1px solid rgba(219,39,119,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--pink); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 480px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--pink-d), var(--purple-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(219,39,119,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(219,39,119,0.45); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--pink); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .compare-row { grid-template-columns: 1fr; }
+      .dark-block { padding: 24px 18px; }
+      .challenge-step { padding: 24px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .prompt-builder { padding: 24px 18px; }
+      .hero-stats { gap: 1.5rem; }
+      .nav-right a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--pink);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 9 of 90 · Hands-On Challenge · DecodeWithAni</div>
+  <div class="hero-icon">🎨</div>
+  <h1>Create <span>AI Art</span> Right Now</h1>
+  <p class="hero-desc">No experience needed. No paid tools. No design skills. Just you, a free AI tool, and a prompt you write yourself. By the end of this post — you will have made real AI art.</p>
+  <div class="hero-challenge-badge">
+    <span>⏱️ Time needed: 15 minutes &nbsp;·&nbsp; 💰 Cost: Free &nbsp;·&nbsp; 🧠 Experience: Zero required</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">5</span><span class="lbl">Steps to your first image</span></div>
+    <div class="hero-stat"><span class="num">3</span><span class="lbl">Free tools to choose from</span></div>
+    <div class="hero-stat"><span class="num">10+</span><span class="lbl">Ready-to-use prompts inside</span></div>
+    <div class="hero-stat"><span class="num">0</span><span class="lbl">Skills required</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- INTRO -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Before We Start</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">You Are About to Make Something <em>That Didn't Exist 5 Minutes Ago</em></h2>
+
+  <p class="fade-up">Here's something that would have sounded like science fiction ten years ago:</p>
+  <p>You type a sentence. A computer reads it. And within seconds — it generates a full, beautiful, detailed image based entirely on your words. Not a stock photo. Not a Google search result. An original piece of visual art — made from scratch, just for you, just from what you typed.</p>
+  <p>That's AI art. And today, you're going to make some.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">💡 What Is an AI Art Prompt?</span>
+    <p>A <span class="highlight">prompt</span> is simply the text you type to tell the AI what image to create. It's your instruction. Your description. Your imagination — typed out.</p>
+    <p>The better your prompt, the better your image. And by the end of this post, you'll know exactly how to write one that works — even if you've never done this before.</p>
+    <p>Think of it like ordering food at a restaurant. The more specific your order, the more likely you get exactly what you want. <span class="highlight">"I want something good"</span> gets you something random. <span class="highlight">"A thin-crust margherita pizza with extra basil and light cheese"</span> gets you exactly what you imagined.</p>
+    <p>AI art works the same way.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- STEP 1 — PICK YOUR TOOL -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Step 1 of 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Pick Your Tool — <em>All Three Are Free to Start</em></h2>
+
+  <p class="fade-up">Good news — you don't need to pay anything to create your first AI image. Here are the three best free options available right now. Pick whichever feels easiest to you.</p>
+
+  <div class="tools-grid fade-up">
+    <a href="https://www.bing.com/images/create" target="_blank" class="tool-card free">
+      <span class="tool-icon">🔵</span>
+      <div class="tool-name">Microsoft Designer</div>
+      <span class="tool-cost">✅ 100% Free</span>
+      <p>Powered by DALL·E. Just sign in with any Microsoft or Outlook account. The easiest starting point — no setup at all. Click the link and start typing.</p>
+    </a>
+    <a href="https://chat.openai.com" target="_blank" class="tool-card paid">
+      <span class="tool-icon">🤖</span>
+      <div class="tool-name">ChatGPT (DALL·E)</div>
+      <span class="tool-cost">⚡ Free + Paid Tier</span>
+      <p>Free accounts get limited image generation. Type your prompt in the chat and ask it to "generate an image of..." — it will create it right inside the conversation.</p>
+    </a>
+    <a href="https://www.adobe.com/in/products/firefly.html" target="_blank" class="tool-card free">
+      <span class="tool-icon">🔥</span>
+      <div class="tool-name">Adobe Firefly</div>
+      <span class="tool-cost">✅ Free with Account</span>
+      <p>Adobe's AI image generator. Very high quality results, especially for realistic and artistic styles. Free credits included when you sign up.</p>
+    </a>
+  </div>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">✅ Our Recommendation for Beginners</span>
+    <p><strong>Start with Microsoft Designer (Bing Image Creator).</strong> No complicated setup. No limits to worry about. Just go to bing.com/images/create, sign in with any Microsoft account, type your prompt, and hit Create. You'll have your first image in under 30 seconds.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- STEP 2 — THE SECRET FORMULA -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Step 2 of 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Secret Formula — <em>How to Write a Prompt That Actually Works</em></h2>
+
+  <p class="fade-up">Most beginners type one or two words and get a blurry, confusing image. Then they think "AI art doesn't work." It does — you just need to give the AI more to work with.</p>
+  <p>Here is the exact formula that works every single time:</p>
+
+  <div class="prompt-builder fade-up">
+    <div class="pb-title">🧩 The 5-Part Prompt Formula</div>
+    <p class="pb-sub">Use all five parts together and your image quality will jump dramatically.</p>
+    <div class="pb-formula">
+      <div class="pb-part">Subject</div>
+      <div class="pb-plus">+</div>
+      <div class="pb-part">Setting / Place</div>
+      <div class="pb-plus">+</div>
+      <div class="pb-part">Mood / Lighting</div>
+      <div class="pb-plus">+</div>
+      <div class="pb-part">Art Style</div>
+      <div class="pb-plus">+</div>
+      <div class="pb-part">Extra Details</div>
+      <div class="pb-equals">=</div>
+      <div class="pb-result">🎨 Great Image</div>
+    </div>
+    <div class="pb-example">
+      <span class="ex-label">📝 Formula in Action — Example</span>
+      <p>
+        <span>A young woman reading a book</span> [Subject]<br/>
+        <span>sitting in a cozy café in Paris</span> [Setting]<br/>
+        <span>on a rainy evening, warm golden light</span> [Mood]<br/>
+        <span>in the style of a watercolour painting</span> [Art Style]<br/>
+        <span>soft colours, detailed, cinematic atmosphere</span> [Extra Details]
+      </p>
+    </div>
+  </div>
+
+  <h3>Good Prompt vs Bad Prompt — See the Difference</h3>
+  <div class="compare-row fade-up">
+    <div class="compare-box bad">
+      <span class="compare-label">❌ Weak Prompt</span>
+      <p>a cat</p>
+    </div>
+    <div class="compare-box good">
+      <span class="compare-label">✅ Strong Prompt</span>
+      <p>a fluffy orange cat sitting on a windowsill at sunset, looking outside at the rain, cozy warm lighting, photorealistic style, highly detailed</p>
+    </div>
+  </div>
+  <div class="compare-row fade-up">
+    <div class="compare-box bad">
+      <span class="compare-label">❌ Weak Prompt</span>
+      <p>mountain view</p>
+    </div>
+    <div class="compare-box good">
+      <span class="compare-label">✅ Strong Prompt</span>
+      <p>a dramatic snow-capped mountain range at golden hour, a tiny wooden cabin in the foreground with smoke from the chimney, oil painting style, epic landscape, deep blue sky</p>
+    </div>
+  </div>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">💡 The Golden Rule of AI Prompts</span>
+    <p>Describe the image the way you'd describe it to a friend who cannot see it — be specific about what's in it, where it's set, what it feels like, and what style it should look like. More detail = better image. Always.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- STEP 3 — ART STYLE CHEAT SHEET -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Step 3 of 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Art Style Cheat Sheet — <em>Just Add These Words to Any Prompt</em></h2>
+
+  <p class="fade-up">The single easiest way to dramatically improve your AI images is to add an <strong>art style</strong> to your prompt. Here are the best ones — just copy and paste any of these into your prompt.</p>
+
+  <div class="example-prompts fade-up">
+    <div class="example-prompt-card">
+      <span class="ep-theme">🎨 Realistic / Photography Look</span>
+      <p class="ep-prompt">...photorealistic, 4K, DSLR quality, sharp focus, professional photography, cinematic lighting</p>
+    </div>
+    <div class="example-prompt-card">
+      <span class="ep-theme">🖌️ Painting Style</span>
+      <p class="ep-prompt">...in the style of an oil painting, impressionist brushstrokes, rich colours, textured canvas, museum quality</p>
+    </div>
+    <div class="example-prompt-card">
+      <span class="ep-theme">✏️ Sketch / Illustration</span>
+      <p class="ep-prompt">...pencil sketch style, hand-drawn illustration, clean lines, minimal shading, sketchbook aesthetic</p>
+    </div>
+    <div class="example-prompt-card">
+      <span class="ep-theme">🌊 Anime / Manga</span>
+      <p class="ep-prompt">...anime art style, Studio Ghibli inspired, soft pastel colours, detailed background, cel shading</p>
+    </div>
+    <div class="example-prompt-card">
+      <span class="ep-theme">🔮 Fantasy / Cinematic</span>
+      <p class="ep-prompt">...epic fantasy art, cinematic wide shot, dramatic lighting, concept art, detailed environment, magical atmosphere</p>
+    </div>
+    <div class="example-prompt-card">
+      <span class="ep-theme">📐 Minimalist / Flat Design</span>
+      <p class="ep-prompt">...flat design illustration, minimalist style, clean geometric shapes, bold colours, modern graphic art</p>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- STEP 4 — YOUR CHALLENGE PROMPTS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Step 4 of 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Your Challenge — <em>Try One of These Right Now</em></h2>
+
+  <p class="fade-up">Below are 6 ready-made prompts for your first AI image. Pick any one, go to your chosen tool, paste it in, and hit generate. Your first AI artwork will appear within seconds.</p>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">1</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">🏙️ City & Urban</span>
+        <div class="step-name">The Mumbai Night Scene</div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <p>A busy Mumbai street at night during the monsoon, neon signs reflecting in rain puddles on the road, street food vendor with a yellow light, rickshaws and people with umbrellas, cinematic photography style, vibrant colours, highly detailed</p>
+      <p class="prompt-note">✏️ Tip: Replace "Mumbai" with your own city to make it personal!</p>
+    </div>
+  </div>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">2</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">🌿 Nature & Peace</span>
+        <div class="step-name">The Forest Morning</div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <p>A peaceful forest path in the early morning, golden sunlight breaking through tall trees, mist rising from the ground, a wooden bridge over a small stream, watercolour painting style, soft greens and gold, serene and magical atmosphere</p>
+      <p class="prompt-note">✏️ Tip: Add "with a person walking on the path" to make it feel more alive!</p>
+    </div>
+  </div>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">3</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">🚀 Fantasy & Imagination</span>
+        <div class="step-name">The Space Explorer</div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <p>An astronaut sitting on the edge of a cliff on an alien planet, looking at a massive ringed planet in the sky, two moons visible, purple and blue atmosphere, distant stars, epic concept art style, cinematic wide shot, ultra detailed</p>
+      <p class="prompt-note">✏️ Tip: Change the planet colours to red and gold for a completely different vibe!</p>
+    </div>
+  </div>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">4</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">☕ Cozy & Warm</span>
+        <div class="step-name">The Reading Corner</div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <p>A cozy reading nook with a large window showing a snowy winter outside, a steaming cup of chai on the windowsill, a stack of books, warm fairy lights, a soft blanket, oil painting style, warm amber tones, inviting and peaceful</p>
+      <p class="prompt-note">✏️ Tip: Add your favourite book title in the prompt to make it truly yours!</p>
+    </div>
+  </div>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">5</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">🏏 For the Cricket Fan</span>
+        <div class="step-name">The SKY Shot</div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <p>A cricket batter playing a stunning reverse scoop shot at a packed stadium, crowd going wild, stadium lights blazing, ball flying high, blue Indian jersey, dramatic slow motion feel, cinematic sports photography, ultra detailed, epic atmosphere</p>
+      <p class="prompt-note">✏️ Tip: Try adding "golden hour lighting" for a completely different mood!</p>
+    </div>
+  </div>
+
+  <div class="challenge-step fade-up">
+    <div class="step-header">
+      <div class="step-badge">6</div>
+      <div class="step-title-wrap">
+        <span class="step-eyebrow">🎨 Write Your Own!</span>
+        <div class="step-name">The Blank Canvas Challenge</div>
+      </div>
+    </div>
+    <p>Now write your own prompt using the formula you learned. Think of something you love — a place, a memory, a dream, a person, an animal — and describe it in detail. Use the formula:</p>
+    <div class="prompt-box">
+      <p>A [subject] in [setting], [mood and lighting], [art style], [2–3 extra detail words]</p>
+      <p class="prompt-note">✏️ This is where the real magic happens — when YOU create something from your own imagination.</p>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- STEP 5 — IMPROVE YOUR IMAGE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Step 5 of 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Your Image Didn't Come Out Right? <em>Here's How to Fix It</em></h2>
+
+  <p class="fade-up">Your first image might not be perfect — and that is completely normal. AI art is a conversation, not a one-shot command. Here's how to improve it.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">🔧 The 4 Fixes That Work Every Time</span>
+    <p><span class="highlight">Too blurry or low quality?</span> Add these words to your prompt: "highly detailed, sharp focus, 4K, professional quality"</p>
+    <p><span class="highlight">Wrong mood or feeling?</span> Add lighting words: "golden hour", "blue hour", "neon lights", "soft morning light", "dramatic shadows", "warm candlelight"</p>
+    <p><span class="highlight">Looks too random or messy?</span> Add style words: "clean composition", "rule of thirds", "minimalist", "simple background", "centred subject"</p>
+    <p><span class="highlight">Not detailed enough?</span> Add: "intricate details", "rich textures", "ultra realistic", "8K resolution", "award winning photography"</p>
+  </div>
+
+  <div class="callout purple fade-up">
+    <span class="callout-label">🔁 The Most Important Thing to Know</span>
+    <p>Generate it multiple times. Even with the exact same prompt, AI generates a different image every time. If you don't love the first result — hit generate again. And again. Most AI artists generate 5–20 versions before choosing their favourite. That's not failure — that's the process.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CLOSING THOUGHT -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Big Idea</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">You Just Did Something <em>Genuinely New</em></h2>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🌟</span>
+    <h3>What You Actually Did Today</h3>
+    <p>You didn't just make a pretty picture. You learned to <strong>communicate with an AI in a language it understands</strong> — precise, descriptive, imaginative text. That skill — prompt writing — is one of the most valuable new skills of the next decade.</p>
+    <p>Companies are hiring "Prompt Engineers." Artists are building entire businesses around AI-generated art. Social media creators are using AI images as thumbnails, posts, and content. And you've just taken your first step into all of it.</p>
+    <p><strong>Share what you made!</strong> Tag DecodeWithAni on LinkedIn or wherever you post. I want to see every single image you create from this post. Every one of them.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"The blank page is no longer blank. The empty canvas is no longer empty. All it takes is a sentence — and the right tool to read it."</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day9of90</span>
+    <span class="tag">#AIArt</span>
+    <span class="tag">#AIChallenge</span>
+    <span class="tag">#PromptEngineering</span>
+    <span class="tag">#DALLE</span>
+    <span class="tag">#AdobeFirefly</span>
+    <span class="tag">#AIForBeginners</span>
+    <span class="tag">#CreateWithAI</span>
+    <span class="tag">#AIForEveryone</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Did You Make Your First AI Art? 🎨</h3>
+  <p>Share it! Tag DecodeWithAni and show the world what you created. And subscribe below — tomorrow we decode the question everyone is afraid to ask: Will AI take your job?</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
