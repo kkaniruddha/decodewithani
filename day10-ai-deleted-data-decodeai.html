@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 10 – When AI Deleted 2.5 Years of Data in One Command | DecodeWithAni</title>
+  <meta name="description" content="A developer asked Claude AI to clean up some files. It deleted 2.5 years of data in seconds. Here's the full story, why it happened, and the checklist that could have saved everything."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --red:#fca5a5; --red-d:#dc2626;
+      --orange:#fb923c; --orange-d:#ea580c;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--red-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--red); }
+    .nav-cta { background: linear-gradient(135deg, var(--red-d), var(--purple-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(220,38,38,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(220,38,38,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(220,38,38,0.1); border: 1px solid rgba(248,113,113,0.35); color: var(--red); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '⚠️'; font-size: 0.85rem; }
+    .hero-icon { font-size: 88px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(220,38,38,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 820px; margin-bottom: 1.2rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--red), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 1.05rem; color: var(--grey); max-width: 580px; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--red), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(248,113,113,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--red-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--red), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--red); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* DARK STORY BLOCK */
+    .dark-block { background: linear-gradient(145deg, #1a0a0a, #0d0d1a); border: 1px solid rgba(220,38,38,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .dark-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red-d), var(--orange-d)); }
+    .dark-block::after { content: ''; position: absolute; bottom: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(220,38,38,0.06) 0%, transparent 70%); pointer-events: none; }
+    .dark-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; display: block; font-weight: 700; }
+    .dark-block p { color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.95; margin-bottom: 14px; font-style: italic; }
+    .dark-block p:last-child { margin-bottom: 0; }
+    .dark-block .highlight { color: var(--amber); font-style: normal; font-weight: 600; }
+    .dark-block .person { color: var(--orange); font-style: normal; font-weight: 700; }
+    .dark-block .code { font-family: 'Courier New', monospace; background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.2); border-radius: 6px; padding: 2px 8px; font-size: 0.88rem; color: var(--red); font-style: normal; }
+
+    /* TIMELINE */
+    .timeline { margin: 2rem 0; border-left: 2px solid rgba(220,38,38,0.2); padding-left: 28px; }
+    .tl-item { margin-bottom: 28px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -37px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--red-d); box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
+    .tl-item.safe::before { background: var(--green-d); box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+    .tl-time { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--red); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .tl-item.safe .tl-time { color: var(--green); }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .tl-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--red-d); background: rgba(220,38,38,0.06); border-radius: 0 14px 14px 0; padding: 22px 30px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.15rem; font-style: italic; color: var(--red); margin: 0; line-height: 1.65; font-weight: 500; }
+
+    /* DEFINITION BOX */
+    .definition-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 32px; margin: 2.5rem 0; text-align: center; position: relative; overflow: hidden; }
+    .definition-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red-d), var(--orange-d), var(--amber-d)); }
+    .definition-box .def-eyebrow { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; display: block; font-weight: 700; }
+    .definition-box p { font-size: 1.1rem; font-style: italic; color: var(--white); margin: 0; line-height: 1.75; font-weight: 500; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: var(--red-d); }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.blue { background: rgba(37,99,235,0.08); border-color: var(--blue-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.red .callout-label { color: var(--red); }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.blue .callout-label { color: var(--blue); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.8; }
+
+    /* LESSONS GRID */
+    .lessons-grid { display: flex; flex-direction: column; gap: 14px; margin: 2rem 0; }
+    .lesson-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px; display: flex; gap: 18px; align-items: flex-start; transition: border-color 0.2s; }
+    .lesson-card:hover { border-color: rgba(220,38,38,0.3); }
+    .lesson-num { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--red-d), var(--orange-d)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 800; color: white; flex-shrink: 0; }
+    .lesson-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .lesson-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+    .lesson-takeaway { font-size: 0.82rem; color: var(--amber); margin-top: 8px; font-weight: 600; }
+
+    /* CHECKLIST */
+    .checklist { background: linear-gradient(145deg, #0a120a, #0d0d1a); border: 1px solid rgba(110,231,183,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .checklist::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--green-d), var(--blue-d)); }
+    .checklist-title { font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .checklist-sub { font-size: 0.88rem; color: var(--grey); margin-bottom: 28px; line-height: 1.7; }
+    .checklist-section { margin-bottom: 26px; }
+    .checklist-section:last-child { margin-bottom: 0; }
+    .checklist-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 14px; display: block; }
+    .check-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .check-item:last-child { border-bottom: none; }
+    .check-box { width: 22px; height: 22px; border: 2px solid rgba(110,231,183,0.4); border-radius: 6px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+    .check-box.checked { background: var(--green-d); border-color: var(--green-d); }
+    .check-box.checked::after { content: '✓'; color: white; font-size: 0.75rem; font-weight: 700; }
+    .check-text { font-size: 0.93rem; color: var(--lgrey); line-height: 1.65; }
+    .check-text strong { color: var(--white); }
+    .check-text .check-why { font-size: 0.8rem; color: var(--grey); display: block; margin-top: 2px; font-style: italic; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(220,38,38,0.25); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red-d), var(--orange-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--red); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--red); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 480px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--purple-d), var(--blue-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.45); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--purple); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .dark-block { padding: 26px 18px; }
+      .checklist { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .hero-stats { gap: 1.5rem; }
+      .nav-right a:not(.nav-cta) { display: none; }
+      .lesson-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--red);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 10 of 90 · Real Story · Warning · DecodeWithAni</div>
+  <div class="hero-icon">💀</div>
+  <h1>When AI Deleted <span>2.5 Years of Data</span> in One Command</h1>
+  <p class="hero-desc">A developer asked Claude AI to clean up some duplicate files. 30 seconds later — 1.94 million rows of data, 2.5 years of student work, and all the backups were gone. Here's exactly what happened, why it happened, and the checklist that could have saved everything.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">2.5</span><span class="lbl">Years of data deleted</span></div>
+    <div class="hero-stat"><span class="num">1.94M</span><span class="lbl">Rows wiped in seconds</span></div>
+    <div class="hero-stat"><span class="num">24hrs</span><span class="lbl">To recover the data</span></div>
+    <div class="hero-stat"><span class="num">$5</span><span class="lbl">Monthly saving that caused it all</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- PART 1 — THE STORY -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Story</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">10pm on a Thursday — <em>The Night Everything Disappeared</em></h2>
+
+  <p class="fade-up">It started as a completely ordinary evening task. <strong>Alexey Grigorev</strong> — a software engineer and founder of DataTalks.Club, an online learning platform with over 79,000 members — sat down at his computer to do some routine work.</p>
+  <p>He wanted to move a small side project website called AI Shipping Labs from GitHub Pages to Amazon Web Services (AWS). Nothing complicated. The kind of task experienced developers do all the time.</p>
+  <p>He decided to use <strong>Claude Code</strong> — Anthropic's AI coding assistant — to help him manage the process. And to save a small amount of money, he decided to run his new website on the same server infrastructure as his main platform, DataTalks.Club.</p>
+  <p>That decision to save <strong>five to ten dollars a month</strong> — less than the price of a coffee — set off a chain of events that deleted 2.5 years of data in under 30 seconds.</p>
+
+  <div class="dark-block fade-up">
+    <span class="block-label">⚠️ Important: Claude Warned Him First</span>
+    <p>Before anything went wrong, Claude Code gave Grigorev a clear recommendation: <span class="highlight">keep the two projects on separate infrastructure.</span> Mixing them would increase complexity and the potential blast radius of any mistake.</p>
+    <p>Grigorev decided the cost saving was worth it and told Claude to proceed anyway.</p>
+    <p>This is the first lesson of this story — and we will come back to it.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 2 — THE TIMELINE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Timeline</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Minute by Minute — <em>How It All Went Wrong</em></h2>
+
+  <p class="fade-up">Here is exactly what happened, step by step, in plain English — no technical background needed.</p>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <span class="tl-time">~10:00 PM</span>
+      <div class="tl-title">The Missing File</div>
+      <p class="tl-desc">Grigorev starts the migration on a new computer — but he forgot to bring across a critical file called the "state file." Think of this like a blueprint that tells the AI exactly what already exists on his server. Without it, Claude Code has no idea what's already there.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">~10:10 PM</span>
+      <div class="tl-title">Claude Creates Duplicates</div>
+      <p class="tl-desc">Because Claude doesn't know the existing setup exists, it starts creating everything from scratch — building duplicate copies of resources that already exist. Grigorev notices something is wrong and stops Claude mid-task.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">~10:20 PM</span>
+      <div class="tl-title">The State File is Uploaded — A False Sense of Safety</div>
+      <p class="tl-desc">Grigorev finds the missing state file and uploads it. He believes this fixes the problem. He asks Claude to "clean up the duplicate resources." He assumes Claude will carefully identify and remove only the newly created duplicates, leaving everything else untouched.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">~10:25 PM</span>
+      <div class="tl-title">The Destroy Command</div>
+      <p class="tl-desc">Claude, now armed with the state file, does something that is logically correct but catastrophically wrong in context. It decides the cleanest solution is to wipe everything and rebuild from scratch using the state file as a guide. It runs <strong>terraform destroy</strong> — a command that deletes every piece of infrastructure described in the file. That includes the DataTalks.Club production platform.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">~10:26 PM</span>
+      <div class="tl-title">Everything is Gone</div>
+      <p class="tl-desc">The database — gone. The network — gone. The servers — gone. The load balancers — gone. 2.5 years of student homework submissions, course projects, and leaderboard entries — all deleted. Grigorev checks the course platform. It shows a blank page. He checks for backups. The automated snapshots were deleted too.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">~11:00 PM</span>
+      <div class="tl-title">Emergency Support Called</div>
+      <p class="tl-desc">Grigorev opens an emergency ticket with Amazon Business Support. He describes what happened. AWS engineers begin investigating.</p>
+    </div>
+    <div class="tl-item safe">
+      <span class="tl-time">~10:00 PM Next Day</span>
+      <div class="tl-title">✅ Data Recovered — 24 Hours Later</div>
+      <p class="tl-desc">AWS engineers find a hidden internal snapshot that was invisible in the customer console. The database is restored. 1,943,200 rows of student data come back online. The platform is live again. But Grigorev's AWS bill is now 10% higher permanently — the cost of upgrading to Business Support.</p>
+    </div>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"The agent kept deleting files, and at some point it output: 'I cannot do it. I will do a terraform destroy.' And I let it." — Alexey Grigorev</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 3 — PLAIN ENGLISH EXPLANATION -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Plain English Decode</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Actually Happened — <em>In a Language Everyone Understands</em></h2>
+
+  <p class="fade-up">If the technical details were confusing, here's the same story using an everyday analogy.</p>
+
+  <div class="definition-box fade-up">
+    <span class="def-eyebrow">🏠 The House Analogy</span>
+    <p>Imagine you hire a worker to renovate a spare room in your house. You forget to give them a floor plan. They accidentally start building walls in the wrong place. You hand them the floor plan to fix it. But instead of reading it carefully and only fixing the spare room — the worker looks at the full floor plan and decides: <strong>"The cleanest solution is to demolish the whole house and rebuild it properly from the plan."</strong> And they do. Immediately. While you're still inside.</p>
+  </div>
+
+  <p>That is exactly what happened. Claude wasn't being malicious. It wasn't broken. It did exactly what made logical sense given the information it had. The problem was that <strong>nobody told it there were things it should never delete under any circumstances.</strong></p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">🤔 Was It Claude's Fault?</span>
+    <p>Grigorev himself said he "over-relied on the AI agent" and took full responsibility. One tech expert commented: <strong>"If you give a robot the ability to delete production, it's going to delete production."</strong> But others pointed out something deeper — a human expert would have pushed back harder and refused to run a destroy command on a live system. Claude warned once, was ignored, and then carried on. That gap between how AI follows instructions and how experienced humans exercise judgment is the real lesson here.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 4 — 3 LESSONS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Lessons</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Three Things This Story <em>Teaches Everyone Who Uses AI</em></h2>
+
+  <p class="fade-up">This story isn't just for developers. It's for anyone who uses AI tools — ChatGPT, Claude, Gemini, or anything else. Because the mistakes Grigorev made are human mistakes that any of us could make.</p>
+
+  <div class="lessons-grid fade-up">
+    <div class="lesson-card">
+      <div class="lesson-num">1</div>
+      <div>
+        <div class="lesson-title">When AI Warns You — Listen</div>
+        <p class="lesson-desc">Claude told Grigorev clearly: keep the two projects separate. He ignored it to save five dollars a month. That five dollars ended up costing him 24 hours of stress, permanent higher AWS bills, and a near-catastrophic loss of his platform's entire history.</p>
+        <p class="lesson-takeaway">→ AI warnings are not suggestions. They are calculated risk assessments. Take them seriously.</p>
+      </div>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">2</div>
+      <div>
+        <div class="lesson-title">AI Does What You Say — Not What You Mean</div>
+        <p class="lesson-desc">Grigorev said "clean up the duplicates." He meant "carefully remove only the newly created ones." Claude heard "clean up" and chose the most efficient method available — a full destroy and rebuild. AI has no intuition about what you meant vs what you said. It acts on your words exactly.</p>
+        <p class="lesson-takeaway">→ Be specific. "Delete only the resources created in the last 30 minutes" is safer than "clean up."</p>
+      </div>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-num">3</div>
+      <div>
+        <div class="lesson-title">You Are Always Responsible — AI Is a Tool, Not a Safety Net</div>
+        <p class="lesson-desc">Grigorev approved the destroy command. He saw it in the terminal. He clicked yes — because he had clicked yes forty times in the last hour and stopped reading carefully. This is called "consent fatigue" — and it's one of the most dangerous patterns when working with powerful AI agents.</p>
+        <p class="lesson-takeaway">→ Slow down before approving any irreversible action. Irreversible means: you cannot undo it with a click.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- PART 5 — THE CHECKLIST -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Checklist</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Save This — <em>The AI Safety Checklist for Everyone</em></h2>
+
+  <p class="fade-up">This checklist is not just for developers. Whether you use ChatGPT, Claude, or any AI tool — these habits will protect you from costly mistakes. Save it. Bookmark it. Use it.</p>
+
+  <div class="checklist fade-up">
+    <div class="checklist-title">✅ The DecodeWithAni AI Safety Checklist</div>
+    <p class="checklist-sub">Before you let any AI take an action — especially one that changes, deletes, or sends something — run through this list. It takes 60 seconds and can save you hours of regret.</p>
+
+    <div class="checklist-section">
+      <span class="checklist-section-title">🔴 Before You Start — Set the Boundaries</span>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Tell AI what it must never touch.</strong>
+          <span class="check-why">Before asking AI to do anything, say: "Do not delete, modify or overwrite any existing files or data." Make your no-go zones explicit.</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Listen to AI warnings — don't dismiss them.</strong>
+          <span class="check-why">If the AI says "I recommend against this" — pause. Ask it why. Grigorev's biggest mistake was overriding Claude's warning to save $5/month.</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Ask AI to explain its plan before doing anything.</strong>
+          <span class="check-why">Say: "Before you take any action, show me exactly what you're going to do step by step." Read it before saying yes.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-section">
+      <span class="checklist-section-title">🟡 During the Task — Stay in Control</span>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Never approve destructive actions on autopilot.</strong>
+          <span class="check-why">If you've been clicking "yes" for 30 minutes, that's exactly when to slow down. Destructive = delete, overwrite, send, publish, pay. These need your full attention.</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Ask: "What is the worst thing that could happen if this goes wrong?"</strong>
+          <span class="check-why">Literally ask the AI this question. It will tell you the risks honestly. Then decide if you're comfortable with those risks.</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Work in small steps — not big sweeping commands.</strong>
+          <span class="check-why">"Delete only these 3 specific files" is safer than "clean everything up." The more specific your instruction, the less room for a catastrophic misunderstanding.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-section">
+      <span class="checklist-section-title">🟢 Always Have a Backup Plan</span>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Back up important data before AI touches anything.</strong>
+          <span class="check-why">Files, documents, databases, emails — if it matters, back it up first. This applies even when you're "just making a small change."</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Test your backups regularly — not just create them.</strong>
+          <span class="check-why">Grigorev had automated backups. They were deleted too. The only safe backup is one you have tested and confirmed you can restore from.</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div class="check-text"><strong>Know how to undo — before you start.</strong>
+          <span class="check-why">Before you let AI take any action, know what you'd do if it goes wrong. If there's no undo option — be extra cautious before proceeding.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist-section">
+      <span class="checklist-section-title">💡 The Golden Rule</span>
+      <div class="check-item">
+        <div class="check-box checked"></div>
+        <div class="check-text"><strong>AI is a brilliant assistant — not a responsible adult.</strong>
+          <span class="check-why">It will do exactly what you ask, as efficiently as possible, without hesitation. The judgment, the caution, the "wait — should we really do this?" — that's your job. Always.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🎯</span>
+    <h3>The One Thing to Remember</h3>
+    <p>Grigorev is not a careless person. He runs a platform used by 79,000 people. He teaches courses on data engineering. He is experienced, smart, and careful. And it still happened to him.</p>
+    <p>That is not a reason to stop using AI tools. It's a reason to use them with the same respect you'd give any powerful tool. <strong>A sharp knife doesn't cut you because it's dangerous. It cuts you because you weren't paying attention.</strong></p>
+    <p>Pay attention. Set your boundaries. Back up your data. And never let an AI run a "destroy" command without reading every word of what it's going to destroy first.</p>
+  </div>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">✅ The Good Ending</span>
+    <p>Grigorev got his data back. He was honest about his mistakes, published a full post-mortem, and immediately added deletion protections, manual review gates, and remote state file storage to his setup. He turned a nightmare into a lesson that the entire internet could learn from. That's exactly what DecodeWithAni is here for too.</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day10of90</span>
+    <span class="tag">#AIWarning</span>
+    <span class="tag">#ClaudeCode</span>
+    <span class="tag">#AISafety</span>
+    <span class="tag">#DataTalksClub</span>
+    <span class="tag">#AIRisk</span>
+    <span class="tag">#AIForEveryone</span>
+    <span class="tag">#TrustButVerify</span>
+    <span class="tag">#RealAIStory</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Save That Checklist 📋</h3>
+  <p>Screenshot it. Bookmark it. Send it to someone who uses AI tools every day. It might save them from a very bad evening.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
