@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 11 – Mira Murati's Thinking Machines: The Nvidia Deal That Changed Everything | DecodeWithAni</title>
+  <meta name="description" content="A girl from a small Albanian city. A scholarship at 16. ChatGPT, boardroom betrayal, a billion-dollar startup, and now the most talked-about deal in AI. The full story of Mira Murati."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --teal:#2dd4bf; --teal-d:#0d9488;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --red:#fca5a5; --red-d:#dc2626;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--teal-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--teal); }
+    .nav-cta { background: linear-gradient(135deg, var(--teal-d), var(--purple-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(13,148,136,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(13,148,136,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.3); color: var(--teal); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '🧠'; font-size: 0.85rem; }
+    .hero-icon { font-size: 88px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(13,148,136,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 840px; margin-bottom: 1.1rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 1rem; font-weight: 600; color: var(--teal); margin-bottom: 1rem; letter-spacing: 0.5px; }
+    .hero-desc { font-size: 1rem; color: var(--grey); max-width: 580px; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(45,212,191,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--teal-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--teal); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* STORY BLOCK */
+    .story-block { background: linear-gradient(145deg, #0a1614, #0d0d1a); border: 1px solid rgba(13,148,136,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .story-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal-d), var(--purple-d)); }
+    .story-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; display: block; font-weight: 700; }
+    .story-block p { color: rgba(255,255,255,0.88); font-size: 1rem; line-height: 2; margin-bottom: 14px; }
+    .story-block p:last-child { margin-bottom: 0; }
+    .story-block .hl { color: var(--teal); font-weight: 700; }
+    .story-block .hlp { color: var(--purple); font-weight: 700; }
+    .story-block .hla { color: var(--amber); font-weight: 600; }
+
+    /* TIMELINE */
+    .timeline { margin: 2rem 0; border-left: 2px solid rgba(13,148,136,0.2); padding-left: 28px; }
+    .tl-item { margin-bottom: 28px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -37px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--teal-d); box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
+    .tl-time { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .tl-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+
+    /* JARGON DECODE BOX */
+    .jargon-box { background: var(--bg3); border: 1px solid rgba(45,212,191,0.2); border-radius: 18px; padding: 30px 28px; margin: 1.8rem 0; position: relative; overflow: hidden; }
+    .jargon-box::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--teal-d), var(--purple-d)); }
+    .jargon-label { display: inline-flex; align-items: center; gap: 8px; background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.25); border-radius: 20px; padding: 4px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .jargon-term { font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+    .jargon-simple { background: rgba(45,212,191,0.06); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+    .jargon-simple .js-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 5px; display: block; }
+    .jargon-simple p { font-size: 0.92rem; color: var(--lgrey); margin: 0; line-height: 1.75; }
+    .jargon-box .jargon-why { font-size: 0.88rem; color: var(--grey); line-height: 1.7; margin: 0; }
+    .jargon-why strong { color: var(--amber); }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--teal-d); background: rgba(13,148,136,0.06); border-radius: 0 14px 14px 0; padding: 22px 30px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.12rem; font-style: italic; color: var(--teal); margin: 0; line-height: 1.65; font-weight: 500; }
+    .pull-quote .pq-source { font-size: 0.78rem; color: var(--grey); font-style: normal; margin-top: 8px; display: block; font-weight: 600; }
+
+    /* FACT CARD ROW */
+    .fact-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 2rem 0; }
+    .fact-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 22px 16px; text-align: center; }
+    .fact-card .fc-num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 4px; }
+    .fact-card .fc-label { font-size: 0.72rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; line-height: 1.4; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.teal { background: rgba(13,148,136,0.08); border-color: var(--teal-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: var(--red-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.teal .callout-label { color: var(--teal); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.red .callout-label { color: var(--red); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.8; }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(45,212,191,0.2); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal-d), var(--purple-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--teal); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(13,148,136,0.08); border: 1px solid rgba(13,148,136,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--teal); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 500px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--teal-d), var(--purple-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(13,148,136,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(13,148,136,0.45); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--teal); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 620px) {
+      .story-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .hero-stats { gap: 1.5rem; }
+      .fact-row { grid-template-columns: repeat(2, 1fr); }
+      .nav-right a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--teal);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 11 of 90 · Big Story · AI Business · DecodeWithAni</div>
+  <div class="hero-icon">🤖</div>
+  <h1>Mira Murati's <span>Thinking Machines</span> — The Nvidia Deal</h1>
+  <p class="hero-subtitle">From a small Albanian city to the most powerful deal in AI right now.</p>
+  <p class="hero-desc">She built ChatGPT. She survived a boardroom coup. She turned down Mark Zuckerberg. And on March 10, 2026 — she signed a deal with Nvidia that the entire tech world is still talking about.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">$2B+</span><span class="lbl">Raised since founding</span></div>
+    <div class="hero-stat"><span class="num">$12B</span><span class="lbl">Valuation — 1 yr old</span></div>
+    <div class="hero-stat"><span class="num">1 GW</span><span class="lbl">Of compute secured</span></div>
+    <div class="hero-stat"><span class="num">120</span><span class="lbl">Employees & growing</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- CHAPTER 1 — VLORË -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 1</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Girl From <em>Vlorë</em></h2>
+
+  <p class="fade-up">There is a coastal city in Albania called Vlorë. It sits where the Adriatic Sea meets the Ionian Sea — a city of salt air, fishing boats, and mountains in the distance. It is beautiful, and for most of its recent history, it was isolated.</p>
+  <p>Albania had been one of the most closed countries in the world — a communist state that banned private cars, foreign books, and contact with the outside world for nearly half a century. By the time <strong>Ermira "Mira" Murati</strong> was born there on December 16, 1988, the walls were just beginning to crack.</p>
+  <p>Her father was a civil engineer. Her mother was an electrical engineer. In a household full of blueprints and equations, the youngest daughter grew up thinking that taking things apart to understand them was simply what you did. Math competitions. Science olympiads. A fierce, quiet hunger to understand how the world worked.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">📖 The Scholarship That Changed Everything</span>
+    <p>When Mira was <span class="hl">sixteen years old</span>, she won a United World Colleges scholarship — a program that selects exceptional students from over 80 countries and gives them a full scholarship to study abroad. Out of all the students in Albania, she was chosen.</p>
+    <p>She packed her bags and flew to <span class="hl">Vancouver Island, Canada</span> — a girl from a post-communist coastal city landing in one of the most beautiful places on earth, surrounded by students from 80 nations. She graduated with an International Baccalaureate in 2007.</p>
+    <p>From there, she did something unusual. Rather than picking one subject, she enrolled in a dual-degree programme across two American universities — earning a Bachelor of Arts in Mathematics from <span class="hl">Colby College</span> and a Bachelor of Engineering in Mechanical Engineering from <span class="hl">Dartmouth College</span>. Art brain and engineer brain — both, at once.</p>
+    <p><span class="hla">That combination — the ability to think beautifully AND build precisely — would define everything she built afterwards.</span></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 2 — THE CAREER PATH -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 2</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Goldman Sachs, Tesla, and the <em>Road to OpenAI</em></h2>
+
+  <p class="fade-up">After graduating, Mira didn't go straight into AI. She went to <strong>Goldman Sachs in Tokyo</strong> as a summer analyst — one of the most competitive internships in finance. Then to <strong>Zodiac Aerospace</strong>, building concepts for aircraft. Then, in 2013, she joined a small electric car company that was trying to do something nobody thought was possible.</p>
+  <p>That company was <strong>Tesla</strong>. And Mira's job was to help build the Model X — the first electric SUV with falcon-wing doors that the whole world would eventually stop and stare at. She spent three years there, learning under Elon Musk, understanding what it took to ship a hardware product that millions of people would use.</p>
+  <p>Then she moved to <strong>Leap Motion</strong>, a startup building augmented reality technology — the kind that layers digital information on top of the real world. She was learning, accumulating, assembling a rare combination of skills that very few people in the world had.</p>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <span class="tl-time">1988</span>
+      <div class="tl-title">Born in Vlorë, Albania</div>
+      <p class="tl-desc">Grows up in an engineering household during Albania's post-communist transition.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2005 — Age 16</span>
+      <div class="tl-title">UWC Scholarship — Canada</div>
+      <p class="tl-desc">Wins a prestigious scholarship and leaves Albania for Pearson College, Vancouver Island. One of the defining moments of her life.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2011–2012</span>
+      <div class="tl-title">Dartmouth + Colby — Dual Degree</div>
+      <p class="tl-desc">Completes a dual degree in Mathematics and Mechanical Engineering. Goldman Sachs internship in Tokyo in 2011.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2013–2016</span>
+      <div class="tl-title">Tesla — Senior Product Manager, Model X</div>
+      <p class="tl-desc">Helps build one of the most complex cars ever made. Learns to ship world-changing hardware products at scale.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2016–2018</span>
+      <div class="tl-title">Leap Motion — Augmented Reality</div>
+      <p class="tl-desc">Works on technology that blends the digital and physical worlds. Begins moving towards AI research.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2018</span>
+      <div class="tl-title">Joins OpenAI as VP of Applied AI</div>
+      <p class="tl-desc">Steps into the most consequential AI lab in the world. The chapter that changes history begins.</p>
+    </div>
+  </div>
+
+  <p>In 2018, she walked into the offices of <strong>OpenAI</strong> — a research lab in San Francisco that was trying to build artificial general intelligence safely. She was hired as VP of Applied AI and Partnerships. Within four years, she was their <strong>Chief Technology Officer</strong>. The person responsible for all of it — ChatGPT, DALL-E, Codex, Sora. Every product that made OpenAI famous passed through her hands.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Mira has helped build some of the most exciting AI technologies we've ever seen, including ChatGPT, DALL-E, and GPT-4."</p>
+    <span class="pq-source">— Satya Nadella, CEO of Microsoft, writing for TIME's 100 Next list</span>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 3 — THE BOARDROOM -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 3</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Night Sam Altman Was Fired — <em>And Mira Became CEO</em></h2>
+
+  <p class="fade-up">On November 17, 2023 — a Friday evening — the OpenAI board of directors did something that shocked the entire technology world. They fired <strong>Sam Altman</strong>, the CEO of the most talked-about company on earth.</p>
+  <p>The reasons were murky. The board said he had not been "consistently candid." The actual internal dynamics were complicated — disagreements about safety, commercialisation speed, and the direction of the company. What we know is that the decision involved a board member named Ilya Sutskever, and that Mira herself had provided information to the board that contributed to their decision.</p>
+  <p>And then — with almost no warning — the OpenAI board did the most natural thing they could think of. They called Mira Murati and asked her to become the <strong>interim CEO of OpenAI</strong>.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">🔥 Five Days That Changed Silicon Valley</span>
+    <p>Mira agreed to step in. She became the <span class="hl">first woman to lead OpenAI</span>, even if only for days. But what followed was one of the strangest weeks in tech history.</p>
+    <p>Sam Altman didn't go quietly. He lobbied. Microsoft — OpenAI's biggest investor — lobbied. <span class="hlp">700 of OpenAI's 770 employees</span> signed a letter threatening to leave if Altman wasn't reinstated. Mira herself eventually sided with the employees who wanted him back.</p>
+    <p>Three days into her stint as CEO, the board brought in a new interim CEO named Emmett Shear. Two days after that — Sam Altman was back. The board members who had fired him were gone. The whole saga lasted <span class="hla">five days</span>. And Mira, who had navigated it all with quiet steadiness, returned to her role as CTO.</p>
+    <p>Some saw her as caught in the middle. Others saw a person of rare judgment — someone who could hold the centre when everything around her was collapsing.</p>
+  </div>
+
+  <p>Less than a year later — on September 25, 2024 — Mira Murati sent an email to the OpenAI team. She was stepping down as CTO. After six years and the most impactful run in AI history, she wanted, as she put it, to <strong>"do her own exploration."</strong></p>
+  <p>The tech world held its breath. What would she build?</p>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 4 — THINKING MACHINES -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 4</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Thinking Machines Lab — <em>Born in February 2025</em></h2>
+
+  <p class="fade-up">On a cold morning in February 2025, Mira Murati registered a new company in San Francisco. She called it <strong>Thinking Machines Lab</strong>. The mission, in her own words: to build AI that is <em>"more widely understood, customizable, and generally capable."</em></p>
+  <p>Three words stood out above all others: <strong>customizable</strong>. Unlike OpenAI or Anthropic, which build fixed AI products and sell access to them, Mira wanted to build AI that people and companies could shape to their own needs. AI that you don't just use — AI that you make your own.</p>
+  <p>She assembled a team of roughly <strong>30 leading researchers</strong> — people from OpenAI, Meta, Mistral, Google DeepMind. Names that the AI world recognised. John Schulman, one of OpenAI's co-founders, joined. Alec Radford — the researcher who helped invent the GPT architecture that underpins ChatGPT — came on as an advisor.</p>
+
+  <div class="fact-row fade-up">
+    <div class="fact-card"><span class="fc-num">Feb 2025</span><span class="fc-label">Thinking Machines founded</span></div>
+    <div class="fact-card"><span class="fc-num">$12B</span><span class="fc-label">Valuation within months</span></div>
+    <div class="fact-card"><span class="fc-num">$2B+</span><span class="fc-label">Seed funding raised</span></div>
+    <div class="fact-card"><span class="fc-num">Oct 2025</span><span class="fc-label">First product — Tinker — shipped</span></div>
+  </div>
+
+  <p>By July 2025 — just five months after founding — Thinking Machines had raised a <strong>$2 billion seed round</strong> led by Andreessen Horowitz, one of the most powerful venture funds in the world. Investors included Accel, ServiceNow, Cisco, Jane Street, and — interestingly — both <strong>Nvidia and AMD</strong>, two rival chip companies, both betting on Mira's lab at the same time. The company was valued at <strong>$12 billion</strong> before it had shipped a single product.</p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">🇦🇱 A Beautiful Detail</span>
+    <p>Among the investors in Thinking Machines Lab's seed round was the <strong>government of Albania</strong> — Mira's home country, putting official national capital behind its most famous daughter. A girl from Vlorë, now backed by her nation.</p>
+  </div>
+
+  <p>In October 2025, Thinking Machines shipped its first product — an API called <strong>Tinker</strong>. Instead of being another chatbot, Tinker was designed to help researchers and developers fine-tune AI models without needing massive computing infrastructure of their own. This was a product built for builders.</p>
+
+  <!-- JARGON BOX 1 — FINE-TUNING -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What is Fine-Tuning?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>Imagine you hire a brilliant new employee who has read every book ever written and knows everything about everything. But your company has very specific ways of doing things — your own rules, your own tone, your own products. Fine-tuning is like giving that employee a two-week training programme so they work exactly the way your company needs.</p>
+    </div>
+    <p class="jargon-why">In AI terms: a base model like GPT is trained on billions of documents and knows a lot. But fine-tuning feeds it <strong>your specific data</strong> — your company's documents, your style guide, your product catalogue — so it answers questions exactly the way you need. That's what Tinker makes easy. <strong>No massive computing setup required.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 5 — THE DRAMA -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Turmoil, Zuckerberg, and <em>The Test of 2025</em></h2>
+
+  <p class="fade-up">Not everything went smoothly. No good story does.</p>
+  <p>In November 2025, one of Thinking Machines' co-founders quietly left for Meta — Mark Zuckerberg's AI empire, which had been aggressively trying to poach talent across the entire industry. Then, on January 14, 2026, came the news that made every AI group chat in San Francisco erupt at once.</p>
+  <p>Mira fired co-founder <strong>Barret Zoph</strong> — reportedly for having a relationship with an employee. Within an hour, OpenAI's CEO of Applications announced that Zoph, another co-founder Luke Metz, and researcher Sam Schoenholz had all rejoined OpenAI. Three founding members gone in one morning. For a one-year-old startup, that was a wound the whole industry noticed.</p>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">💰 The Offer She Said No To</span>
+    <p>Before all of this, Mark Zuckerberg had reportedly made Mira Murati a staggering offer — a <strong>multi-billion dollar acquisition</strong> of Thinking Machines, or failing that, enormous personal packages to join Meta. Mira turned all of it down. She wanted to build her own thing, on her own terms. That decision, in hindsight, looks like one of the most consequential choices in AI history.</p>
+  </div>
+
+  <p>The whispers started. Was Thinking Machines stable? Could a 120-person lab survive losing its founding team? Was the dream already unravelling?</p>
+  <p>Then came March 10, 2026.</p>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 6 — THE NVIDIA DEAL -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 6</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Nvidia Deal — <em>The Rebuttal Heard Around the World</em></h2>
+
+  <p class="fade-up">On March 10, 2026 — less than two months after the co-founder departures — Mira Murati and <strong>Jensen Huang</strong>, the CEO of Nvidia, stood together and announced a partnership that nobody in the industry had been expecting at this scale.</p>
+  <p>Thinking Machines Lab and Nvidia had signed a <strong>multi-year strategic partnership</strong>. The deal had two headline components. First: Nvidia was making a "significant investment" in Thinking Machines Lab — an undisclosed amount, but described by both companies as major. Second: Thinking Machines had committed to deploying at least <strong>one gigawatt of Nvidia's next-generation Vera Rubin chips</strong> starting in early 2027.</p>
+  <p>The Financial Times reported the chip supply component of the deal was worth <strong>tens of billions of dollars.</strong></p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">💬 Mira's Words on the Deal</span>
+    <p><span class="hla">"Nvidia's technology is the foundation on which the entire field is built. This partnership accelerates our capacity to build AI that people can shape and make their own, as it shapes human potential in turn."</span></p>
+    <p>— Mira Murati, CEO of Thinking Machines Lab, March 10, 2026</p>
+  </div>
+
+  <p>The timing was unmistakable. <em>This was not just a business deal. This was a statement.</em> Jensen Huang — the most powerful person in AI infrastructure — was putting real chips, real capital, and real reputational weight behind Mira's lab, right after its most difficult public moment.</p>
+  <p>As one analyst wrote at the time: <strong>"In AI's 2026 reality, compute is credibility. And Thinking Machines just bought itself a much more convincing chair at the adults' table."</strong></p>
+
+  <!-- JARGON BOX 2 — FRONTIER AI MODEL -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What is a Frontier AI Model?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>Think of AI models like cars. Most AI is like a reliable family car — it does its job well. A "frontier model" is the absolute bleeding edge — think Formula 1. It's the most capable, most powerful, most expensive-to-build AI that exists at this moment in history. ChatGPT-4, Claude 3 Opus, Gemini Ultra — these are frontier models.</p>
+    </div>
+    <p class="jargon-why">Only a handful of organisations in the world have the computing power, money, and talent to build frontier models. OpenAI, Google DeepMind, Anthropic, Meta — and now, with this Nvidia deal, <strong>Thinking Machines Lab has officially declared it intends to be in that same league.</strong> That's what makes this deal so significant.</p>
+  </div>
+
+  <!-- JARGON BOX 3 — GIGAWATT OF COMPUTE -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What is a Gigawatt of Compute?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>A gigawatt is a unit of power — the same way we measure how bright a light bulb is in watts. One gigawatt of power is enough to run approximately 750,000 homes. When an AI lab says it is deploying "one gigawatt of compute," it means it is building server farms that consume that much electricity to run its AI chips continuously.</p>
+    </div>
+    <p class="jargon-why">Training a frontier AI model — teaching it by processing hundreds of billions of data points — requires unimaginable amounts of computing power. <strong>A gigawatt commitment is a threshold that only the very largest AI labs in the world have approached.</strong> It is a signal that you are not building a tool — you are building infrastructure to compete with the biggest players on earth.</p>
+  </div>
+
+  <!-- JARGON BOX 4 — VERA RUBIN -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What Are Vera Rubin Chips?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>Nvidia names its chips after scientists. The Vera Rubin chips — named after the astronomer who discovered dark matter — are Nvidia's most advanced AI chips, released in 2026. They are the successor to the Hopper and Blackwell series that powered the current generation of AI. Think of them as the newest, fastest, most powerful engine Nvidia has ever built.</p>
+    </div>
+    <p class="jargon-why">Training a model like ChatGPT requires thousands of these chips running simultaneously for months. By securing a commitment of one gigawatt of Vera Rubin systems, Thinking Machines is not just buying chips — it is <strong>locking in the most advanced computing infrastructure available</strong> before its rivals can get their hands on it. In AI right now, whoever secures the best chips first has a durable advantage.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 7 — WHY IT MATTERS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 7</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Why This Deal Matters — <em>Beyond the Numbers</em></h2>
+
+  <p class="fade-up">It would be easy to read this story as just another big tech business deal. Billions of dollars, chip agreements, multi-year partnerships. The kind of thing that only matters to investors and analysts.</p>
+  <p>But look at what this deal actually represents — and the story becomes something different.</p>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🌍</span>
+    <h3>This Is a Story About Independent Vision</h3>
+    <p>Mira Murati was offered billions by Mark Zuckerberg. She said no. She was at the centre of the most powerful AI company in the world. She left. She lost co-founders. She absorbed public criticism. And then, thirteen months after founding Thinking Machines, she secured <strong>the largest infrastructure commitment any independent AI lab had ever made.</strong></p>
+    <p>Not because she played the game everyone else was playing. But because she built something people believed in — an AI company that isn't trying to be another ChatGPT, but something with a different philosophy entirely. <strong>AI you can shape. AI you can make your own.</strong></p>
+  </div>
+
+  <p>The deal also tells us something important about where AI is heading in 2026. The era of "who has the best demo" is over. <strong>The race is now about infrastructure.</strong> Who has the chips. Who has the power. Who has secured the computing resources to train the next generation of models — years before those models exist. The deals being signed today are bets on a future that hasn't happened yet.</p>
+  <p>And Jensen Huang — who has seen every major AI bet of the last decade — chose to put Nvidia's money, its chips, and its name behind Mira Murati. That alone tells you something.</p>
+
+  <div class="callout teal fade-up">
+    <span class="callout-label">🔮 What Comes Next</span>
+    <p>Mira will appear alongside Jensen Huang at Nvidia's GTC conference to discuss the future of open frontier models. Thinking Machines is hiring rapidly — with job postings suggesting it's working on AI models for audio processing and visual reasoning. The Vera Rubin chips arrive in early 2027. And then, the real test begins: can a 120-person lab actually build a frontier model that competes with OpenAI, Google, and Anthropic? That question is worth watching very closely.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"She is no longer short of compute to try." </p>
+    <span class="pq-source">— The Next Web, March 11, 2026</span>
+  </div>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🇦🇱</span>
+    <h3>The Full Circle Moment</h3>
+    <p>In 2024, Dartmouth College — the same university that once taught a girl from Albania how to think like an engineer — awarded Mira Murati an honorary Doctor of Science. The citation read that she had <strong>"democratized technology and advanced a better, safer world for us all."</strong></p>
+    <p>A girl from Vlorë. A scholarship at sixteen. A career that built the tools billions of people use every day. A boardroom crisis she navigated with steadiness. A billion-dollar offer she turned down. And now — a deal that puts her, and a 120-person startup from San Francisco, at the centre of the most important technological race of our lifetime.</p>
+    <p>That is the story of Mira Murati. And it is very far from over.</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day11of90</span>
+    <span class="tag">#MiraMurati</span>
+    <span class="tag">#ThinkingMachines</span>
+    <span class="tag">#Nvidia</span>
+    <span class="tag">#JensenHuang</span>
+    <span class="tag">#AINews</span>
+    <span class="tag">#VelaRubin</span>
+    <span class="tag">#FrontierAI</span>
+    <span class="tag">#AIForEveryone</span>
+    <span class="tag">#WomenInTech</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>What Do You Think? 🤔</h3>
+  <p>Can a 120-person startup actually compete with OpenAI, Google, and Anthropic? Drop your thoughts in the comments — and subscribe so you never miss the next chapter of this story.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
