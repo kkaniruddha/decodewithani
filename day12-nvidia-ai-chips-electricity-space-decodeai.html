@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 12 – The Chip That Runs the World: Nvidia, AI Power, and the Race to Space | DecodeWithAni</title>
+  <meta name="description" content="One man drew a plan on a diner napkin. That plan became a $3 trillion company that now powers every AI on earth. And the electricity bill is so enormous — the world is moving data centers to the Arctic. And then to space."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --red:#fca5a5; --red-d:#dc2626;
+      --orange:#fb923c; --orange-d:#ea580c;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--orange-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--orange); }
+    .nav-cta { background: linear-gradient(135deg, var(--orange-d), var(--purple-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(234,88,12,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(234,88,12,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(234,88,12,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.3); color: var(--orange); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '⚡'; font-size: 0.85rem; }
+    .hero-icon { font-size: 88px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(234,88,12,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    .hero h1 { font-size: clamp(2rem, 5.5vw, 4.2rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 860px; margin-bottom: 1.1rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 1rem; font-weight: 600; color: var(--orange); margin-bottom: 1rem; letter-spacing: 0.5px; }
+    .hero-desc { font-size: 1rem; color: var(--grey); max-width: 600px; line-height: 1.88; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(251,146,60,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ARTICLE */
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--orange-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--orange); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    /* STORY BLOCK */
+    .story-block { background: linear-gradient(145deg, #130d08, #0d0d1a); border: 1px solid rgba(234,88,12,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .story-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange-d), var(--purple-d)); }
+    .story-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; display: block; font-weight: 700; }
+    .story-block p { color: rgba(255,255,255,0.88); font-size: 1rem; line-height: 2; margin-bottom: 14px; }
+    .story-block p:last-child { margin-bottom: 0; }
+    .story-block .hl { color: var(--orange); font-weight: 700; }
+    .story-block .hlp { color: var(--purple); font-weight: 700; }
+    .story-block .hla { color: var(--amber); font-weight: 600; }
+    .story-block .hlg { color: var(--green); font-weight: 600; }
+
+    /* JARGON BOX */
+    .jargon-box { background: var(--bg3); border: 1px solid rgba(251,146,60,0.2); border-radius: 18px; padding: 30px 28px; margin: 1.8rem 0; position: relative; overflow: hidden; }
+    .jargon-box::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--orange-d), var(--purple-d)); }
+    .jargon-label { display: inline-flex; align-items: center; gap: 8px; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.25); border-radius: 20px; padding: 4px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+    .jargon-term { font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+    .jargon-simple { background: rgba(251,146,60,0.06); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+    .jargon-simple .js-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; display: block; }
+    .jargon-simple p { font-size: 0.92rem; color: var(--lgrey); margin: 0; line-height: 1.75; }
+    .jargon-why { font-size: 0.88rem; color: var(--grey); line-height: 1.7; margin: 0; }
+    .jargon-why strong { color: var(--amber); }
+
+    /* TIMELINE */
+    .timeline { margin: 2rem 0; border-left: 2px solid rgba(234,88,12,0.2); padding-left: 28px; }
+    .tl-item { margin-bottom: 28px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -37px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange-d); box-shadow: 0 0 0 3px rgba(234,88,12,0.15); }
+    .tl-time { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--orange); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .tl-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--orange-d); background: rgba(234,88,12,0.06); border-radius: 0 14px 14px 0; padding: 22px 30px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.12rem; font-style: italic; color: var(--orange); margin: 0; line-height: 1.65; font-weight: 500; }
+    .pull-quote .pq-source { font-size: 0.78rem; color: var(--grey); font-style: normal; margin-top: 8px; display: block; font-weight: 600; }
+
+    /* FACT ROW */
+    .fact-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 2rem 0; }
+    .fact-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 22px 16px; text-align: center; }
+    .fact-card .fc-num { font-size: 1.8rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 4px; }
+    .fact-card .fc-label { font-size: 0.7rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; line-height: 1.4; }
+
+    /* CALLOUT */
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.orange { background: rgba(234,88,12,0.08); border-color: var(--orange-d); }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: var(--red-d); }
+    .callout.blue { background: rgba(37,99,235,0.08); border-color: var(--blue-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.orange .callout-label { color: var(--orange); }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.red .callout-label { color: var(--red); }
+    .callout.blue .callout-label { color: var(--blue); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.85; }
+
+    /* RIVALS TABLE */
+    .rivals-grid { display: flex; flex-direction: column; gap: 12px; margin: 2rem 0; }
+    .rival-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: grid; grid-template-columns: 100px 1fr 1fr; gap: 16px; align-items: center; transition: border-color 0.2s; }
+    .rival-card:hover { border-color: rgba(251,146,60,0.3); }
+    .rival-name { font-weight: 800; color: var(--white); font-size: 0.95rem; }
+    .rival-play { font-size: 0.85rem; color: var(--lgrey); line-height: 1.6; }
+    .rival-verdict { font-size: 0.82rem; font-weight: 600; line-height: 1.6; }
+    .rival-verdict.struggling { color: var(--red); }
+    .rival-verdict.gaining { color: var(--amber); }
+    .rival-verdict.niche { color: var(--blue); }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(251,146,60,0.2); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange-d), var(--purple-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--orange); }
+
+    /* COMPARISON TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 2rem 0; border-radius: 14px; overflow: hidden; }
+    .compare-table th { background: var(--bg3); color: var(--orange); font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .compare-table td { padding: 14px 16px; font-size: 0.88rem; color: var(--lgrey); border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.65; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(251,146,60,0.04); }
+    .compare-table .emoji-col { font-size: 1.2rem; text-align: center; }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(234,88,12,0.08); border: 1px solid rgba(234,88,12,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--orange); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 500px; margin: 0 auto 1.5rem; line-height: 1.85; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--orange-d), var(--purple-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(234,88,12,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(234,88,12,0.45); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--orange); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .rival-card { grid-template-columns: 1fr; gap: 8px; }
+      .story-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .hero-stats { gap: 1.5rem; }
+      .fact-row { grid-template-columns: repeat(2,1fr); }
+      .nav-right a:not(.nav-cta) { display: none; }
+      .compare-table { font-size: 0.8rem; }
+      .compare-table th, .compare-table td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--orange);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 12 of 90 · Deep Dive · AI Infrastructure · DecodeWithAni</div>
+  <div class="hero-icon">⚡</div>
+  <h1>The Chip That <span>Runs the World</span></h1>
+  <p class="hero-subtitle">From a diner napkin in Fremont to a $3 trillion empire — and the electricity bill that's pushing the internet to the Arctic and beyond.</p>
+  <p class="hero-desc">One man's bet in 1993 became the engine of every AI on earth. But the power it consumes is so enormous — data centers are fleeing to the North Pole. And Elon Musk thinks the answer is outer space. This is the full story.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">$3T</span><span class="lbl">Nvidia's peak valuation</span></div>
+    <div class="hero-stat"><span class="num">700W</span><span class="lbl">Power per AI chip</span></div>
+    <div class="hero-stat"><span class="num">32</span><span class="lbl">Arctic data centers live</span></div>
+    <div class="hero-stat"><span class="num">1M</span><span class="lbl">Satellites Musk wants to launch</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- CHAPTER 1 — JENSEN HUANG -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 1</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Diner Napkin That Started a <em>$3 Trillion Empire</em></h2>
+
+  <p class="fade-up">It is 1993. A 30-year-old electrical engineer named <strong>Jensen Huang</strong> sits in a Denny's diner in Fremont, California — a budget chain restaurant famous for its $6 breakfasts. Across from him are two friends: Chris Malachowsky and Curtis Priem. Between pancakes and coffee, the three of them sketch out an idea on whatever paper is available.</p>
+  <p>The idea: build a chip specifically designed to render computer graphics — to make video games look real. Not a general-purpose chip like a CPU. A specialised one. They call the company <strong>Nvidia</strong>.</p>
+  <p>Nobody at the time thought this was a world-changing idea. It was a niche product for a niche market. But Jensen Huang had a particular way of thinking about problems — one that would, thirty years later, make him one of the most powerful people in technology history.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">👦 The Making of Jensen Huang</span>
+    <p>Jensen Huang was born in Tainan, Taiwan in 1963. When he was nine, his parents — wanting him to have a better education — sent him to live with relatives in the United States. He ended up at a boarding school in Kentucky called Oneida Baptist Institute, sharing a dorm room with a roommate who, as Huang later recalled with a laugh, <span class="hla">"had a tattoo and a knife."</span></p>
+    <p>He survived the culture shock, thrived academically, went to Oregon State University for his undergraduate degree in electrical engineering, and then got his Master's from Stanford. He worked at AMD and LSI Logic before the diner meeting in Fremont.</p>
+    <p>The detail that matters: at every step, Huang was obsessed not just with building things — but with <span class="hl">building systems</span>. Not just the hardware, but the software to run it. Not just the chip, but the platform around it. That obsession would become Nvidia's greatest weapon.</p>
+  </div>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <span class="tl-time">1993</span>
+      <div class="tl-title">Nvidia Founded — Denny's Diner, Fremont</div>
+      <p class="tl-desc">Jensen Huang, Chris Malachowsky, Curtis Priem. Goal: graphics chips for video games. Starting capital: $40,000.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">1999</span>
+      <div class="tl-title">The GPU Is Born — GeForce 256</div>
+      <p class="tl-desc">Nvidia coins the term "GPU" (Graphics Processing Unit) with the launch of the GeForce 256. The company goes public. Revenue: $158 million.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2006</span>
+      <div class="tl-title">CUDA — The Most Important Software Nobody Knows</div>
+      <p class="tl-desc">Nvidia releases CUDA — a free programming platform that lets developers write code to run on Nvidia GPUs. At the time, seen as a side project. In hindsight: the most consequential software bet in AI history.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2012</span>
+      <div class="tl-title">The AlexNet Moment — AI Wakes Up to GPUs</div>
+      <p class="tl-desc">A research team uses Nvidia GPUs to train a neural network called AlexNet. It obliterates the competition in a global image recognition contest. The AI world realizes GPUs are the key to deep learning. Nvidia is already there, with CUDA ready.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2022</span>
+      <div class="tl-title">The H100 — The Most Coveted Object on Earth</div>
+      <p class="tl-desc">Nvidia launches the H100 GPU. ChatGPT explodes. Every AI lab on Earth desperately queues for H100s. Single chips sell for $40,000 on secondary markets. Waitlists stretch 6–12 months.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">2024</span>
+      <div class="tl-title">$3 Trillion — The Most Valuable Company on Earth</div>
+      <p class="tl-desc">Nvidia briefly surpasses Apple and Microsoft to become the most valuable company in the world. Revenue from AI chips: $90 billion. Two years prior it was $15 billion. No company in history grew that fast at that scale.</p>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 2 — WHAT IS AN AI CHIP -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 2</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">What Is an AI Chip — <em>And Why GPUs Became the Engine of Intelligence</em></h2>
+
+  <p class="fade-up">To understand why Nvidia rules the AI world, you first need to understand what an AI chip actually does — and why it's so different from the chip inside your laptop.</p>
+
+  <!-- JARGON — CPU vs GPU -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">CPU vs GPU — What's the Difference?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>A <strong>CPU</strong> (the chip in your laptop) is like a single brilliant surgeon — it handles one or a few complex tasks at a time, very fast and very precisely. A <strong>GPU</strong> is like an army of thousands of simpler workers — each one isn't as smart, but they all work at the same time in parallel. Training an AI requires doing millions of simple maths operations simultaneously. The GPU's army wins over the surgeon every time for this kind of work.</p>
+    </div>
+    <p class="jargon-why">This is why video game graphics chips turned out to be perfect for AI. Rendering a 3D game frame also requires doing millions of parallel calculations at once — the same kind of parallel maths that AI needs. <strong>Nvidia's GPUs were already built for this. They just needed the right software to unlock it — and that's what CUDA did.</strong></p>
+  </div>
+
+  <!-- JARGON — CUDA -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What is CUDA — and Why Is It Nvidia's Secret Weapon?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>Imagine Nvidia's GPU is a powerful new type of engine. CUDA is the universal instruction manual that tells every developer in the world how to use that engine. Nvidia released it for free in 2006 — and for 18 years, every AI researcher, every AI framework, every university AI course has been built on top of it. It's now so deeply embedded in how the whole field works that switching away from Nvidia would mean rewriting everything from scratch.</p>
+    </div>
+    <p class="jargon-why"><strong>This is what economists call a "moat."</strong> Nvidia's competitors can build a fast chip. Almost nobody can build 18 years of developer trust, tooling, education, and ecosystem. PyTorch, TensorFlow, JAX — every major AI framework runs on CUDA. That's why Google and Meta, who make their own AI chips, still buy Nvidia chips too.</p>
+  </div>
+
+  <div class="callout orange fade-up">
+    <span class="callout-label">⚡ The AlexNet Moment — When Everything Changed</span>
+    <p>In 2012, a team of researchers at the University of Toronto used two Nvidia GTX 580 gaming GPUs to train a neural network called AlexNet. It entered the ImageNet competition — a global contest to identify objects in photos — and won by a margin so large that the runner-up reportedly thought there was an error. The AI world had its proof of concept. <strong>GPUs were the engine. Nvidia was already there.</strong> The company's fate was sealed from that day.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 3 — WHY NVIDIA DOMINATES -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 3</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Why Nvidia Is Almost Impossible to Beat — <em>The Full Stack Advantage</em></h2>
+
+  <p class="fade-up">Nvidia's dominance isn't just about having the fastest chip. It's about having built something that the entire world's AI infrastructure runs on — and making it almost impossible to leave.</p>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🏰</span>
+    <h3>The Full Stack — Why Nobody Can Just Copy Nvidia</h3>
+    <p>Nvidia doesn't sell you a chip. It sells you an entire ecosystem. The <strong>GPU hardware</strong> itself is just the start. On top of that: <strong>CUDA</strong> — the programming platform. <strong>cuDNN</strong> — a library of AI-optimised math operations. <strong>NVLink</strong> — technology that connects thousands of GPUs to act as one giant brain. <strong>DGX Servers</strong> — pre-built AI supercomputer boxes ready to deploy out of the box.</p>
+    <p>A competitor can build a fast chip. <strong>Almost nobody in the world can build all five layers of this stack at once</strong> — and have 18 years of developer familiarity on top of it. That's the real fortress.</p>
+  </div>
+
+  <p>The network effect compounds this further. Every AI researcher learns on CUDA. Every cloud provider — AWS, Azure, Google Cloud — optimises their infrastructure for Nvidia. Every AI startup builds their product assuming Nvidia hardware underneath. Even if a technically superior chip existed tomorrow, the switching cost for the entire industry would be so staggering that Nvidia would still dominate for years.</p>
+
+  <p>This is why Jensen Huang — who still wears his signature black leather jacket to every event — has been called <strong>the most important person in technology.</strong> Not because of one great product. Because of thirty years of building an ecosystem that the world cannot function without.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Nvidia won the same way Windows dominated PCs in the 90s — not by being the only option, but by becoming the default that everyone built on top of."</p>
+  </div>
+
+  <h3>Who Is Trying to Challenge Nvidia?</h3>
+  <p>Every major tech company is desperately trying to reduce its dependence on Nvidia. Here's an honest look at where each stands:</p>
+
+  <div class="rivals-grid fade-up">
+    <div class="rival-card">
+      <div class="rival-name">🔴 AMD</div>
+      <div class="rival-play">MI300X chip + ROCm software platform. Gaining real ground in inference workloads.</div>
+      <div class="rival-verdict gaining">Maybe 10–15% of market. The CUDA moat remains brutal.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🔵 Google</div>
+      <div class="rival-play">TPUs (Tensor Processing Units) — world-class custom AI chips used internally for all Google AI.</div>
+      <div class="rival-verdict niche">Excellent — but not sold externally. Only helps Google.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🔵 Meta</div>
+      <div class="rival-play">MTIA custom chips — built for running (inference) AI, not training it.</div>
+      <div class="rival-verdict niche">Not competing at training level yet. Reduces costs at the edges.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🔵 Apple</div>
+      <div class="rival-play">M-series and A-series chips — extraordinary for on-device AI on iPhones and Macs.</div>
+      <div class="rival-verdict niche">Different use case entirely. Not a data centre competitor.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🔴 Intel</div>
+      <div class="rival-play">Gaudi AI accelerators — multiple generations launched to compete directly.</div>
+      <div class="rival-verdict struggling">Significantly behind both Nvidia and AMD. Market share minimal.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🟡 Groq / Cerebras</div>
+      <div class="rival-play">Ultra-fast inference chips — extremely fast at running models, not training them.</div>
+      <div class="rival-verdict niche">Impressive niche players. Not yet at frontier training scale.</div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 4 — ELECTRICITY CRISIS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 4</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Electricity Crisis — <em>AI Is Hungry and the Bill Is Terrifying</em></h2>
+
+  <p class="fade-up">Here is a number that should make you stop and think: a single Nvidia H100 AI chip uses <strong>700 watts of power</strong>. That's roughly the same as running a microwave oven continuously — just for one chip. A typical AI data centre has tens of thousands of them running simultaneously, 24 hours a day, 7 days a week.</p>
+  <p>Now you understand why the AI industry has an electricity problem.</p>
+
+  <!-- JARGON — TRANSISTORS -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">Why Does a Chip Use So Much Electricity?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>A chip is made of billions of tiny switches called <strong>transistors</strong>. An Nvidia H100 has about 80 billion of them packed into a piece of silicon the size of your palm. Each transistor does one job: flip between ON and OFF — the 1s and 0s of computing. Every time a transistor flips, it uses a tiny burst of electricity. And some of that energy escapes as heat — the same reason your phone gets warm when you use it hard. With 80 billion transistors flipping millions of times per second — the heat and power consumption become enormous.</p>
+    </div>
+    <p class="jargon-why">AI training is worse than regular computing because it runs <strong>thousands of calculations simultaneously</strong> using thousands of chip cores — all firing at once, all generating heat, all the time. A regular laptop chip does a few billion operations per second at 15–45 watts. An H100 does <strong>thousands of trillions</strong> of operations per second — at 700 watts. That's the scale difference.</p>
+  </div>
+
+  <div class="fact-row fade-up">
+    <div class="fact-card"><span class="fc-num">10×</span><span class="fc-label">More electricity than a Google search — per ChatGPT query</span></div>
+    <div class="fact-card"><span class="fc-num">$100M+</span><span class="fc-label">Electricity cost to train a single frontier AI model</span></div>
+    <div class="fact-card"><span class="fc-num">700W</span><span class="fc-label">Power per H100 chip — like a microwave running nonstop</span></div>
+    <div class="fact-card"><span class="fc-num">2030</span><span class="fc-label">When AI data centers may consume as much power as France or Germany</span></div>
+  </div>
+
+  <div class="story-block fade-up">
+    <span class="block-label">🌍 The Scale of the Problem</span>
+    <p>Training GPT-4 is estimated to have consumed as much electricity as <span class="hl">1,000 US homes use in an entire year</span>. Microsoft, Google, and Amazon have all had to quietly <span class="hla">reverse their carbon neutrality commitments</span> because AI data centre demand is growing faster than renewable energy can supply.</p>
+    <p>A single data centre with 50,000 H100 chips running at full power is equivalent to <span class="hl">the electrical load of a small city</span>. And it doesn't just stop there — for every watt a chip consumes, you need roughly another 0.3–0.5 watts just to cool it down. Giant fans. Chilled water systems. Liquid cooling pumped directly over the chips. All of it costs money, water, and more electricity.</p>
+    <p>This is the fundamental tension at the heart of the AI boom: <span class="hla">the more powerful AI becomes, the more electricity it needs — and the planet is already struggling to supply it.</span></p>
+  </div>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">💡 What Is Being Done?</span>
+    <p>The industry is fighting back on multiple fronts. Nvidia's next-gen Blackwell and Vera Rubin chips are designed to deliver dramatically more AI work per watt. Techniques like <strong>quantization</strong> (using smaller numbers in calculations) and <strong>mixture of experts</strong> (only activating parts of a model at a time) reduce compute needs. And liquid cooling — pumping cold water directly over chips — cuts cooling energy by 30–40%. But the models keep getting bigger faster than efficiency gains can keep up. The problem is not solved. It is being managed.</p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 5 — ARCTIC DATA CENTERS -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Running to the Arctic — <em>The World's Biggest Free Refrigerator</em></h2>
+
+  <p class="fade-up">If your data centre is consuming so much electricity that it generates enough heat to warm a small town — what do you do? You go somewhere cold.</p>
+  <p>The tech industry has figured out that the Arctic is essentially the world's largest free refrigerator. And they are flooding into it with extraordinary speed.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">🧊 The Physics of Free Cooling</span>
+    <p>In warm climates, data centres need massive, expensive, energy-hungry chiller systems to keep their chips from overheating. In the Arctic, the ambient air is cold enough — for most of the year — to cool the data centre using just outside air and natural water sources. No chillers. No refrigerants. Just cold air doing the work for free.</p>
+    <p>The savings are not small. Cold climate data centres save approximately <span class="hl">30–40% of their total energy consumption</span> compared to warm-climate equivalents. At the scale of a 100-megawatt facility, that's tens of millions of dollars every year — just from free cooling.</p>
+    <p>Southern Finland alone offers about <span class="hla">8,000 hours of free cooling per year</span>. Go further north, and that number climbs higher. Iceland, sitting on volcanic geothermal energy that is essentially free and limitless, is seen as a near-perfect data centre location.</p>
+  </div>
+
+  <p>The numbers tell the story of the rush. As of 2025, at least <strong>32 data centres are operating in the Arctic</strong>, spread across Arctic nations. Their combined capacity is around <strong>870 megawatts</strong>. The single largest belongs to Iceland's Verne Global — 140 megawatts, enough to power approximately 140,000 homes.</p>
+  <p>The biggest names in tech are already there. <strong>Google</strong> operates facilities in Finland. <strong>Meta</strong> built one of Europe's largest data centres in northern Sweden specifically for the energy and cooling advantages. <strong>Microsoft</strong> has been evaluating sites in northern Sweden and Finland for massive AI-focused expansions.</p>
+  <p>One facility planned in northern Norway near Ballangen is designed to draw 100% of its power from wind and hydroelectricity — and use cold fjord water for passive cooling. Plans call for eventually scaling to over <strong>1,000 megawatts</strong> from a single site. That's the equivalent of a large nuclear power plant — powered entirely by renewables, cooled entirely for free.</p>
+
+  <div class="callout green fade-up">
+    <span class="callout-label">✅ Iceland — The Dream Location</span>
+    <p>Iceland sits on the Mid-Atlantic Ridge — a zone of intense volcanic activity that gives the country essentially unlimited geothermal energy. No coal. No gas. Just the earth's own heat, converted into electricity for free. Combined with its Arctic temperatures for free cooling, Iceland has become one of the most sought-after locations for data centre development in the world. <strong>The only constraint: it's a small island, and space is limited.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 6 — INDIGENOUS PEOPLE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 6</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Price Someone Else Pays — <em>The People the Tech World Forgot to Mention</em></h2>
+
+  <p class="fade-up">The Arctic data centre story has a dark side that almost no tech coverage mentions. The Arctic is not empty. It is home to approximately <strong>4 million people</strong> — including Indigenous communities who have lived there, in balance with the land, for thousands of years.</p>
+  <p>Their names: Alaska Natives, Inuit, First Nations in Canada, Sámi in Scandinavia and Russia, and over 40 other ethnic groups speaking more than 40 languages. They didn't cause the AI electricity crisis. But they are paying for it.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">⚠️ Four Ways Data Centres Are Harming Arctic Communities</span>
+    <p><span class="hl">Land Displacement:</span> Research in Sápmi — the traditional homeland of the Sámi people in Scandinavia — found that proposed data centre sites directly overlap with reindeer grazing areas. These are not just economic assets. They are cultural and spiritual pillars of Sámi life, maintained for thousands of years. Tech companies often describe this land as "underutilised" — erasing the people entirely from the narrative.</p>
+    <p><span class="hl">Climate Amplification:</span> The Arctic is already warming at roughly double the rate of the rest of the world. The warming disrupts ice roads, shortens safe travel seasons, and shrinks the habitats of beluga whales, walruses, and seals — species that Indigenous communities depend on for food and cultural practice. More data centres — even renewable ones — add infrastructure and human activity that accelerates this disruption.</p>
+    <p><span class="hla">Ancient Threats Reawakening:</span> As permafrost thaws, layers of ground frozen for thousands of years are being exposed. In 2016, a 12-year-old boy in Siberia died after being infected with anthrax — from a long-frozen reindeer carcass exposed during a summer heatwave. Scientists warn that as humans drill and build in previously frozen Arctic ground, they risk encountering viruses and bacteria frozen for up to a million years.</p>
+    <p><span class="hl">Colonialism by Another Name:</span> Structural inequalities and systemic neglect are directly impacting communities that have been managing this land sustainably for generations. The benefits of AI — faster chat responses, better image generators, more powerful search engines — flow to people thousands of miles away. The costs — disrupted land, accelerated warming, displaced culture — stay local.</p>
+  </div>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">🔴 The Hard Truth</span>
+    <p>The Indigenous communities of the Arctic did not create the AI electricity problem. They did not demand ChatGPT or image generators or faster search results. But they are watching their ancestral land, their traditional routes, their food sources, and their way of life disappear — because the rest of the world cannot figure out how to power its AI without running to the coldest place left on earth. <strong>That is a story that deserves far more attention than it gets.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 7 — ELON MUSK SPACE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 7</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Elon Musk's Wildest Bet — <em>Take the Data Centers to Space</em></h2>
+
+  <p class="fade-up">If the problem is that data centres need enormous amounts of electricity and cooling — and the Arctic is running out of space — what if you removed the problem entirely? What if you put the data centres somewhere with unlimited free solar power and zero cooling costs?</p>
+  <p>What if you put them in <strong>space</strong>?</p>
+  <p>This sounds like science fiction. It is not. On January 30, 2026, SpaceX filed with the US Federal Communications Commission for approval to launch up to <strong>one million satellites</strong> to form a megaconstellation of orbital data centres. Shortly after, SpaceX formally merged with Musk's AI company <strong>xAI</strong> — drawing his space and AI ventures together into one infrastructure project.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">🚀 Why Space Actually Makes Sense — In Theory</span>
+    <p>The logic is not crazy. In orbit, solar panels are dramatically more efficient — <span class="hl">no clouds, no weather, no atmosphere absorbing the sunlight</span>. In the right orbit, solar panels can collect energy almost continuously. And there is no air in space — so no need for complex, expensive, energy-hungry cooling systems. The heat can simply radiate away into the void.</p>
+    <p>SpaceX already has the beginnings of this infrastructure. Its 8,000 Starlink satellites collectively contain nearly <span class="hla">half a million computers</span> powered by solar arrays totalling about 100 megawatts — roughly the computing count and power used for a large earthbound data centre, spread across orbit, connected by free-space optical laser links.</p>
+    <p>Musk has said rocket launch costs have fallen so dramatically that within three years, <span class="hl">space will be the cheapest way to generate AI compute power.</span> He has set 2028 as the tipping point year.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"You can mark my words: in 36 months — probably closer to 30 months — the most economically compelling place to put AI will be space."</p>
+    <span class="pq-source">— Elon Musk, 2025</span>
+  </div>
+
+  <p>Musk went further. He predicted: <strong>"Five years from now, we will launch and be operating every year more AI in space than the cumulative total on Earth."</strong></p>
+
+  <h3>The Problems — And They Are Very Real</h3>
+  <p>The vision is spectacular. The obstacles are formidable. Here are the ones that matter most:</p>
+
+  <div class="rivals-grid fade-up">
+    <div class="rival-card">
+      <div class="rival-name">💸 Cost</div>
+      <div class="rival-play">Putting a 1-gigawatt data centre in orbit would add an estimated $35 billion to overall costs — even assuming SpaceX meets all its future operational goals.</div>
+      <div class="rival-verdict struggling">No earthbound data centre costs anywhere close to this per megawatt.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">☢️ Radiation</div>
+      <div class="rival-play">In orbit, electronic components typically last only 5 years due to constant radiation damage from cosmic rays and solar particles. Earth's atmosphere shields us from these on the ground.</div>
+      <div class="rival-verdict struggling">Constant replacement needed — requiring robots that don't yet exist at required capability.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🛸 Space Junk</div>
+      <div class="rival-play">There are already ~45,000 human-made objects orbiting Earth. Adding 1 million more satellites risks Kessler Syndrome — a cascade of collisions generating debris that makes low Earth orbit permanently unusable.</div>
+      <div class="rival-verdict struggling">Could lock humanity out of orbit for generations if it goes wrong.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">🌍 Environment</div>
+      <div class="rival-play">Rocket exhaust and satellite metals (aluminium, magnesium, lithium) released into the upper atmosphere can affect polar cloud formation and potentially facilitate ozone layer damage at scale.</div>
+      <div class="rival-verdict struggling">Scientists say consequences at this scale are genuinely unknown.</div>
+    </div>
+    <div class="rival-card">
+      <div class="rival-name">⏰ Timeline</div>
+      <div class="rival-play">A European Space Policy Institute report calculated a competitive orbital data centre is "at least 20 years away." Deutsche Bank estimates well into the 2030s before cost parity with earthbound options.</div>
+      <div class="rival-verdict gaining">One researcher: "When Musk gives a timeline, I add a zero to the end."</div>
+    </div>
+  </div>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">🇨🇳 But Musk Is Not Alone</span>
+    <p>In May 2025, China launched the first dozen satellites of its planned 2,800-satellite <strong>"Three-Body Computing Constellation"</strong> — a literal supercomputer in space, connected by laser communications. Sam Altman has mused that space data centres might be the long-term solution. Jeff Bezos has predicted "giant gigawatt data centres in space" within 20 years. Former Google CEO Eric Schmidt acquired a rocket company as a bet on orbital computing. <strong>The race for the sky is real — and it has geopolitical dimensions beyond just electricity costs.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 8 — THE BIG PICTURE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Big Picture</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Pattern Nobody Wants to Say Out Loud — <em>Every Solution Has a Hidden Cost</em></h2>
+
+  <p class="fade-up">Step back from all of this and you start to see a pattern.</p>
+
+  <table class="compare-table fade-up">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Location</th>
+        <th>Advantage</th>
+        <th>Hidden Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="emoji-col">🌡️</td>
+        <td><strong>Regular Data Centres</strong></td>
+        <td>Close to users, easy to maintain</td>
+        <td>Burns massive electricity, water, heats cities, breaks climate pledges</td>
+      </tr>
+      <tr>
+        <td class="emoji-col">🧊</td>
+        <td><strong>Arctic Data Centres</strong></td>
+        <td>Free cooling, clean energy, 30–40% savings</td>
+        <td>Destroys Indigenous land, accelerates Arctic warming, exposes ancient pathogens</td>
+      </tr>
+      <tr>
+        <td class="emoji-col">🚀</td>
+        <td><strong>Space Data Centres</strong></td>
+        <td>Free solar power, no cooling needed, unlimited space</td>
+        <td>$35B+ extra cost, space junk risk, ozone damage, decades away</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">🤔</span>
+    <h3>The Question Worth Asking</h3>
+    <p>We started this story with a 30-year-old engineer sketching on a diner napkin. That sketch became the chip that runs every AI on earth. That chip now consumes so much electricity that the world is moving its computers to the Arctic — displacing Indigenous communities who have lived there for thousands of years. And the next proposed solution is to put a million satellites in orbit and risk making space unusable for generations.</p>
+    <p>Each step in this chain was rational. Each step had brilliant people behind it. And yet the cumulative result is a technology whose power consumption is <strong>actively reversing humanity's climate commitments</strong> — with the costs falling most heavily on people who had nothing to do with creating any of it.</p>
+    <p><strong>That is the story of the chip that runs the world.</strong> And it deserves to be told whole — not just the triumph, but the price.</p>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day12of90</span>
+    <span class="tag">#Nvidia</span>
+    <span class="tag">#JensenHuang</span>
+    <span class="tag">#AIChips</span>
+    <span class="tag">#GPU</span>
+    <span class="tag">#CUDA</span>
+    <span class="tag">#ArcticDataCenters</span>
+    <span class="tag">#ElonMusk</span>
+    <span class="tag">#SpaceDataCenters</span>
+    <span class="tag">#AIEnergy</span>
+    <span class="tag">#IndigenousRights</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Which Part Surprised You Most? 🤯</h3>
+  <p>The diner napkin? The $40,000 chip? The Arctic displacement? Or Musk's million satellite plan? Drop a comment — and subscribe so you never miss the next decode.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
