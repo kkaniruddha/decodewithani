@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 13 – Zuckerberg's Broken Promise: The Avocado Delay That's Shaking Meta | DecodeWithAni</title>
+  <meta name="description" content="Zuckerberg promised AI supremacy. He spent $14.3 billion. He hired the world's youngest billionaire. And now — Meta's next big AI model is late, lagging behind, and the company is quietly asking Google for help. The full inside story."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa; --blue-d:#2563eb;
+      --green:#6ee7b7; --green-d:#059669;
+      --amber:#fcd34d; --amber-d:#d97706;
+      --red:#fca5a5; --red-d:#dc2626;
+      --cyan:#22d3ee; --cyan-d:#0891b2;
+      --bg:#0d0d1a; --bg2:#13131f; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-d); border-radius: 3px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 60px; }
+    .nav-brand { font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--blue); }
+    .nav-cta { background: linear-gradient(135deg, var(--blue-d), var(--purple-d)); color: white !important; padding: 0.35rem 1.1rem; border-radius: 20px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 60px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(124,58,237,0.1) 0%, transparent 60%), var(--bg); position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-series-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-series-badge::before { content: '🔵'; font-size: 0.8rem; }
+    .hero-icon { font-size: 88px; margin-bottom: 20px; animation: float 3.5s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(37,99,235,0.45)); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    .hero h1 { font-size: clamp(2rem, 5.5vw, 4.2rem); font-weight: 900; color: var(--white); line-height: 1.1; max-width: 860px; margin-bottom: 1.1rem; letter-spacing: -1px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 1rem; font-weight: 600; color: var(--blue); margin-bottom: 1rem; }
+    .hero-desc { font-size: 1rem; color: var(--grey); max-width: 600px; line-height: 1.88; margin-bottom: 2.5rem; }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .lbl { font-size: 0.7rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-arrow { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(96,165,250,0.4); font-size: 20px; animation: bounce 1.8s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    .article { max-width: 780px; margin: 0 auto; padding: 80px 28px 120px; }
+    .chapter-opener { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); white-space: nowrap; }
+    .chapter-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--blue-d), transparent); }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 1.4rem; }
+    h2 em { font-style: italic; background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--blue); margin: 2rem 0 0.8rem; }
+    p { font-size: 1rem; margin-bottom: 1.3rem; color: var(--lgrey); line-height: 1.9; }
+    strong { color: var(--white); font-weight: 600; }
+
+    .story-block { background: linear-gradient(145deg, #080d18, #0d0d1a); border: 1px solid rgba(37,99,235,0.2); border-radius: 20px; padding: 40px 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .story-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue-d), var(--purple-d)); }
+    .story-block .block-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; display: block; font-weight: 700; }
+    .story-block p { color: rgba(255,255,255,0.88); font-size: 1rem; line-height: 2; margin-bottom: 14px; }
+    .story-block p:last-child { margin-bottom: 0; }
+    .story-block .hl { color: var(--blue); font-weight: 700; }
+    .story-block .hlp { color: var(--purple); font-weight: 700; }
+    .story-block .hla { color: var(--amber); font-weight: 600; }
+    .story-block .hlr { color: var(--red); font-weight: 600; }
+    .story-block .hlg { color: var(--green); font-weight: 600; }
+
+    .timeline { margin: 2rem 0; border-left: 2px solid rgba(37,99,235,0.2); padding-left: 28px; }
+    .tl-item { margin-bottom: 28px; position: relative; }
+    .tl-item::before { content: ''; position: absolute; left: -37px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--blue-d); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .tl-item.bad::before { background: var(--red-d); box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
+    .tl-item.good::before { background: var(--green-d); box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+    .tl-time { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--blue); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .tl-item.bad .tl-time { color: var(--red); }
+    .tl-item.good .tl-time { color: var(--green); }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .tl-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin: 0; }
+
+    .jargon-box { background: var(--bg3); border: 1px solid rgba(96,165,250,0.2); border-radius: 18px; padding: 30px 28px; margin: 1.8rem 0; position: relative; overflow: hidden; }
+    .jargon-box::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue-d), var(--purple-d)); }
+    .jargon-label { display: inline-flex; align-items: center; gap: 8px; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25); border-radius: 20px; padding: 4px 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+    .jargon-term { font-size: 1.2rem; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+    .jargon-simple { background: rgba(96,165,250,0.06); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+    .jargon-simple .js-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 5px; display: block; }
+    .jargon-simple p { font-size: 0.92rem; color: var(--lgrey); margin: 0; line-height: 1.75; }
+    .jargon-why { font-size: 0.88rem; color: var(--grey); line-height: 1.7; margin: 0; }
+    .jargon-why strong { color: var(--amber); }
+
+    .pull-quote { border-left: 4px solid var(--blue-d); background: rgba(37,99,235,0.06); border-radius: 0 14px 14px 0; padding: 22px 30px; margin: 2.5rem 0; }
+    .pull-quote p { font-size: 1.12rem; font-style: italic; color: var(--blue); margin: 0; line-height: 1.65; font-weight: 500; }
+    .pull-quote .pq-source { font-size: 0.78rem; color: var(--grey); font-style: normal; margin-top: 8px; display: block; font-weight: 600; }
+
+    .fact-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 2rem 0; }
+    .fact-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 22px 16px; text-align: center; }
+    .fact-card .fc-num { font-size: 1.8rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 4px; }
+    .fact-card .fc-label { font-size: 0.7rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; line-height: 1.4; }
+
+    .callout { border-radius: 14px; padding: 20px 24px; margin: 2rem 0; border-left: 4px solid; }
+    .callout.blue { background: rgba(37,99,235,0.08); border-color: var(--blue-d); }
+    .callout.green { background: rgba(5,150,105,0.08); border-color: var(--green-d); }
+    .callout.amber { background: rgba(217,119,6,0.08); border-color: var(--amber-d); }
+    .callout.purple { background: rgba(124,58,237,0.08); border-color: var(--purple-d); }
+    .callout.red { background: rgba(220,38,38,0.08); border-color: var(--red-d); }
+    .callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .callout.blue .callout-label { color: var(--blue); }
+    .callout.green .callout-label { color: var(--green); }
+    .callout.amber .callout-label { color: var(--amber); }
+    .callout.purple .callout-label { color: var(--purple); }
+    .callout.red .callout-label { color: var(--red); }
+    .callout p { margin: 0; font-size: 0.95rem; color: var(--lgrey); line-height: 1.85; }
+
+    .highlight-box { background: var(--bg3); border: 1px solid rgba(96,165,250,0.2); border-radius: 18px; padding: 34px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue-d), var(--purple-d)); }
+    .highlight-box .hl-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .highlight-box h3 { font-size: 1.2rem; color: var(--white); margin-bottom: 10px; margin-top: 0; }
+    .highlight-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 10px; }
+    .highlight-box p:last-child { margin: 0; }
+    .highlight-box strong { color: var(--blue); }
+
+    /* VERDICT TABLE */
+    .verdict-table { width: 100%; border-collapse: collapse; margin: 2rem 0; border-radius: 14px; overflow: hidden; }
+    .verdict-table th { background: var(--bg3); color: var(--blue); font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .verdict-table td { padding: 14px 16px; font-size: 0.88rem; color: var(--lgrey); border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.65; }
+    .verdict-table tr:last-child td { border-bottom: none; }
+    .verdict-table tr:hover td { background: rgba(96,165,250,0.04); }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+    .maybe { color: var(--amber); font-weight: 700; }
+
+    /* WANG CARD */
+    .wang-card { background: linear-gradient(145deg, #0a0d18, #0d0d1a); border: 1px solid rgba(96,165,250,0.25); border-radius: 20px; padding: 36px; margin: 2.5rem 0; position: relative; overflow: hidden; }
+    .wang-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan-d), var(--blue-d), var(--purple-d)); }
+    .wang-header { display: flex; align-items: center; gap: 20px; margin-bottom: 22px; }
+    .wang-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-d), var(--purple-d)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+    .wang-name { font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 3px; }
+    .wang-title { font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .wang-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .wang-stat { background: rgba(96,165,250,0.07); border: 1px solid rgba(96,165,250,0.15); border-radius: 12px; padding: 14px 12px; text-align: center; }
+    .wang-stat .ws-num { font-size: 1.3rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 3px; }
+    .wang-stat .ws-label { font-size: 0.65rem; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; line-height: 1.3; }
+    .wang-card p { font-size: 0.95rem; color: var(--lgrey); line-height: 1.88; margin-bottom: 12px; }
+    .wang-card p:last-child { margin: 0; }
+    .wang-card strong { color: var(--cyan); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+    .tag { background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.2); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--blue); font-weight: 600; }
+
+    .closing { text-align: center; padding: 64px 28px; background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%); border-top: 1px solid var(--border); }
+    .close-badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; display: block; font-weight: 700; }
+    .closing h3 { font-size: 1.5rem; color: var(--white); font-weight: 800; margin-bottom: 10px; }
+    .closing p { color: var(--grey); font-size: 0.95rem; max-width: 500px; margin: 0 auto 1.5rem; line-height: 1.85; }
+    .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--blue-d), var(--purple-d)); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(37,99,235,0.3); }
+    .closing-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.45); }
+
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-sub { font-size: 0.8rem; color: var(--grey); }
+    .footer-sub a { color: var(--blue); text-decoration: none; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .story-block { padding: 26px 18px; }
+      .article { padding: 52px 18px 80px; }
+      .hero-stats { gap: 1.5rem; }
+      .fact-row { grid-template-columns: repeat(2,1fr); }
+      .wang-stats { grid-template-columns: repeat(2,1fr); }
+      .wang-header { flex-direction: column; text-align: center; }
+      .nav-right a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/" style="color:var(--blue);font-weight:700">← Home</a>
+    <a href="/#blog">Blog</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe Free</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-series-badge">Day 13 of 90 · Breaking Story · Meta AI · DecodeWithAni</div>
+  <div class="hero-icon">🥑</div>
+  <h1>Zuckerberg's <span>Broken Promise</span> — The Avocado Delay</h1>
+  <p class="hero-subtitle">He spent $14.3 billion. Made the boldest promise in AI. And now Meta is quietly asking Google for help.</p>
+  <p class="hero-desc">Three delays. A model lagging behind rivals. A $200 million researcher who left after 7 months. The soul of Meta's AI division walking out the door. And the unthinkable — Zuckerberg considering using Google's AI inside Facebook. This is the inside story of Meta's AI reckoning.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">3×</span><span class="lbl">Avocado has been delayed</span></div>
+    <div class="hero-stat"><span class="num">$14.3B</span><span class="lbl">Bet on one hire</span></div>
+    <div class="hero-stat"><span class="num">$135B</span><span class="lbl">AI spend planned for 2026</span></div>
+    <div class="hero-stat"><span class="num">7 mo</span><span class="lbl">Before $200M hire left</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<article class="article">
+
+  <!-- CHAPTER 1 — THE PROMISE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 1</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Promise — <em>"We Will Build Superintelligence"</em></h2>
+
+  <p class="fade-up">It was January 2025. Mark Zuckerberg — in his signature grey t-shirt, speaking with the calm confidence of a man who had turned Facebook into a $1.4 trillion empire — made an announcement that sent shockwaves through Silicon Valley.</p>
+  <p>Meta, he declared, was going all in on AI. Not just AI features. Not just an AI chatbot. <strong>Superintelligence</strong> — AI that could exceed human intelligence across every domain. He said he expected Meta's next model to become <strong>"the leading state-of-the-art system"</strong> that year. He committed to spending between $60–65 billion on AI infrastructure in 2025 alone.</p>
+  <p>For emphasis, he recorded a video wearing a custom Meta AI hoodie, speaking directly to camera: <strong>"I think we have a real shot at this."</strong></p>
+  <p>In October 2025, after months of restructuring, billion-dollar hires, and a seismic internal reorganisation, he told investors: <strong>"I think we've already built the lab with the highest talent density in the industry."</strong></p>
+  <p>These were not quiet claims. These were war cries. Public bets. Statements that would age either very well or very badly.</p>
+  <p>On March 12, 2026 — they aged very badly.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">📰 What The New York Times Reported — March 12, 2026</span>
+    <p>Meta has pushed back its next flagship AI model — codenamed <span class="hl">Avocado</span> — from a planned March 2026 release to <span class="hl">at least May 2026</span>. Internal tests showed the model trailing the leading systems from Google, OpenAI, and Anthropic in <span class="hla">logical reasoning, software development, coding, and agentic behaviour</span> — the ability to autonomously plan and execute complex tasks.</p>
+    <p>More stunning: Meta's AI leadership has held internal discussions about <span class="hlr">temporarily licensing Google's Gemini</span> to power Meta's own AI products — Facebook, Instagram, WhatsApp — while Avocado catches up. No decision has been made. But the fact that the conversation happened at all is extraordinary. <span class="hlr">Zuckerberg considering borrowing his arch-rival's AI to power his own products.</span></p>
+    <p>Meta's stock fell <span class="hlr">2.55%</span> on the news.</p>
+  </div>
+
+  <!-- JARGON — AGENTIC BEHAVIOUR -->
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">What Is "Agentic Behaviour" in AI?</div>
+    <div class="jargon-simple">
+      <span class="js-label">Plain English</span>
+      <p>Most AI today answers questions — you ask, it replies. "Agentic" AI goes further. It can receive a complex goal like <em>"book me a flight to Mumbai, check my calendar, and draft a packing list"</em> and then autonomously break it into steps, use tools, make decisions, and complete the task — without you guiding it every step of the way. It's the difference between a calculator and an assistant.</p>
+    </div>
+    <p class="jargon-why">This is where the AI race is heading in 2026 — agents that can do real work independently. OpenAI has Operator. Google has Astra. Anthropic has Computer Use. <strong>Avocado was supposed to be Meta's entry into this race. It's currently not competitive enough to enter.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 2 — THE TIMELINE -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 2</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Full Timeline — <em>How We Got Here</em></h2>
+
+  <p class="fade-up">This isn't one bad moment. It's a pattern — and the pattern matters. Here is every key event, in order:</p>
+
+  <div class="timeline fade-up">
+    <div class="tl-item good">
+      <span class="tl-time">Jan 2025</span>
+      <div class="tl-title">The Bold Promise</div>
+      <p class="tl-desc">Zuckerberg publicly predicts Meta's next model will become "the leading state-of-the-art system." Commits $60–65B in AI infrastructure spending for the year. The world takes notice.</p>
+    </div>
+    <div class="tl-item bad">
+      <span class="tl-time">April 2025</span>
+      <div class="tl-title">Llama 4 — The First Stumble</div>
+      <p class="tl-desc">Llama 4, Meta's then-flagship model, is delayed after failing to meet internal benchmarks. When finally released, its reception is tepid. Developer enthusiasm is notably absent.</p>
+    </div>
+    <div class="tl-item bad">
+      <span class="tl-time">May 2025</span>
+      <div class="tl-title">Behemoth Delayed</div>
+      <p class="tl-desc">Meta's even larger model, codenamed Behemoth, is delayed because engineers cannot produce significant enough improvements. Two flagship models stumbling in two months.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">June 2025</span>
+      <div class="tl-title">The $14.3 Billion Bet — Alexandr Wang Joins as Chief AI Officer</div>
+      <p class="tl-desc">Meta purchases a 49% stake in Scale AI for $14.3 billion. Scale AI's founder Alexandr Wang joins Meta as Chief AI Officer. A seismic, historic hire. The world's youngest self-made billionaire, inside Meta's walls.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">June 2025</span>
+      <div class="tl-title">Reorganisation — Meta Superintelligence Labs Created</div>
+      <p class="tl-desc">Zuckerberg restructures all AI work under a single division: Meta Superintelligence Labs. Wang leads the new "TBD Lab" within it, tasked with building frontier models including Avocado.</p>
+    </div>
+    <div class="tl-item bad">
+      <span class="tl-time">Oct 2025</span>
+      <div class="tl-title">600 FAIR Researchers Laid Off</div>
+      <p class="tl-desc">Hundreds of employees from FAIR — Meta's prestigious Fundamental AI Research unit, its academic crown jewel — are laid off to fund the Superintelligence Labs pivot. Yann LeCun, Meta's Chief AI Scientist and godfather of AI, announces his departure.</p>
+    </div>
+    <div class="tl-item bad">
+      <span class="tl-time">Nov 2025</span>
+      <div class="tl-title">$200M Researcher Leaves After 7 Months</div>
+      <p class="tl-desc">Ruoming Pang — recruited with a staggering $200 million pay package — leaves Meta for OpenAI after just seven months. A very public, very expensive exit.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-time">Jan 2026</span>
+      <div class="tl-title">Zuckerberg Doubles Down</div>
+      <p class="tl-desc">On an investor call, Zuckerberg says Avocado will be "good, but more importantly show the rapid trajectory we're on." Capital expenditure guidance: $115–135 billion for 2026. Nearly double 2025's spending.</p>
+    </div>
+    <div class="tl-item bad">
+      <span class="tl-time">March 12, 2026</span>
+      <div class="tl-title">Avocado — Delayed Again. The Story Breaks.</div>
+      <p class="tl-desc">The New York Times reports Avocado's third delay — now pushed to at least May. Internal tests show it lagging across reasoning, coding, and agentic tasks. Internal discussions about licensing Google Gemini reported. Stock falls 2.55%.</p>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 3 — ALEXANDR WANG -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 3</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The $14.3 Billion Man — <em>Who Is Alexandr Wang?</em></h2>
+
+  <p class="fade-up">To understand why this story matters, you need to understand the person at the centre of it. Because Zuckerberg's AI restructuring wasn't just a spending decision. It was a personal bet — on one 28-year-old from New Mexico.</p>
+
+  <div class="wang-card fade-up">
+    <div class="wang-header">
+      <div class="wang-avatar">👨‍💻</div>
+      <div>
+        <div class="wang-name">Alexandr Wang</div>
+        <div class="wang-title">Chief AI Officer, Meta · Founder, Scale AI</div>
+      </div>
+    </div>
+    <div class="wang-stats">
+      <div class="wang-stat"><span class="ws-num">28</span><span class="ws-label">Age — youngest self-made billionaire in history</span></div>
+      <div class="wang-stat"><span class="ws-num">$3.6B</span><span class="ws-label">Net worth as of April 2025</span></div>
+      <div class="wang-stat"><span class="ws-num">19</span><span class="ws-label">Age when he founded Scale AI — MIT dropout</span></div>
+    </div>
+    <p>Wang was born in <strong>Los Alamos, New Mexico</strong> — the same town where the first nuclear bomb was built. His parents were Chinese immigrants who worked as physicists at Los Alamos National Laboratory. He grew up surrounded by scientists, absorbing their rigour and their obsession with getting things right.</p>
+    <p>By his teenage years he was competing in national maths olympiads and coding competitions. He got into MIT — one of the world's most prestigious engineering universities — and then, at 19, dropped out to found Scale AI with co-founder Lucy Guo. The idea came from a gap he noticed: AI labs had brilliant algorithms, but no good way to label and organise the training data that algorithms learn from. <strong>Scale AI became the company that labelled the data that trained the world's AI.</strong></p>
+    <p>By 24, he was a billionaire — the world's youngest self-made one. Clients included OpenAI, Microsoft, Google, Lyft, and the US Department of Defense. By 28, Scale AI was valued at $29 billion after Meta's investment.</p>
+    <p>Interestingly — at the height of the COVID-19 pandemic, Wang was <strong>roommates with Sam Altman</strong>, the CEO of OpenAI. Two of the most powerful people in AI, once sharing an apartment. Now running competing labs.</p>
+  </div>
+
+  <h3>Why Did Zuckerberg Make This Bet?</h3>
+  <p>The logic was sound on paper. Wang had demonstrated an extraordinary ability to identify what AI systems actually need to improve — training data quality, evaluation methodology, human feedback loops. Scale AI's technology is literally what helps AI companies measure how good their models are. <strong>If anyone knew how to close a benchmark gap, it should be the man who built the tools to measure it.</strong></p>
+  <p>Zuckerberg made the bet loudly and publicly. He told investors Meta had built "the lab with the highest talent density in the industry." He pointed at Wang as proof.</p>
+  <p>Now, with Avocado lagging and three delays on the board, <strong>that claim is under its first serious test.</strong></p>
+
+  <div class="callout amber fade-up">
+    <span class="callout-label">⚡ The Internal Tension</span>
+    <p>Reports suggest Wang has clashed with other senior Meta executives — including Zuckerberg himself — over direction, pace, and approach. Wang and former GitHub CEO Nat Friedman have introduced a Silicon Valley intensity culture to Meta — 70-hour workweeks normalised, old FAIR academic research methods replaced by fast-paced model development. For a company that promoted from within for 20 years, <strong>this has been a jarring, painful cultural rupture.</strong></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 4 — TALENT WALKING OUT -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 4</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Soul of Meta AI — <em>Walking Out the Door</em></h2>
+
+  <p class="fade-up">The delay is the headline. But the talent departures tell a deeper story about what is happening inside Meta's walls.</p>
+
+  <div class="story-block fade-up">
+    <span class="block-label">👤 The Loss That Hurt Most — Yann LeCun</span>
+    <p>To understand what Yann LeCun leaving means, you need to know who he is. LeCun is one of the three "godfathers of deep learning" — the foundational research that makes modern AI possible. Along with Geoffrey Hinton and Yoshua Bengio, he won the <span class="hl">Turing Award</span> — the Nobel Prize of computer science — for inventing the techniques that underpin neural networks.</p>
+    <p>He joined Meta (then Facebook) in 2013 and spent over a decade building its AI research reputation from the ground up. FAIR — the Fundamental AI Research unit he championed — published foundational research that the entire industry benefited from. He was not just an employee. <span class="hla">He was the academic conscience and the intellectual reputation of Meta AI.</span></p>
+    <p>He left in October 2025, as the FAIR unit he built was gutted. He has since founded his own startup — <span class="hl">AMI Labs</span> — in Paris, focused on world models and autonomous reasoning. It has already raised a billion dollars.</p>
+    <p><span class="hlr">Losing Yann LeCun is not like losing a researcher. It is like a band losing the person who wrote all their songs.</span></p>
+  </div>
+
+  <div class="story-block fade-up">
+    <span class="block-label">💸 The $200 Million Hire That Left in 7 Months</span>
+    <p>Ruoming Pang was recruited from Google with a pay package reportedly worth <span class="hl">$200 million</span> — one of the most expensive individual AI hires in history. He was brought in to be part of the new superintelligence push.</p>
+    <p>Seven months later, he walked out and joined <span class="hlr">OpenAI</span> — Meta's most direct competitor.</p>
+    <p>Meta did not publicly comment. But the signal was impossible to miss. When someone leaves a $200 million package in under a year, something significant is happening inside the building. <span class="hla">Money alone is not enough to retain the people who have options.</span></p>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 5 — THE GEMINI QUESTION -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">Chapter 5</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">The Google Question — <em>Could Meta Really Use Its Rival's AI?</em></h2>
+
+  <p class="fade-up">Of all the details in this story, the one that made Silicon Valley do a double-take was this: Meta's leadership discussed <strong>temporarily licensing Google's Gemini</strong> to power its AI products — Facebook, Instagram, WhatsApp — while Avocado is being fixed.</p>
+  <p>Think about what that means for a moment. Meta and Google are not friends. They compete in advertising. They compete in social media. They compete in smart glasses. They compete in AI. The idea of Mark Zuckerberg calling Sundar Pichai and asking to borrow Gemini for Facebook is, as Fortune magazine put it, <strong>"almost impossible to imagine."</strong></p>
+  <p>And yet the conversation reportedly happened internally at Meta. Which means the gap is real enough, and the pressure is strong enough, that someone in leadership thought it was worth considering.</p>
+
+  <div class="callout blue fade-up">
+    <span class="callout-label">⚠️ Important Context</span>
+    <p>This has not happened. No agreement has been reached. The New York Times reported it as an internal discussion, not a decision. But the fact that it was discussed at all — and reported by three independent sources — tells you everything about the pressure Meta's AI team is under right now.</p>
+  </div>
+
+  <div class="pull-quote fade-up">
+    <p>"Meta needs a model that changes the conversation. Avocado, at least for now, seems to be doing the opposite."</p>
+    <span class="pq-source">— Quartz, March 2026</span>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CHAPTER 6 — HONEST VERDICT -->
+  <div class="chapter-opener fade-up"><span class="chapter-num">The Honest Verdict</span><div class="chapter-line"></div></div>
+  <h2 class="fade-up">Is Meta in Trouble? — <em>The Fair and Balanced Answer</em></h2>
+
+  <p class="fade-up">Here is the question everyone is asking. And here is the most honest answer possible.</p>
+
+  <table class="verdict-table fade-up">
+    <thead>
+      <tr><th>Question</th><th>Honest Answer</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Is the delay real?</td><td><span class="yes">✅ Yes</span> — confirmed by NYT, Reuters, Fortune, multiple independent sources</td></tr>
+      <tr><td>Is licensing Gemini confirmed?</td><td><span class="maybe">⚠️ Discussed internally — not decided</span></td></tr>
+      <tr><td>Is one delay trouble?</td><td><span class="no">❌ No</span> — every AI lab delays models. It happens everywhere.</td></tr>
+      <tr><td>Is the pattern of delays concerning?</td><td><span class="yes">✅ Yes</span> — 3rd delay on same model, after Llama 4 and Behemoth also stumbled</td></tr>
+      <tr><td>Is Meta going bankrupt or dying?</td><td><span class="no">❌ Absolutely not</span> — $1.4 trillion company with 3.2B daily users</td></tr>
+      <tr><td>Is Meta's AI strategy under real pressure?</td><td><span class="yes">✅ Yes</span> — $14.3B bet, key talent leaving, culture fracturing, rivals pulling ahead</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box fade-up">
+    <span class="hl-icon">⚖️</span>
+    <h3>What Meta Still Has Going For It</h3>
+    <p>To be fair — Meta is far from finished. The company plans to spend <strong>$115–135 billion on AI in 2026 alone</strong> — nearly double last year's budget. That is an almost incomprehensible war chest.</p>
+    <p>And Meta has something no other AI lab in the world has: <strong>3.2 billion daily active users</strong> across WhatsApp, Instagram, and Facebook. Even a second-tier AI model, baked into those platforms, reaches more humans than any competitor could dream of. That distribution moat is enormous and real.</p>
+    <p>The pipeline continues — Mango for image and video generation, Watermelon as Avocado's successor. Rich companies get more than one swing. Zuckerberg clearly intends to keep paying for them.</p>
+  </div>
+
+  <div class="callout red fade-up">
+    <span class="callout-label">🎯 The One-Line Summary</span>
+    <p>Meta is not in trouble the way a startup is in trouble. But it is in trouble the way a giant is in trouble — it made a very loud, very expensive promise about AI leadership, and the results aren't matching the promises. <strong>The gap between the rhetoric and the reality is the actual story.</strong> And that gap, for now, is named Avocado.</p>
+  </div>
+
+  <div class="fact-row fade-up">
+    <div class="fact-card"><span class="fc-num">$600B</span><span class="fc-label">Total AI infrastructure committed by 2028</span></div>
+    <div class="fact-card"><span class="fc-num">3.2B</span><span class="fc-label">Daily active users — the real moat</span></div>
+    <div class="fact-card"><span class="fc-num">Dec 2025</span><span class="fc-label">Avocado's original release date</span></div>
+    <div class="fact-card"><span class="fc-num">May 2026+</span><span class="fc-label">Current earliest expected release</span></div>
+  </div>
+
+  <div class="tag-row fade-up">
+    <span class="tag">#DecodeWithAni</span>
+    <span class="tag">#Day13of90</span>
+    <span class="tag">#Meta</span>
+    <span class="tag">#Avocado</span>
+    <span class="tag">#Zuckerberg</span>
+    <span class="tag">#AlexandrWang</span>
+    <span class="tag">#YannLeCun</span>
+    <span class="tag">#AIRace</span>
+    <span class="tag">#MetaAI</span>
+    <span class="tag">#AINews</span>
+    <span class="tag">#BreakingAI</span>
+  </div>
+
+</article>
+
+<div class="closing">
+  <span class="close-badge">90 Days · DecodeWithAni</span>
+  <h3>Can Zuckerberg Close the Gap? 🤔</h3>
+  <p>$600 billion committed. 3.2 billion users. And a model that's still not ready. Do you think Meta can catch OpenAI and Google — or is the gap too big now? Drop your thoughts in the comments.</p>
+  <br/>
+  <a href="/#subscribe" class="closing-btn">📬 Subscribe — Never Miss a Decode</a>
+</div>
+
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <p class="footer-sub">Decoding life, one topic at a time — No jargon. No fear. Just the truth.<br/>
+  <a href="/">Home</a> ·
+  <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet">AI Tools</a> ·
+  <a href="/#subscribe">Subscribe</a></p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
