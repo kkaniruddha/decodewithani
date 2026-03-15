@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>1,600 Jobs Gone in a Morning — The Atlassian Story and the AI Layoff Wave of 2026 | DecodeWithAni</title>
+  <meta name="description" content="On March 11, 2026, Atlassian cut 1,600 jobs and replaced its CTO — all before lunch. Here's the full story decoded: why it happened, who's next, and what December 2026 might actually look like."/>
+  <style>
+    :root{
+      --purple:#a78bfa;--purple-d:#7c3aed;--purple-light:rgba(167,139,250,0.12);
+      --blue:#60a5fa;--blue-d:#2563eb;
+      --amber:#fcd34d;--red:#fca5a5;--red-d:#dc2626;
+      --bg:#0d0d1a;--bg2:#111122;--bg3:#1a1a2e;--bg4:#1e1e3a;
+      --border:#2a2a4a;--border-l:rgba(167,139,250,0.2);
+      --white:#ffffff;--grey:#9ca3af;--lgrey:#d1d5db;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Georgia',serif;line-height:1.9;font-size:1.05rem}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple-d);border-radius:3px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+    .nav-brand{font-size:1rem;font-weight:800;font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:1.5rem}
+    .nav-links a{color:var(--grey);text-decoration:none;font-size:0.82rem;font-family:'Segoe UI',system-ui,sans-serif;transition:color 0.2s}
+    .nav-links a:hover{color:var(--purple)}
+    .nav-cta{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white!important;padding:0.32rem 1rem;border-radius:20px;font-weight:700!important}
+
+    /* HERO */
+    .hero{padding:100px 24px 60px;max-width:860px;margin:0 auto;text-align:center;position:relative}
+    .hero::before{content:'';position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d));z-index:200}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--purple-light);border:1px solid var(--border-l);color:var(--purple);padding:0.38rem 1.1rem;border-radius:30px;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.8rem;font-family:'Segoe UI',system-ui,sans-serif}
+    .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--purple);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+    .hero-icon{font-size:72px;display:block;margin-bottom:20px;filter:drop-shadow(0 0 32px rgba(167,139,250,0.4));animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .hero h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:900;color:var(--white);line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;font-family:'Segoe UI',system-ui,sans-serif}
+    .hero h1 .grad{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:1.05rem;color:var(--grey);max-width:580px;margin:0 auto 2.5rem;line-height:1.85}
+    .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:3rem}
+    .stat{background:var(--bg3);padding:20px 14px;text-align:center}
+    .stat-num{display:block;font-size:1.7rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'Segoe UI',system-ui,sans-serif}
+    .stat-lbl{font-size:0.66rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase;font-family:'Segoe UI',system-ui,sans-serif}
+    .hero-meta{display:flex;align-items:center;justify-content:center;gap:1.5rem;font-size:0.8rem;color:var(--grey);font-family:'Segoe UI',system-ui,sans-serif}
+    .hero-meta span{display:flex;align-items:center;gap:5px}
+
+    /* BODY */
+    .post-body{max-width:760px;margin:0 auto;padding:0 24px 80px}
+
+    /* CHAPTER DIVIDER */
+    .chapter{margin:3.5rem 0 2rem;position:relative}
+    .chapter-line{display:flex;align-items:center;gap:14px;margin-bottom:1.6rem}
+    .chapter-num{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);background:var(--purple-light);border:1px solid var(--border-l);padding:5px 14px;border-radius:20px;white-space:nowrap;font-family:'Segoe UI',system-ui,sans-serif}
+    .chapter-rule{flex:1;height:1px;background:linear-gradient(90deg,var(--border-l),transparent)}
+    .chapter h2{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;color:var(--white);line-height:1.15;font-family:'Segoe UI',system-ui,sans-serif}
+
+    /* PROSE */
+    .post-body p{margin-bottom:1.6rem;color:var(--lgrey)}
+    .post-body p.intro{font-size:1.12rem;color:var(--white);line-height:1.95}
+    .post-body strong{color:var(--white)}
+
+    /* PULL QUOTE */
+    .pull-quote{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(37,99,235,0.06));border-left:4px solid var(--purple-d);border-radius:0 14px 14px 0;padding:22px 28px;margin:2.2rem 0;position:relative}
+    .pull-quote::before{content:'\201C';font-size:4rem;color:var(--purple-d);opacity:0.3;position:absolute;top:-8px;left:14px;font-family:Georgia,serif;line-height:1}
+    .pull-quote p{font-size:1.12rem;color:var(--white);font-style:italic;line-height:1.75;margin:0;padding-left:16px}
+    .pull-quote cite{display:block;font-size:0.78rem;color:var(--purple);margin-top:10px;padding-left:16px;font-style:normal;font-weight:700;font-family:'Segoe UI',system-ui,sans-serif}
+
+    /* JARGON BOX */
+    .jargon{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin:2rem 0;display:flex;gap:14px;align-items:flex-start}
+    .jargon-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+    .jargon-label{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:4px;font-family:'Segoe UI',system-ui,sans-serif}
+    .jargon-term{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:6px;font-family:'Segoe UI',system-ui,sans-serif}
+    .jargon p{font-size:0.88rem;color:var(--grey);line-height:1.7;margin:0}
+
+    /* CALLOUT BOX */
+    .callout{border-radius:16px;padding:24px 26px;margin:2rem 0}
+    .callout.amber{background:rgba(252,211,77,0.06);border:1px solid rgba(252,211,77,0.2)}
+    .callout.red{background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2)}
+    .callout.purple{background:var(--purple-light);border:1px solid var(--border-l)}
+    .callout-title{font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-family:'Segoe UI',system-ui,sans-serif}
+    .callout.amber .callout-title{color:var(--amber)}
+    .callout.red .callout-title{color:#f87171}
+    .callout.purple .callout-title{color:var(--purple)}
+    .callout p{font-size:0.92rem;color:var(--lgrey);margin:0;line-height:1.75}
+
+    /* DATA TABLE */
+    .data-table{width:100%;border-collapse:collapse;margin:2rem 0;font-family:'Segoe UI',system-ui,sans-serif}
+    .data-table th{background:var(--bg4);color:var(--purple);font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+    .data-table td{padding:12px 16px;border-bottom:1px solid rgba(42,42,74,0.5);font-size:0.88rem;color:var(--lgrey)}
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table tr:hover td{background:rgba(167,139,250,0.04)}
+    .data-table .company{color:var(--white);font-weight:700}
+    .data-table .jobs{color:#f87171;font-weight:700}
+    .table-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:2rem 0}
+    .table-caption{padding:14px 16px 0;font-size:0.7rem;color:var(--grey);letter-spacing:1px;text-transform:uppercase;font-family:'Segoe UI',system-ui,sans-serif}
+
+    /* NUMBER HIGHLIGHT */
+    .big-number{display:flex;align-items:center;gap:20px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin:2rem 0}
+    .big-number-val{font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'Segoe UI',system-ui,sans-serif;white-space:nowrap}
+    .big-number-desc{font-size:0.9rem;color:var(--grey);line-height:1.6}
+    .big-number-desc strong{color:var(--white)}
+
+    /* PREDICTION BOX */
+    .prediction{background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(37,99,235,0.08));border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:32px;margin:2.5rem 0;position:relative;overflow:hidden}
+    .prediction::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple-d),var(--blue-d))}
+    .prediction-badge{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);background:var(--purple-light);border:1px solid var(--border-l);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:14px;font-family:'Segoe UI',system-ui,sans-serif}
+    .prediction h3{font-size:1.2rem;font-weight:800;color:var(--white);margin-bottom:12px;font-family:'Segoe UI',system-ui,sans-serif}
+    .prediction p{font-size:0.92rem;color:var(--grey);line-height:1.8;margin-bottom:10px}
+    .prediction p:last-child{margin-bottom:0}
+
+    /* FINAL QUESTION */
+    .final-question{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(37,99,235,0.08));border:1px solid rgba(167,139,250,0.25);border-radius:20px;padding:36px;margin:3rem 0;text-align:center}
+    .fq-icon{font-size:3rem;display:block;margin-bottom:16px}
+    .final-question h3{font-size:1.4rem;font-weight:900;color:var(--white);line-height:1.3;margin-bottom:14px;font-family:'Segoe UI',system-ui,sans-serif}
+    .final-question p{font-size:0.95rem;color:var(--grey);line-height:1.8;max-width:520px;margin:0 auto}
+
+    /* CTA */
+    .cta-strip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:36px;text-align:center;margin:3rem 0}
+    .cta-strip h3{font-size:1.3rem;font-weight:800;color:var(--white);margin-bottom:10px;font-family:'Segoe UI',system-ui,sans-serif}
+    .cta-strip p{font-size:0.9rem;color:var(--grey);margin-bottom:20px;line-height:1.7}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{background:linear-gradient(135deg,var(--purple-d),var(--blue-d));color:white;padding:0.75rem 1.9rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.92rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(124,58,237,0.3);font-family:'Segoe UI',system-ui,sans-serif}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,0.45)}
+    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--lgrey);padding:0.75rem 1.9rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.92rem;transition:border-color 0.2s,color 0.2s;font-family:'Segoe UI',system-ui,sans-serif}
+    .btn-secondary:hover{border-color:var(--purple);color:var(--purple)}
+
+    /* NAV BETWEEN POSTS */
+    .post-nav{display:flex;justify-content:space-between;gap:16px;margin:3rem 0;flex-wrap:wrap}
+    .post-nav-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px 20px;text-decoration:none;flex:1;min-width:220px;transition:border-color 0.2s}
+    .post-nav-item:hover{border-color:var(--purple-d)}
+    .pn-label{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:5px;font-family:'Segoe UI',system-ui,sans-serif}
+    .pn-title{font-size:0.88rem;font-weight:700;color:var(--white);line-height:1.35;font-family:'Segoe UI',system-ui,sans-serif}
+    .post-nav-item.next{text-align:right}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2.5rem 5%;text-align:center}
+    .footer-brand{font-size:1rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'Segoe UI',system-ui,sans-serif}
+    .footer-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin:1rem 0}
+    .footer-links a{color:var(--grey);text-decoration:none;font-size:0.8rem;font-family:'Segoe UI',system-ui,sans-serif;transition:color 0.2s}
+    .footer-links a:hover{color:var(--purple)}
+    .footer-copy{font-size:0.72rem;color:var(--grey);margin-top:0.5rem;font-family:'Segoe UI',system-ui,sans-serif}
+
+    .fade-up{opacity:0;transform:translateY(22px);transition:opacity 0.55s,transform 0.55s}
+    .fade-up.vis{opacity:1;transform:translateY(0)}
+
+    @media(max-width:680px){
+      .hero-stats{grid-template-columns:repeat(2,1fr)}
+      .big-number{flex-direction:column;text-align:center}
+      .post-nav{flex-direction:column}
+      .nav-links a:not(.nav-cta){display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP PROGRESS BAR ON SCROLL -->
+<script>
+  window.addEventListener('scroll',()=>{
+    const prog=document.getElementById('prog');
+    if(prog){const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'}
+  });
+</script>
+<div id="prog" style="position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#7c3aed,#2563eb);z-index:300;width:0;transition:width 0.1s"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-links">
+    <a href="/#blog">← All Decodes</a>
+    <a href="/#subscribe" class="nav-cta">📬 Subscribe</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero fade-up">
+  <div class="hero-badge"><div class="dot"></div>Day 14 · AI & Jobs · March 2026</div>
+  <span class="hero-icon">💼</span>
+  <h1>1,600 Jobs Gone<br/>in a <span class="grad">Single Morning</span></h1>
+  <p class="hero-sub">On March 11, 2026, Atlassian cut 10% of its workforce, replaced its CTO, and watched its share price go up. This is the full story — and it's bigger than one company.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">1,600</span><span class="stat-lbl">Atlassian Jobs Cut</span></div>
+    <div class="stat"><span class="stat-num">48,100+</span><span class="stat-lbl">Global Tech Layoffs 2026</span></div>
+    <div class="stat"><span class="stat-num">264K</span><span class="stat-lbl">Projected by Dec 2026</span></div>
+    <div class="stat"><span class="stat-num">+2%</span><span class="stat-lbl">Stock Reaction</span></div>
+  </div>
+  <div class="hero-meta">
+    <span>📖 12 min read</span>
+    <span>·</span>
+    <span>🧠 8 chapters</span>
+    <span>·</span>
+    <span>📅 March 15, 2026</span>
+  </div>
+</div>
+
+<!-- POST BODY -->
+<div class="post-body">
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 1</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The Email That Changed 1,600 Lives</h2>
+  </div>
+
+  <p class="intro fade-up">It was a Tuesday morning. At 9 AM, 1,600 people who worked at Atlassian — the company behind the project management tools Jira, Confluence and Trello that millions of teams use every day — received an email. They had twenty minutes to find out if their job still existed.</p>
+
+  <p class="fade-up">Twenty minutes. That is not a typo.</p>
+
+  <p class="fade-up">Workers reported on social media that they received an automated message giving them a short window to click a link and discover whether they were being let go. No face-to-face meeting. No manager call. A link. A countdown. An answer.</p>
+
+  <div class="pull-quote fade-up">
+    <p>We are doing this to self-fund further investment in AI and enterprise sales, while strengthening our financial profile.</p>
+    <cite>— Mike Cannon-Brookes, CEO, Atlassian · March 11, 2026</cite>
+  </div>
+
+  <p class="fade-up">The memo from CEO Mike Cannon-Brookes was carefully worded. He called it adaptation. He said the bar for what "great" looks like for software companies had gone up. He acknowledged it was a very tough day. He promised severance packages above the legal minimum — a $1,000 technology stipend, accelerated bonuses, at least 16 weeks of separation pay.</p>
+
+  <p class="fade-up">And then, in after-market trading, Atlassian's stock went up 2%.</p>
+
+  <p class="fade-up">That single fact tells you more about what is happening in the tech industry right now than almost anything else. And understanding why — really understanding it — is what this decode is about.</p>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 2</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The Company That Was Actually Winning</h2>
+  </div>
+
+  <p class="fade-up">Here is the part of this story that almost nobody is talking about.</p>
+
+  <p class="fade-up">Atlassian is not a struggling company. Before the layoffs were announced, the company had just reported cloud revenue of approximately $1.07 billion — up 26% compared to the same period a year earlier. Its contracted future revenue (a number called Remaining Performance Obligations, or RPO) had grown 44%. Its AI assistant tool, Rovo, had just crossed five million monthly active users. The company reaffirmed its full-year financial guidance on the exact same day it announced the cuts.</p>
+
+  <div class="big-number fade-up">
+    <div class="big-number-val">$1.59B</div>
+    <div class="big-number-desc"><strong>Atlassian's quarterly revenue</strong> in the final quarter of 2025 — up $300 million year on year. This is not a company in financial crisis. It is a company choosing to restructure from a position of strength.</div>
+  </div>
+
+  <p class="fade-up">So if the company was growing, why did 1,600 people lose their jobs?</p>
+
+  <p class="fade-up">The answer lies in a number that never made the headlines: Atlassian has been <strong>unprofitable since 2017</strong>. In the most recent quarter, it recorded a net loss of $42 million — actually slightly worse than the $38 million loss from a year before. Enormous top-line revenue growth. Persistent bottom-line loss. Investors who have been patient for almost a decade starting to run out of that patience.</p>
+
+  <div class="jargon fade-up">
+    <div class="jargon-icon">💡</div>
+    <div>
+      <div class="jargon-label">Jargon Decoded</div>
+      <div class="jargon-term">Net Loss vs Revenue Growth</div>
+      <p>Revenue is the total money coming in. Net loss is what's left after all costs. A company can have enormous, growing revenue and still lose money if its costs are growing even faster. Atlassian earns a lot — but spends even more. The investors' patience for that gap was running out, which is partly why they cheered the layoffs.</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER 3 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 3</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The Leadership Exodus Nobody Noticed</h2>
+  </div>
+
+  <p class="fade-up">On the very same day Atlassian announced the 1,600 layoffs, something else happened — and it barely made the news.</p>
+
+  <p class="fade-up"><strong>Rajeev Rajan</strong>, Atlassian's Chief Technology Officer, announced he would step down on March 31st. To understand why that matters, you need to know who Rajeev Rajan is. He was not a junior executive. He spent over two decades at Microsoft in engineering leadership roles. He then became VP of Engineering at Meta — one of the most powerful technology companies in the world. He joined Atlassian four years ago to build their R&D organisation from the ground up.</p>
+
+  <p class="fade-up">And he left without publicly saying a single word about why.</p>
+
+  <div class="callout purple fade-up">
+    <div class="callout-title">⚡ What Happened Next</div>
+    <p>Atlassian split the CTO role between two executives. Taroon Mandhana — formerly head of engineering for AI and products — became CTO Teamwork. Vikram Rao became CTO Enterprise. Atlassian called them "next generation AI talent." In a single sentence, they told you everything about the philosophy reset underway: the old guard of software engineering leadership was out. The AI-native generation was in.</p>
+  </div>
+
+  <p class="fade-up">This is not just a restructuring. This is a company changing the definition of what kind of person builds its future. And Atlassian is not the only one doing it.</p>
+
+  <!-- CHAPTER 4 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 4</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The SaaSpocalypse — The Market Panic Nobody Explained to You</h2>
+  </div>
+
+  <p class="fade-up">To truly understand what happened at Atlassian, you need one piece of context that most news articles assume you already know. You almost certainly don't. It is called the <strong>SaaSpocalypse</strong>.</p>
+
+  <div class="jargon fade-up">
+    <div class="jargon-icon">💡</div>
+    <div>
+      <div class="jargon-label">Jargon Decoded</div>
+      <div class="jargon-term">The SaaSpocalypse</div>
+      <p>SaaS stands for Software as a Service — basically any software you pay a monthly subscription to use, like Slack, Salesforce, Atlassian's Jira, or Notion. The "SaaSpocalypse" is a term traders coined for a brutal selloff in SaaS company stocks that began in early 2026. Why? Because investors started asking a terrifying question: if AI can now do most of what these software tools do — build project trackers, generate reports, manage workflows — why would companies pay $50 per user per month for software forever? Maybe AI agents replace the software itself. That fear drove mass selling of SaaS stocks. Atlassian lost more than half its market value since January 2026 alone.</p>
+    </div>
+  </div>
+
+  <p class="fade-up">Atlassian's stock had already fallen more than 84% from its all-time high reached in late 2021, during the pandemic era when every software company looked invincible. By the time the layoffs were announced, it had lost more than half of its remaining value just since January 2026.</p>
+
+  <div class="pull-quote fade-up">
+    <p>The bar for what 'great' looks like for software companies — on growth, on profitability, on speed, on value creation — has gone up.</p>
+    <cite>— Mike Cannon-Brookes, Atlassian CEO Blog Post · March 11, 2026</cite>
+  </div>
+
+  <p class="fade-up">Cannon-Brookes never used the words "SaaSpocalypse" or even "investor pressure" in his memo. He said "the bar has gone up." That is a CEO speaking to two audiences at once — to the 1,600 people losing their jobs, and to the investors he desperately needed to reassure. The stock going up after the announcement tells you which audience was more satisfied.</p>
+
+  <!-- CHAPTER 5 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 5</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>"AI Is the Reason" — The Honest, Complicated Truth</h2>
+  </div>
+
+  <p class="fade-up">When a company cuts jobs and says "AI is the reason," there are usually three things happening at once. Only one of them is the story they want you to hear.</p>
+
+  <p class="fade-up"><strong>The first thing:</strong> The Pandemic Overhire Hangover. Between 2020 and 2022, every tech company hired furiously. Digital demand exploded. Zoom, Atlassian, Meta, Amazon — they all grew teams at speeds that were never sustainable. When the boom ended, they were massively overstaffed. Companies have been quietly correcting that error for three years. Saying "AI changed the math" sounds better than "we hired too many people."</p>
+
+  <p class="fade-up"><strong>The second thing:</strong> Investor Pressure. The SaaSpocalypse made this worse. Cutting headcount while announcing an AI strategy sends a signal to investors: we get it, we're adapting, we won't be obsolete. The stock going up after layoffs is the market responding: finally.</p>
+
+  <p class="fade-up"><strong>The third thing</strong> — and this is the one that is genuinely real and genuinely new: <strong>AI is actually reducing how many people certain jobs require.</strong> Not in every role. Not evenly. But in specific areas — code generation, routine QA testing, data analysis, tier-1 customer support — one person using AI tools well can now do the work that previously required a team.</p>
+
+  <div class="callout amber fade-up">
+    <div class="callout-title">⚠️ The "AI Washing" Warning</div>
+    <p>OpenAI's own CEO Sam Altman called this out in February 2026 — describing companies that use AI as justification for cuts made primarily for financial reasons as "AI washing." He estimated fewer than 1% of real-world job losses could be genuinely attributed to AI replacing workers today. That number will change. But right now, in many of the 2026 layoffs, AI is at least partly a cover story.</p>
+  </div>
+
+  <div class="jargon fade-up">
+    <div class="jargon-icon">💡</div>
+    <div>
+      <div class="jargon-label">Jargon Decoded</div>
+      <div class="jargon-term">AI Washing</div>
+      <p>Just like "greenwashing" is when a company pretends to be more environmentally friendly than it is, "AI washing" is when a company overstates how much artificial intelligence is driving a decision — when the real reasons are more uncomfortable: financial pressure, past overhiring, or investor expectations.</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER 6 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 6</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The 2026 Hall of Shame — Atlassian Is Not Alone</h2>
+  </div>
+
+  <p class="fade-up">Atlassian's 1,600 job cuts made headlines. But zoom out, and you realise it is a single chapter in a much larger story.</p>
+
+  <div class="table-wrap fade-up">
+    <div class="table-caption">🗓️ Major Tech Layoffs — 2026 (January–March)</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Jobs Cut</th>
+          <th>Official Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="company">Amazon</td><td class="jobs">16,000+</td><td>Restructuring cloud & AI investment</td></tr>
+        <tr><td class="company">Block (Jack Dorsey)</td><td class="jobs">4,000 (40%!)</td><td>"Intelligence tools changed how we build companies"</td></tr>
+        <tr><td class="company">WiseTech Global</td><td class="jobs">2,000 (30%)</td><td>"Era of manually writing code is over"</td></tr>
+        <tr><td class="company">Atlassian</td><td class="jobs">1,600 (10%)</td><td>"Self-fund AI investment"</td></tr>
+        <tr><td class="company">Ericsson</td><td class="jobs">1,900</td><td>Telecom restructuring + AI</td></tr>
+        <tr><td class="company">ASML</td><td class="jobs">1,700</td><td>Restructuring</td></tr>
+        <tr><td class="company">Pinterest</td><td class="jobs">~675 (15%)</td><td>"AI-forward strategy"</td></tr>
+        <tr><td class="company">eBay</td><td class="jobs">800</td><td>Third round since 2023</td></tr>
+        <tr><td class="company">Meta (Reality Labs)</td><td class="jobs">1,500</td><td>Shift from metaverse to AI</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="big-number fade-up">
+    <div class="big-number-val">48,100+</div>
+    <div class="big-number-desc"><strong>Global tech layoffs as of March 15, 2026</strong> — surpassing the same period in 2025. Roughly 20% are explicitly tied to AI adoption and organisational restructuring. The other 80% are linked to financial pressure, restructuring, and — yes — the pandemic overhire correction that never quite finished.</div>
+  </div>
+
+  <p class="fade-up">In 2025, AI was cited as the cause of nearly 55,000 layoffs in the US alone. Earlier waves of cuts focused on operational and support roles. The 2026 wave is different. It is now reaching specialised and senior roles — engineers, data scientists, product managers — as companies reorganise entire departments around AI-first ways of working.</p>
+
+  <!-- CHAPTER 7 -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 7</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The December 2026 Prediction — My Honest Call</h2>
+  </div>
+
+  <p class="fade-up">Here is what the data says. Here is what I think it actually means.</p>
+
+  <p class="fade-up">RationalFX, the financial research firm tracking these numbers, has done the maths: if layoffs continue at their current pace through 2026, total tech job cuts could reach <strong>264,730 by year-end</strong> — surpassing 2025's total of 245,000. That is the straight-line projection. But real life is never straight-line.</p>
+
+  <div class="prediction fade-up">
+    <div class="prediction-badge">🔮 DecodeWithAni Analysis — December 2026</div>
+    <h3>My Honest Forecast: 200,000–230,000 Layoffs Total</h3>
+    <p>Here is why I think the 264,000 number is a ceiling, not a certainty. The first quarter of 2026 was front-loaded. Amazon alone accounts for over 16,000 of the 48,000 global cuts — more than a third. That is an outlier event, not a sustainable monthly pace. As the biggest companies finish their restructuring, the rate is likely to slow in Q3 and Q4.</p>
+    <p>But I do not think it slows to nothing. The SaaSpocalypse investor pressure is real and ongoing. Meta has reportedly been preparing cuts that could affect up to 15,000 employees — 20% of its workforce — if the reports from early March prove accurate. Oracle is reportedly considering 20,000–30,000 cuts to fund its AI data centres. If those materialize, the full-year number could easily reach 230,000.</p>
+    <p><strong>The more important number:</strong> I believe the composition of layoffs will shift. By December 2026, we will see fewer cuts in junior roles and more cuts in mid-senior roles where AI automation is now genuinely threatening. The people most at risk in Q4 2026 are not entry-level support agents — they are mid-level engineers and analysts who have not adopted AI tools and whose managers now have data to prove the gap in productivity.</p>
+  </div>
+
+  <div class="callout red fade-up">
+    <div class="callout-title">🚨 The Roles at Highest Risk by December 2026</div>
+    <p>Manual QA testing · Basic data entry and data labelling · Tier-1 customer support · Routine code review and documentation · Content production at scale · Mid-level business analysts doing work that AI dashboards now automate</p>
+  </div>
+
+  <div class="callout purple fade-up">
+    <div class="callout-title">🌱 The Roles Growing Fastest Through 2026</div>
+    <p>AI prompt engineering · Model fine-tuning and evaluation · AI safety and policy · Data curation and quality assurance for AI systems · People who can bridge AI tools with real-world human judgment in messy, high-stakes situations</p>
+  </div>
+
+  <p class="fade-up">The most important pattern emerging from all of this data is one that almost no CEO is saying out loud: <strong>companies that invested in reskilling their people before restructuring retained more talent and made better cuts.</strong> Accenture was a rare exception — CEO Julie Sweet explicitly committed to retraining employees whose roles could evolve, and only exiting those who could not adapt. Most companies did not try. They hired AI, then fired humans, without ever asking whether the humans could have made the transition.</p>
+
+  <!-- CHAPTER 8 — THE QUESTION -->
+  <div class="chapter fade-up">
+    <div class="chapter-line">
+      <span class="chapter-num">Chapter 8</span>
+      <div class="chapter-rule"></div>
+    </div>
+    <h2>The Question Nobody Is Asking</h2>
+  </div>
+
+  <p class="fade-up">Every headline about AI layoffs focuses on the same story: AI is taking jobs. Some say it is inevitable. Some say it is overblown. Most say some version of "upskill or be left behind" before moving on to the next news cycle.</p>
+
+  <p class="fade-up">But here is the question I have not seen asked — not once — in any of the coverage of Atlassian, Block, WiseTech, or any of the other 2026 layoffs.</p>
+
+  <p class="fade-up"><strong>How many of the 1,600 Atlassian employees who lost their jobs were actually given a fair chance to adopt AI — with real tools, real training, and real time — before the company decided they were no longer needed?</strong></p>
+
+  <p class="fade-up">Because there is a difference between "this person's role was eliminated by AI" and "this person was never given the tools to compete with AI." The first is a technological inevitability. The second is a management failure dressed up as one.</p>
+
+  <p class="fade-up">Cannon-Brookes said: "Our approach is not 'AI replaces people.' But it would be disingenuous to pretend AI doesn't change the mix of skills we need." That is an honest sentence. But it quietly skips the harder question: whose job was it to change those skills? The employee's? Or the company that paid them?</p>
+
+  <div class="final-question fade-up">
+    <span class="fq-icon">🤔</span>
+    <h3>The Big Question to Sit With</h3>
+    <p>We talk about AI adoption as if it is an individual responsibility — a personal failure if you did not learn fast enough. But most of the people losing jobs in 2026 were never given the training, the tools, or the time to adapt. If a company invests billions in AI infrastructure and almost nothing in reskilling the humans already inside it — then lays those humans off and calls it "AI disruption" — is that the future taking its natural course? Or is it a choice that someone made?</p>
+  </div>
+
+  <!-- NAVIGATE -->
+  <div class="post-nav fade-up">
+    <a href="day13-meta-avocado-delay-zuckerberg-decodeai.html" class="post-nav-item">
+      <div class="pn-label">← Day 13</div>
+      <div class="pn-title">Zuckerberg's Broken Promise — The Avocado Delay</div>
+    </a>
+    <a href="/" class="post-nav-item next">
+      <div class="pn-label">All Decodes →</div>
+      <div class="pn-title">Back to the Full 90-Day Series</div>
+    </a>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip fade-up">
+    <h3>📬 Never Miss a Decode</h3>
+    <p>One honest, clear decode every day for 90 days. No jargon. No paywall. Just the real story behind the things that matter.</p>
+    <div class="cta-btns">
+      <a href="/#subscribe" class="btn-primary">Subscribe Free →</a>
+      <a href="/" class="btn-secondary">Read All 14 Decodes</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day2-history-of-ai-decodeai.html">Day 2</a>
+    <a href="day3-what-is-ai-decodeai.html">Day 3</a>
+    <a href="day4-machine-learning-decodeai.html">Day 4</a>
+    <a href="day5-neural-networks-decodeai.html">Day 5</a>
+    <a href="day6-apple-google-siri-decodeai.html">Day 6</a>
+    <a href="day7-large-language-models-decodeai.html">Day 7</a>
+    <a href="day8-suryakumar-yadav-decodeai.html">Day 8</a>
+    <a href="day9-ai-art-prompt-challenge-decodeai.html">Day 9</a>
+    <a href="day10-ai-deleted-data-decodeai.html">Day 10</a>
+    <a href="day11-mira-murati-thinking-machines-nvidia-decodeai.html">Day 11</a>
+    <a href="day12-nvidia-ai-chips-electricity-space-decodeai.html">Day 12</a>
+    <a href="day13-meta-avocado-delay-zuckerberg-decodeai.html">Day 13</a>
+    <a href="day14-atlassian-ai-layoffs-decodeai.html">Day 14</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+  </div>
+  <p class="footer-copy">© 2026 DecodeWithAni · decodewithani.com · Decoding life, one topic at a time</p>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:0.07});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
