@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anthropic's Masterstroke — The AI That Works While You Sleep | DecodeWithAni Day 19</title>
+  <meta name="description" content="On March 23, 2026, Anthropic crossed a line most AI companies only dreamed about. Claude can now use your computer — clicking, typing, navigating — while you do something else entirely. Day 19 of DecodeWithAni."/>
+  <style>
+    :root {
+      --amber: #f59e0b;
+      --amber-d: #d97706;
+      --amber-l: #fcd34d;
+      --amber-glow: rgba(245,158,11,0.18);
+      --amber-border: rgba(245,158,11,0.28);
+      --bg: #0d0d1a;
+      --bg2: #111120;
+      --bg3: #1a1a2e;
+      --bg4: #1e1e38;
+      --border: #2a2a4a;
+      --white: #ffffff;
+      --grey: #9ca3af;
+      --lgrey: #d1d5db;
+      --purple: #a78bfa;
+      --blue: #60a5fa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--lgrey); font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.85; }
+    ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--amber-d); border-radius: 3px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,26,0.94); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 58px; }
+    .nav-brand { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1rem; font-weight: 800; background: linear-gradient(135deg, var(--amber), #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.83rem; font-family: 'Segoe UI', system-ui, sans-serif; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--amber); }
+    .nav-back { background: var(--amber-glow); border: 1px solid var(--amber-border); color: var(--amber) !important; padding: 0.3rem 1rem; border-radius: 20px; font-weight: 600 !important; }
+
+    /* HERO */
+    .hero { min-height: 96vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 110px 24px 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse 110% 60% at 50% 0%, rgba(245,158,11,0.14) 0%, transparent 60%), radial-gradient(ellipse 80% 40% at 20% 100%, rgba(249,115,22,0.07) 0%, transparent 50%), var(--bg); }
+    .hero-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0; background-image: linear-gradient(rgba(245,158,11,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,0.035) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black, transparent); }
+    .day-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--amber-glow); border: 1px solid var(--amber-border); color: var(--amber); -webkit-text-fill-color: var(--amber); padding: 0.38rem 1.1rem; border-radius: 30px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 1.8rem; font-family: 'Segoe UI', system-ui, sans-serif; position: relative; z-index: 1; }
+    .day-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); animation: pulse 1.6s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.75)} }
+    .hero-icon { font-size: 90px; margin-bottom: 24px; filter: drop-shadow(0 0 40px rgba(245,158,11,0.5)); animation: float 3.8s ease-in-out infinite; position: relative; z-index: 1; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .hero h1 { font-size: clamp(2.2rem, 6.5vw, 4.6rem); font-weight: 900; color: #ffffff; -webkit-text-fill-color: #ffffff; line-height: 1.06; max-width: 880px; margin-bottom: 0.8rem; letter-spacing: -1.5px; font-family: 'Segoe UI', system-ui, sans-serif; position: relative; z-index: 1; }
+    .hero h1 .grad { background: linear-gradient(135deg, var(--amber), #f97316, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub { font-size: 1.1rem; color: #f59e0b; -webkit-text-fill-color: #f59e0b; font-weight: 600; margin-bottom: 1.2rem; font-family: 'Segoe UI', system-ui, sans-serif; letter-spacing: 0.3px; position: relative; z-index: 1; }
+    .hero-desc { font-size: 1.05rem; color: #9ca3af; -webkit-text-fill-color: #9ca3af; max-width: 600px; line-height: 1.9; margin-bottom: 2.8rem; position: relative; z-index: 1; }
+    .hero-stats { display: flex; gap: 2.8rem; flex-wrap: wrap; justify-content: center; padding-top: 2.5rem; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+    .hero-stat .num { font-size: 1.9rem; font-weight: 900; display: block; background: linear-gradient(135deg, var(--amber), #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .hero-stat .lbl { font-size: 0.68rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .scroll-arrow { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); color: rgba(245,158,11,0.4); font-size: 18px; animation: bounce 2s infinite; font-family: sans-serif; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(9px)} }
+
+    /* ARTICLE BODY */
+    .article { max-width: 780px; margin: 0 auto; padding: 60px 28px 80px; }
+
+    /* CHAPTER OPENER */
+    .chapter-opener { display: flex; align-items: center; gap: 18px; margin: 70px 0 38px; }
+    .ch-num { font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); background: var(--amber-glow); border: 1px solid var(--amber-border); padding: 6px 14px; border-radius: 20px; white-space: nowrap; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .ch-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--amber-border), transparent); }
+    .chapter-opener h2 { display: none; }
+
+    h2.chapter-title { font-size: 1.65rem; font-weight: 800; color: var(--white); line-height: 1.22; margin-bottom: 1.4rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+    h3.sub-title { font-size: 1.15rem; font-weight: 700; color: var(--white); margin: 2rem 0 0.9rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+    p { margin-bottom: 1.4rem; font-size: 1.05rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* JARGON BOX */
+    .jargon-box { background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(249,115,22,0.04)); border: 1px solid var(--amber-border); border-left: 4px solid var(--amber); border-radius: 12px; padding: 22px 26px; margin: 2rem 0; }
+    .jargon-label { font-size: 0.62rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .jargon-term { font-size: 1.08rem; font-weight: 800; color: var(--white); margin-bottom: 8px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .jargon-box p { font-size: 0.95rem; color: var(--lgrey); margin-bottom: 0; line-height: 1.75; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 4px solid var(--amber); padding: 20px 28px; margin: 2.5rem 0; background: var(--amber-glow); border-radius: 0 12px 12px 0; }
+    .pull-quote p { font-size: 1.15rem; font-style: italic; color: var(--white); line-height: 1.7; font-weight: 500; margin: 0; }
+    .pull-quote cite { display: block; font-size: 0.75rem; color: var(--amber); font-style: normal; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 10px; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    /* EXAMPLE BOX */
+    .example-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 26px 28px; margin: 2rem 0; position: relative; overflow: hidden; }
+    .example-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--amber-d), #f97316); }
+    .example-label { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .example-title { font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 12px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .example-box p { font-size: 0.93rem; color: var(--lgrey); line-height: 1.75; margin-bottom: 0.8rem; }
+    .example-box p:last-child { margin-bottom: 0; }
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .before-card, .after-card { padding: 14px 16px; border-radius: 10px; font-size: 0.88rem; line-height: 1.65; }
+    .before-card { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--lgrey); }
+    .after-card { background: rgba(245,158,11,0.08); border: 1px solid var(--amber-border); color: var(--lgrey); }
+    .ba-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 7px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .before-card .ba-label { color: #f87171; }
+    .after-card .ba-label { color: var(--amber); }
+
+    /* LOOP VISUAL */
+    .loop-visual { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin: 2rem 0; }
+    .loop-label { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .loop-steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; }
+    .loop-step { background: var(--amber-glow); border: 1px solid var(--amber-border); border-radius: 10px; padding: 12px 18px; text-align: center; }
+    .ls-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+    .ls-text { font-size: 0.78rem; font-weight: 700; color: var(--white); font-family: 'Segoe UI', system-ui, sans-serif; }
+    .loop-arrow { color: var(--amber); font-size: 1.2rem; padding: 0 10px; }
+
+    /* COMPETITOR TABLE */
+    .comp-table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.88rem; }
+    .comp-table th { background: var(--bg4); color: var(--amber); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.7rem; padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .comp-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--lgrey); vertical-align: top; }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr:hover td { background: rgba(245,158,11,0.03); }
+    .comp-table .claude-row td { background: rgba(245,158,11,0.05); }
+    .comp-table .name { color: var(--white); font-weight: 700; }
+    .tick { color: #6ee7b7; font-weight: 700; }
+    .cross { color: #f87171; }
+
+    /* SAFETY CARD */
+    .safety-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.5rem 0; }
+    .safety-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .safety-icon { font-size: 1.4rem; margin-bottom: 8px; display: block; }
+    .safety-title { font-size: 0.88rem; font-weight: 700; color: var(--white); margin-bottom: 5px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .safety-desc { font-size: 0.8rem; color: var(--grey); line-height: 1.65; }
+
+    /* VERDICT BOX */
+    .verdict-box { background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(249,115,22,0.07)); border: 1px solid var(--amber-border); border-radius: 20px; padding: 36px; margin: 2.5rem 0; text-align: center; }
+    .verdict-label { font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .verdict-icon { font-size: 3rem; margin-bottom: 12px; }
+    .verdict-text { font-size: 1.1rem; color: var(--white); line-height: 1.75; font-weight: 500; max-width: 600px; margin: 0 auto; }
+
+    /* CTA */
+    .cta-section { background: linear-gradient(135deg, var(--bg3), var(--bg4)); border: 1px solid var(--border); border-top: 3px solid var(--amber); border-radius: 20px; padding: 40px; text-align: center; margin: 60px 0 20px; }
+    .cta-section h3 { font-size: 1.4rem; font-weight: 800; color: var(--white); margin-bottom: 10px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .cta-section p { color: var(--grey); font-size: 0.95rem; margin-bottom: 22px; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-amber { background: linear-gradient(135deg, var(--amber-d), #f97316); color: white; padding: 0.8rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.95rem; font-family: 'Segoe UI', system-ui, sans-serif; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(245,158,11,0.3); }
+    .btn-amber:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,158,11,0.4); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--lgrey); padding: 0.8rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.95rem; font-family: 'Segoe UI', system-ui, sans-serif; transition: border-color 0.2s, color 0.2s; }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* NAV POSTS */
+    .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 40px 0; }
+    .post-nav-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+    .post-nav-card:hover { border-color: var(--amber-border); transform: translateY(-2px); }
+    .pn-dir { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .pn-title { font-size: 0.92rem; font-weight: 700; color: var(--white); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.35; }
+    .post-nav-card.next { text-align: right; }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2.5rem 5%; text-align: center; }
+    .footer-brand { font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--amber), #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .footer-links { display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap; margin: 1rem 0; }
+    .footer-links a { color: var(--grey); text-decoration: none; font-size: 0.8rem; font-family: 'Segoe UI', system-ui, sans-serif; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 0.5rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.6s, transform 0.6s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    strong { color: var(--white); font-weight: 700; }
+    em { color: var(--amber-l); font-style: italic; }
+
+    @media(max-width:700px){
+      .before-after { grid-template-columns: 1fr; }
+      .safety-grid { grid-template-columns: 1fr; }
+      .post-nav { grid-template-columns: 1fr; }
+      .loop-steps { flex-direction: column; }
+      .loop-arrow { transform: rotate(90deg); }
+      .comp-table { font-size: 0.78rem; }
+      .comp-table th, .comp-table td { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/">← Home</a>
+    <a href="day18-anthropic-pentagon-ai-ethics-court-decodeai.html">Day 18</a>
+    <a href="/#subscribe" class="nav-back">📬 Subscribe</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="day-badge"><div class="dot"></div>Day 19 · Computer Use · March 2026</div>
+  <div class="hero-icon">🖥️</div>
+  <h1>Anthropic's <span class="grad">Masterstroke</span><br/>The AI That Works While You Sleep</h1>
+  <p class="hero-sub">The day AI stopped answering questions — and started getting things done.</p>
+  <p class="hero-desc">On March 23, 2026, Anthropic crossed a line most AI companies had only dreamed about. Claude can now open your apps, click your buttons, fill your forms, and complete your work — while you do something else entirely.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">8</span><span class="lbl">Chapters</span></div>
+    <div class="hero-stat"><span class="num">2</span><span class="lbl">New Products</span></div>
+    <div class="hero-stat"><span class="num">0</span><span class="lbl">Jargon Left Undecoded</span></div>
+    <div class="hero-stat"><span class="num">Now</span><span class="lbl">Available</span></div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<!-- ARTICLE -->
+<article class="article">
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 01</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">The Morning That Changed Everything</h2>
+
+  <p class="fade-up">Imagine this. You're running late. You're in a taxi, phone in hand, 12 minutes from the office. Your 9am meeting starts in eight minutes. Your boss is on the call. And the presentation — a big client pitch — is still sitting as a half-finished PowerPoint on your laptop back home.</p>
+
+  <p class="fade-up">In the old world, you panic. You call a colleague. You ask them to log in remotely, find the file, export it as a PDF, and email it to the client before the meeting starts. You owe them a coffee. Maybe two.</p>
+
+  <p class="fade-up">In the new world — the world that arrived on March 23, 2026 — you open Claude on your phone. You type: <em>"Export the pitch deck on my desktop as a PDF and attach it to my 9am calendar invite."</em> You put the phone in your pocket. You walk into the office. The work is done.</p>
+
+  <p class="fade-up">This is not science fiction. This is <strong>Claude Computer Use</strong> — and it is already live.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Before this, AI could advise you. Now it can act for you. That is not an incremental improvement. That is a different category of tool entirely."</p>
+    <cite>DecodeWithAni · Day 19</cite>
+  </div>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 02</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">The Problem That Nobody Talks About</h2>
+
+  <p class="fade-up">Before we get into what Claude Computer Use does, let us understand what problem it actually solves. Because this is the kind of problem so familiar, so woven into your daily life, that you barely even notice it anymore.</p>
+
+  <p class="fade-up">It has a name. Researchers who study workplace productivity call it <strong>"swivel chair work."</strong></p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">Swivel Chair Work</div>
+    <p>The name comes from the image of an office worker literally spinning their chair from one screen to another — copying from one app, pasting into another, switching tabs, logging into different systems, pulling data from here to put it over there. It is repetitive, brain-numbing, and it swallows enormous amounts of time in modern knowledge work. Some studies estimate that professionals spend 20–40% of their working hours on exactly this kind of task.</p>
+  </div>
+
+  <p class="fade-up">Think about the last time you had to do something like this: copy a list of names from an email into a spreadsheet. Pull last month's figures from a website and paste them into a report. Log into three different tools to update the same piece of information. Fill in the same details across multiple forms. None of this is skilled work. None of it requires your brain. And yet it cannot be delegated to anyone, because it is too small and specific for a real human to take on.</p>
+
+  <p class="fade-up">Until now, AI could not help either. You could ask ChatGPT or Claude a question, and they would give you a beautiful answer — but then you still had to go do the actual clicking yourself. The AI sat on the other side of the screen, unable to reach through and just do it for you.</p>
+
+  <p class="fade-up">Claude Computer Use reaches through the screen. And that changes everything.</p>
+
+  <!-- CHAPTER 3 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 03</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">Two Products. One Massive Shift.</h2>
+
+  <p class="fade-up">What Anthropic launched on March 23, 2026 is actually two separate-but-connected products. Understanding both is key to understanding why this is such a big deal. Let us decode them properly.</p>
+
+  <h3 class="sub-title fade-up">🖥️ Product One: Computer Use</h3>
+
+  <p class="fade-up">Computer Use is exactly what it sounds like. Claude can now use your computer. Inside the Claude Desktop app — in either Claude Cowork (for everyday tasks) or Claude Code (for developers) — you can turn on a setting that gives Claude the ability to control your screen.</p>
+
+  <p class="fade-up">Once enabled, Claude can open any application on your Mac, navigate web browsers and click links, fill in forms and search boxes, work with spreadsheets and documents, run developer tools like code editors and test runners, and do essentially anything you would do sitting at your keyboard.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">Claude Cowork vs Claude Code</div>
+    <p>These are two different Claude Desktop tools. <strong>Cowork</strong> is designed for everyday knowledge workers — it helps with tasks like writing, research, data work, and managing files. <strong>Claude Code</strong> is for software developers — it can write code, run tests, and interact with the technical tools developers use daily. Computer Use is available in both. Non-technical users want Cowork. Developers want Claude Code. Both got the upgrade on the same day.</p>
+  </div>
+
+  <h3 class="sub-title fade-up">📱 Product Two: Dispatch</h3>
+
+  <p class="fade-up">Dispatch is the companion feature that makes Computer Use truly powerful. It launched a week earlier, on March 17, 2026, but became far more interesting the moment Computer Use arrived.</p>
+
+  <p class="fade-up">Here is what Dispatch does: it creates a single, continuous conversation with Claude that follows you across devices. You can be on your iPhone, send Claude a task, walk away, and come back to find the finished work waiting on your desktop. Your phone is the remote control. Your computer is where the work actually happens.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">Asynchronous vs Synchronous AI</div>
+    <p>Most AI tools are <strong>synchronous</strong> — you ask, you wait, you get an answer. You are always present and watching. <strong>Asynchronous</strong> means you can set something in motion and come back later to collect the result. Dispatch makes Claude asynchronous for the first time. You are not stuck watching Claude work. You assign, you go, you return. This is a fundamentally different relationship with an AI tool.</p>
+  </div>
+
+  <p class="fade-up">The combination of the two products is what makes this genuinely exciting. Dispatch without Computer Use is useful — but Claude can only work with things it has direct connectors for (like Google Calendar or Slack). Add Computer Use, and suddenly Claude has no limits — if it cannot connect directly, it will just open the app and do it like a human would.</p>
+
+  <!-- CHAPTER 4 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 04</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">How Does It Actually See Your Screen?</h2>
+
+  <p class="fade-up">This is the part that most people gloss over, but it is genuinely fascinating. Claude does not have some magical camera or secret window into your computer. It uses a very specific technical method — and once you understand it, the whole thing makes perfect sense.</p>
+
+  <p class="fade-up">Claude's Computer Use works in a loop. A repeating cycle of four steps that keeps going until the task is done. Think of it like a human working at a desk — they look at the screen, decide what to do, do it, then look again to see what changed.</p>
+
+  <div class="loop-visual fade-up">
+    <div class="loop-label">⚙️ How Claude Sees & Acts</div>
+    <div class="loop-steps">
+      <div class="loop-step"><span class="ls-icon">📸</span><span class="ls-text">Screenshot</span></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step"><span class="ls-icon">🧠</span><span class="ls-text">Analyse</span></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step"><span class="ls-icon">🖱️</span><span class="ls-text">Act</span></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step"><span class="ls-icon">🔄</span><span class="ls-text">Repeat</span></div>
+    </div>
+  </div>
+
+  <p class="fade-up">Step one: Claude takes a screenshot of your screen. Not a full blurry capture — it has a zoom tool that lets it focus on specific regions at full resolution, so it can read small text, see button labels, and understand exactly what is on screen.</p>
+
+  <p class="fade-up">Step two: Claude analyses what it sees using the same vision capabilities it uses to understand images. It identifies where buttons are, what text says, what the current state of the application is.</p>
+
+  <p class="fade-up">Step three: Claude acts. It might move the mouse, click a button, type text, scroll down, or press a keyboard shortcut — exactly as a human would.</p>
+
+  <p class="fade-up">Step four: repeat. New screenshot. New analysis. New action. This continues until the task is complete.</p>
+
+  <p class="fade-up">There is also an important design detail worth highlighting: Claude is actually <strong>smart enough to try the easy route first.</strong> Before falling back to screen control, it checks whether it already has a direct connection to the tool you need. If you ask it to add an event to your Google Calendar — and you have the Google Calendar connector active — it will use that. Fast, clean, reliable. Only if there is no connector available does it pick up the virtual mouse and navigate the screen the old-fashioned way.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Claude tries the smart API route first. Only if that is not available does it go old school and use the screen like a human. That is genuinely thoughtful design."</p>
+    <cite>DecodeWithAni · Day 19</cite>
+  </div>
+
+  <!-- CHAPTER 5 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 05</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">What Can It Actually Do? Real Examples for Real People.</h2>
+
+  <p class="fade-up">This is the chapter that will make this real for you. Let us go through concrete examples across very different kinds of people and jobs — because this tool is not just for developers or tech workers. It is for anyone who has ever stared at a boring task and thought: <em>I wish someone else could just do this.</em></p>
+
+  <div class="example-box fade-up">
+    <div class="example-label">🧑‍💼 For Office & Admin Workers</div>
+    <div class="example-title">The Weekly Report That Writes Itself</div>
+    <p>Every Monday morning, thousands of people do exactly the same thing: open four different tools, copy numbers from each one, paste them into a spreadsheet, calculate some totals, then paste a summary into an email. An hour of your week, every week, forever.</p>
+    <p>With Dispatch + Computer Use: set it once. Tell Claude — "Every Monday at 8am, open the dashboard, pull last week's numbers into the report template, and email the summary to the team." Claude does it while you are still on your morning walk.</p>
+    <div class="before-after">
+      <div class="before-card"><div class="ba-label">Before</div>45–60 mins every Monday. Same clicks, same tabs, same copy-paste. Every. Single. Week.</div>
+      <div class="after-card"><div class="ba-label">After Computer Use</div>Tell Claude once. It runs every Monday automatically. You come in to find it done.</div>
+    </div>
+  </div>
+
+  <div class="example-box fade-up">
+    <div class="example-label">🎓 For Students</div>
+    <div class="example-title">Research Compiled While You Sleep</div>
+    <p>You need to compare five universities for your master's application. Each one has its own website with different layouts. Fees buried in PDFs. Deadlines scattered across pages. The process of pulling it all into one table takes hours of tab-switching and copy-pasting.</p>
+    <p>With Computer Use: "Go to these five university websites, find the application deadline, tuition fee, and required documents for each, and fill in this comparison spreadsheet." Claude opens each site, navigates to the right pages, reads what it finds, and fills in your table. You come back to a finished document.</p>
+  </div>
+
+  <div class="example-box fade-up">
+    <div class="example-label">👨‍💻 For Developers</div>
+    <div class="example-title">The Code Review That Runs on Its Own</div>
+    <p>Software developers spend a surprisingly large amount of time on repetitive tasks that are not actually coding — running tests, checking results, making small tweaks, running tests again, submitting changes, writing pull request descriptions.</p>
+    <p>With Claude Code + Computer Use: "Make the changes we discussed, run the test suite, fix any failing tests, and put up a pull request with a summary of what changed." Claude opens the code editor, makes the edits, runs the terminal commands, reads the test output, fixes what broke, and submits the PR. The developer comes back to review, not to do the work.</p>
+    <div class="before-after">
+      <div class="before-card"><div class="ba-label">Before</div>Developer runs tests, reads output, fixes failures, reruns, writes PR description. 90 minutes of their afternoon.</div>
+      <div class="after-card"><div class="ba-label">After Computer Use</div>Developer assigns the task from their phone. Comes back to review a finished, tested PR.</div>
+    </div>
+  </div>
+
+  <div class="example-box fade-up">
+    <div class="example-label">📰 For Content Creators & Bloggers</div>
+    <div class="example-title">Publishing Without the Pain</div>
+    <p>Writing a blog post is the creative work. The hour that follows — uploading it to the CMS, resizing the images, filling in the SEO fields, scheduling it for the right time, cross-posting the link to three platforms — that is the boring work. And it is very hard to hire someone to do something so small.</p>
+    <p>With Computer Use: "Upload this article to the blog, use this image as the header, set the publish time to 9am tomorrow, and post the link to LinkedIn and Instagram." Claude opens the browser, logs into the CMS, fills in every field, sets the schedule, and handles the social posts. The creator just creates.</p>
+  </div>
+
+  <div class="example-box fade-up">
+    <div class="example-label">🛒 For Small Business Owners</div>
+    <div class="example-title">Orders Tracked. Inventory Updated. Emails Sent.</div>
+    <p>Running a small e-commerce business means juggling an order management tool, a shipping dashboard, an inventory spreadsheet, and customer email — often all at once. Updating all four every time an order ships is the kind of task that eats your evenings.</p>
+    <p>With Computer Use: "Check today's shipped orders, update the inventory spreadsheet, and send each customer their tracking number." Claude opens each tool, reads the data, makes the updates, and fires off the emails. You close your laptop and have dinner with your family.</p>
+  </div>
+
+  <div class="example-box fade-up">
+    <div class="example-label">🏥 For Healthcare & Clinic Workers</div>
+    <div class="example-title">Patient Summaries Without the Admin Burden</div>
+    <p>Clinic staff spend a significant portion of their day on administrative tasks — entering patient data from one system into another, filling referral forms, generating appointment summaries. This is important work, but it is not the reason they got into healthcare.</p>
+    <p>With Computer Use (on non-sensitive tasks, with proper oversight): "Compile this week's appointment schedule into the weekly summary report and file it in the shared folder." The tool handles the mechanical work. The human focuses on the patient.</p>
+    <p><strong>Note:</strong> Anthropic specifically warns against using Computer Use with sensitive medical or financial data in the current research preview phase. The example above applies to non-sensitive administrative tasks only.</p>
+  </div>
+
+  <!-- CHAPTER 6 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 06</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">Why This Is a Masterstroke — The Genius of the Design</h2>
+
+  <p class="fade-up">Other companies have tried to build AI that controls computers before. It has been a research topic for years. So why does this one feel different? Why are people paying attention in a way they did not for previous attempts?</p>
+
+  <p class="fade-up">The answer is in the design decisions Anthropic made — specifically three of them that are quietly brilliant.</p>
+
+  <h3 class="sub-title fade-up">1. The Connector-First Architecture</h3>
+  <p class="fade-up">Most AI agents that control computers jump straight to screen control. Claude does not. It checks whether it already has a direct, clean, fast connection to the tool first. If you have the Google Calendar connector active, that is what it uses. Screen control is the fallback — not the first resort.</p>
+  <p class="fade-up">This means that for the tools you use most often (and that have Claude connectors), everything is fast and reliable. Screen control is reserved for the long tail — the hundreds of apps and websites that will never build a dedicated Claude integration. This is a much smarter approach than pure screen automation, and it makes the whole system more robust.</p>
+
+  <h3 class="sub-title fade-up">2. The Phone-First Workflow</h3>
+  <p class="fade-up">Dispatch is not a footnote. It fundamentally changes when and how you interact with AI. Previously, using an AI tool required you to be at your desk, watching a screen. Dispatch breaks that constraint. The assignment can happen anywhere — on a train, in a meeting, over breakfast. The work happens on your desktop while you do something else.</p>
+  <p class="fade-up">This mirrors how the best human assistants work. You do not stand over them watching every keystroke. You give them the task and go. Dispatch makes Claude feel like an assistant for the first time, not a tool.</p>
+
+  <h3 class="sub-title fade-up">3. No Setup Required</h3>
+  <p class="fade-up">This is deceptively important. Previous attempts at computer-controlling AI required complex configurations — custom scripts, API keys, sandboxed environments, hours of setup. Anthropic built this so that flipping a single toggle in Claude Desktop settings is all it takes. No terminal commands. No coding. No IT support ticket. Just: <em>enable, and go.</em></p>
+  <p class="fade-up">The barrier to entry for genuinely powerful AI automation just dropped from "technically advanced user" to "anyone who can find a settings menu." That is a massive expansion of who this serves.</p>
+
+  <div class="verdict-box fade-up">
+    <div class="verdict-label">🏆 The Masterstroke</div>
+    <div class="verdict-icon">🎯</div>
+    <p class="verdict-text">Claude did not just build a feature. It built a workflow. One that starts on your phone, works on your desktop, adapts to every app — and requires you to do almost nothing except decide what you want done. That is not an upgrade. That is a new category.</p>
+  </div>
+
+  <!-- CHAPTER 7 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 07</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">The AI Arms Race — Claude Is Not Alone</h2>
+
+  <p class="fade-up">Here is something worth knowing: Anthropic did not invent the idea of an AI that controls a computer. But they may have just built the best version of it available to regular users. Let us look at who else is in this race.</p>
+
+  <table class="comp-table fade-up">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Company</th>
+        <th>What It Does</th>
+        <th>Available Now?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="claude-row">
+        <td class="name">Claude Computer Use</td>
+        <td>Anthropic</td>
+        <td>Full computer control + phone-to-desktop Dispatch. Connector-first architecture.</td>
+        <td><span class="tick">✓ Yes</span> (Pro/Max, macOS)</td>
+      </tr>
+      <tr>
+        <td class="name">OpenClaw</td>
+        <td>OpenAI</td>
+        <td>Agentic task automation. Widely cited as the catalyst that prompted this race. Jensen Huang called it "the next evolution after ChatGPT."</td>
+        <td><span class="tick">✓ Limited</span></td>
+      </tr>
+      <tr>
+        <td class="name">Gemini Screen Automation</td>
+        <td>Google</td>
+        <td>Android app control — can navigate apps on a Galaxy device. More focused on mobile than desktop.</td>
+        <td><span class="tick">✓ Android</span></td>
+      </tr>
+      <tr>
+        <td class="name">Perplexity Computer</td>
+        <td>Perplexity</td>
+        <td>Browser and research-focused automation. Still early.</td>
+        <td><span class="cross">◯ Limited</span></td>
+      </tr>
+      <tr>
+        <td class="name">Meta Manus</td>
+        <td>Meta</td>
+        <td>Autonomous agent for multi-step tasks. Research preview stage.</td>
+        <td><span class="cross">◯ Preview</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="fade-up">The pattern is unmistakable. Every major AI company is racing toward the same destination: an AI that does not just answer your questions, but acts on your behalf. The industry term for this is <strong>agentic AI</strong>.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-label">🔍 Jargon Decoded</div>
+    <div class="jargon-term">Agentic AI</div>
+    <p>An "agent" in AI refers to a system that does not just respond to questions, but <strong>takes actions to achieve goals</strong>. A standard AI like ChatGPT is reactive — it answers and stops. An agentic AI is proactive — it plans a series of steps, executes them, checks the results, adjusts, and keeps going until the job is done. Computer Use makes Claude agentic in the most literal sense possible: it can act in the world, not just describe it.</p>
+  </div>
+
+  <p class="fade-up">2026 is the year agentic AI stopped being a research concept and became something you can download and use today. The question is no longer whether AI will be able to do this. It already can. The question is: how far will it go?</p>
+
+  <!-- CHAPTER 8 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 08</span>
+    <div class="ch-line"></div>
+  </div>
+  <h2 class="chapter-title fade-up">The Honest Part: Safety, Limitations & What to Watch Out For</h2>
+
+  <p class="fade-up">One of the principles of DecodeWithAni is that we do not sell you hype. So let us be honest about what this launch is — and is not.</p>
+
+  <p class="fade-up">Anthropic themselves said it clearly: <em>"Computer use is still early compared to Claude's ability to code or interact with text."</em> Early reports from users suggest around a 50/50 reliability rate on complex multi-step tasks in this research preview phase. It works beautifully on straightforward tasks. It can get confused on complex ones with many steps or unexpected screen changes. Do not build anything critical around it just yet.</p>
+
+  <p class="fade-up">But alongside the limitations, Anthropic has thought carefully about safety. Here is what they have built in:</p>
+
+  <div class="safety-grid fade-up">
+    <div class="safety-item">
+      <span class="safety-icon">🔒</span>
+      <div class="safety-title">Permission Before Access</div>
+      <p class="safety-desc">Claude will always ask for explicit permission before accessing any new application. It does not go rogue and start opening things on its own.</p>
+    </div>
+    <div class="safety-item">
+      <span class="safety-icon">⛔</span>
+      <div class="safety-title">Stop Anytime</div>
+      <p class="safety-desc">You can halt Claude's computer control at any moment. There is always a stop button. You are always in charge.</p>
+    </div>
+    <div class="safety-item">
+      <span class="safety-icon">🚫</span>
+      <div class="safety-title">Hard No-Go Zones</div>
+      <p class="safety-desc">Claude is trained to refuse certain actions outright — no stock trading, no inputting sensitive personal data, no scraping facial images from websites.</p>
+    </div>
+    <div class="safety-item">
+      <span class="safety-icon">🏠</span>
+      <div class="safety-title">Local Processing Only</div>
+      <p class="safety-desc">All Computer Use happens on your own machine. It is not streaming your screen to Anthropic's servers. Your computer stays your computer.</p>
+    </div>
+  </div>
+
+  <p class="fade-up">And Anthropic is very clear about what you should <em>not</em> point it at — at least not yet. Financial apps where a mistake could be costly. Legal documents where one wrong field could have consequences. Medical systems with private patient data. These are off-limits in the current preview for very good reasons.</p>
+
+  <p class="fade-up">The honest caveat is this: screen navigation is inherently slower and more fragile than a well-built, direct API connection. A slight change in a website's layout, an unexpected pop-up dialogue, an app that loads slowly — any of these can break a Claude Computer Use task mid-flow. The real value right now is in low-stakes, repetitive work where a mistake is annoying but not catastrophic.</p>
+
+  <p class="fade-up">Start small. Use it for things where you would not lose sleep if something went slightly wrong. Let it prove itself. Then expand.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"The gap this fills is the long tail — the hundreds of apps that will never build a dedicated AI connector. For those, screen control is the only path. And now there is a good one."</p>
+    <cite>DecodeWithAni · Day 19</cite>
+  </div>
+
+  <p class="fade-up">One more practical note: your computer must remain awake and the Claude Desktop app must stay open for Dispatch tasks to run. If your laptop sleeps or you close the app, Claude goes dark mid-task. Plan your workflows around this before depending on it.</p>
+
+  <p class="fade-up">None of this diminishes what happened on March 23, 2026. This is a genuinely significant moment — one of those rare product launches where you can draw a clear line between "before" and "after" in how AI tools work. The limitations are real, but so is the direction of travel. And that direction only points one way.</p>
+
+  <div class="verdict-box fade-up">
+    <div class="verdict-label">The Decode · Final Verdict</div>
+    <div class="verdict-icon">🖥️</div>
+    <p class="verdict-text">Claude Computer Use is not perfect, and Anthropic will be the first to tell you that. But it is the most accessible, thoughtfully designed, and genuinely usable version of an AI-controlled computer that has ever been available to regular people. The swivel chair work that has stolen hours from your weeks for years — it now has a solution. Use it wisely. Use it carefully. But do use it.</p>
+  </div>
+
+  <!-- POST NAV -->
+  <div class="post-nav fade-up">
+    <a href="day18-anthropic-pentagon-ai-ethics-court-decodeai.html" class="post-nav-card prev">
+      <div class="pn-dir">← Previous</div>
+      <div class="pn-title">Day 18 · A School Still on the Map — AI, War & Who Is Responsible</div>
+    </a>
+    <a href="/" class="post-nav-card next">
+      <div class="pn-dir">Next →</div>
+      <div class="pn-title">Day 20 · Coming Soon — Subscribe to be first to know</div>
+    </a>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section fade-up">
+    <h3>📬 Never Miss a Decode</h3>
+    <p>90 days of honest, clear writing that makes sense. Zero jargon. Zero hype. All free — delivered wherever you are.</p>
+    <div class="cta-btns">
+      <a href="/#subscribe" class="btn-amber">📬 Subscribe Free</a>
+      <a href="/" class="btn-ghost">← Back to All Posts</a>
+    </div>
+  </div>
+
+</article>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day5-neural-networks-decodeai.html">Day 5</a>
+    <a href="day7-large-language-models-decodeai.html">Day 7</a>
+    <a href="day10-ai-deleted-data-decodeai.html">Day 10</a>
+    <a href="day14-atlassian-ai-layoffs-decodeai.html">Day 14</a>
+    <a href="day17-terafab-musk-jensen-chip-war-decodeai.html">Day 17</a>
+    <a href="day18-anthropic-pentagon-ai-ethics-court-decodeai.html">Day 18</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+  </div>
+  <p class="footer-copy">© 2026 DecodeWithAni · decodewithani.com · Decoding life, one topic at a time</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
