@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 20 — Sam Altman Steps Back from Safety & the Birth of Spud | DecodeWithAni</title>
+  <meta name="description" content="On March 24, 2026, Sam Altman told OpenAI staff he's stepping away from safety. A new model called Spud is almost ready. And the race for AI infrastructure is changing everything. Decoded in plain English."/>
+  <style>
+    :root {
+      --purple:#a78bfa; --purple-d:#7c3aed;
+      --blue:#60a5fa;   --blue-d:#2563eb;
+      --amber:#fbbf24;  --amber-d:#d97706; --amber-glow:rgba(251,191,36,0.18);
+      --amber-border:rgba(251,191,36,0.3);
+      --bg:#0d0d1a; --bg2:#111120; --bg3:#1a1a2e; --bg4:#1e1e3a;
+      --border:#2a2a4a; --white:#ffffff; --grey:#9ca3af; --lgrey:#d1d5db;
+      --red:#f87171; --green:#6ee7b7;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.85;font-size:1.02rem}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--amber-d);border-radius:3px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+    .nav-brand{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.05rem;font-weight:800;background:linear-gradient(135deg,var(--amber),#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-series{font-size:0.78rem;color:var(--grey);display:flex;align-items:center;gap:8px}
+    .nav-series span{background:var(--amber-glow);border:1px solid var(--amber-border);color:var(--amber);padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+    .nav-back{color:var(--grey);text-decoration:none;font-size:0.83rem;transition:color 0.2s}
+    .nav-back:hover{color:var(--amber)}
+
+    /* HERO */
+    .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 28px 80px;position:relative;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background:
+      radial-gradient(ellipse 80% 60% at 50% 0%,rgba(217,119,6,0.18) 0%,transparent 65%),
+      radial-gradient(ellipse 50% 40% at 80% 80%,rgba(251,191,36,0.07) 0%,transparent 60%),
+      var(--bg)}
+    .hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(251,191,36,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(251,191,36,0.03) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black,transparent)}
+    .hero-inner{position:relative;z-index:2;max-width:860px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--amber-glow);border:1px solid var(--amber-border);color:var(--amber);padding:0.4rem 1.2rem;border-radius:30px;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem}
+    .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+    .hero-icon{font-size:88px;margin-bottom:20px;filter:drop-shadow(0 0 40px rgba(251,191,36,.45));animation:float 3.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+    h1.hero-title{font-family:'Segoe UI',system-ui,sans-serif;font-size:clamp(2.2rem,6.5vw,4.6rem);font-weight:800;color:var(--white);line-height:1.06;letter-spacing:-2px;margin-bottom:1rem}
+    h1.hero-title .grad{background:linear-gradient(135deg,var(--amber),#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:1.1rem;color:var(--grey);max-width:640px;margin:0 auto 2rem;line-height:1.85}
+    .hero-meta{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:2.5rem}
+    .meta-chip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:0.73rem;color:var(--grey)}
+    .meta-chip.highlight{border-color:var(--amber-border);color:var(--amber);background:var(--amber-glow)}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;padding-top:2rem;border-top:1px solid var(--border)}
+    .stat .num{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.85rem;font-weight:800;display:block;background:linear-gradient(135deg,var(--amber),#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat .lbl{font-size:0.68rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase}
+
+    /* ARTICLE BODY */
+    .article-wrap{max-width:780px;margin:0 auto;padding:70px 28px 100px}
+
+    /* CHAPTER OPENERS */
+    .chapter-opener{margin:64px 0 28px;border-top:1px solid var(--border);padding-top:28px;display:flex;align-items:flex-start;gap:16px}
+    .ch-num{font-family:'Segoe UI',system-ui,sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber);background:var(--amber-glow);border:1px solid var(--amber-border);padding:5px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:3px}
+    .ch-title{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.55rem;font-weight:800;color:var(--white);line-height:1.2}
+
+    /* BODY TEXT */
+    p{margin-bottom:1.4rem;color:var(--lgrey)}
+    strong{color:var(--white);font-weight:600}
+
+    /* PULL QUOTE */
+    .pull-quote{border-left:3px solid var(--amber);background:linear-gradient(135deg,rgba(251,191,36,0.07),rgba(251,191,36,0.02));border-radius:0 12px 12px 0;padding:22px 28px;margin:36px 0;position:relative}
+    .pull-quote p{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.2rem;font-style:italic;color:var(--white);line-height:1.55;margin:0;font-weight:600}
+    .pull-quote .attrib{display:block;margin-top:10px;font-size:0.75rem;color:var(--amber);letter-spacing:1px;text-transform:uppercase;font-style:normal;font-family:'Segoe UI',system-ui,sans-serif}
+
+    /* JARGON BOX */
+    .jargon-box{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:32px 0;position:relative;overflow:hidden}
+    .jargon-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--amber-d),#fb923c)}
+    .jargon-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+    .jargon-title{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:8px}
+    .jargon-box p{margin:0;font-size:0.9rem;color:var(--grey);line-height:1.75}
+
+    /* HIGHLIGHT BOX */
+    .highlight-box{background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.02));border:1px solid var(--amber-border);border-radius:16px;padding:28px;margin:32px 0}
+    .highlight-box .hb-title{font-family:'Segoe UI',system-ui,sans-serif;font-size:1rem;font-weight:800;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .highlight-box p{margin:0;font-size:0.91rem;line-height:1.8}
+
+    /* PERSON CARD */
+    .person-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:24px;margin:28px 0;display:flex;align-items:flex-start;gap:20px;position:relative;overflow:hidden}
+    .person-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--amber-d),#fb923c)}
+    .person-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;background:linear-gradient(135deg,var(--amber-d),#d97706)}
+    .person-name{font-family:'Segoe UI',system-ui,sans-serif;font-size:1rem;font-weight:800;color:var(--white);margin-bottom:2px}
+    .person-role{font-size:0.73rem;color:var(--amber);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+    .person-card p{margin:0;font-size:0.88rem;color:var(--grey);line-height:1.7}
+
+    /* TIMELINE */
+    .timeline{margin:32px 0;display:flex;flex-direction:column;gap:0}
+    .tl-item{display:flex;gap:16px;position:relative;padding-bottom:24px}
+    .tl-item:last-child{padding-bottom:0}
+    .tl-item:not(:last-child)::after{content:'';position:absolute;left:16px;top:36px;bottom:0;width:1px;background:var(--border)}
+    .tl-dot{width:33px;height:33px;border-radius:50%;background:var(--amber-glow);border:2px solid var(--amber-border);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;z-index:1}
+    .tl-content .tl-year{font-size:0.7rem;color:var(--amber);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+    .tl-content .tl-text{font-size:0.9rem;color:var(--lgrey);line-height:1.7}
+    .tl-content .tl-bold{font-family:'Segoe UI',system-ui,sans-serif;font-size:0.97rem;font-weight:700;color:var(--white);margin-bottom:4px}
+
+    /* VERDICT BOX */
+    .verdict{background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(251,191,36,0.04));border:1px solid var(--amber-border);border-radius:20px;padding:34px;margin:40px 0;text-align:center}
+    .verdict .v-icon{font-size:2.4rem;margin-bottom:12px;display:block}
+    .verdict .v-title{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:12px}
+    .verdict p{max-width:580px;margin:0 auto;font-size:0.95rem;color:var(--lgrey);line-height:1.85}
+
+    /* SPLIT VERDICT */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}
+    .col-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:22px}
+    .col-card.green-card{border-color:rgba(110,231,183,0.25)}
+    .col-card.red-card{border-color:rgba(248,113,113,0.25)}
+    .col-card .col-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:block}
+    .col-card.green-card .col-label{color:var(--green)}
+    .col-card.red-card .col-label{color:var(--red)}
+    .col-card p{font-size:0.88rem;color:var(--grey);line-height:1.75;margin:0}
+
+    /* CTA */
+    .bottom-cta{background:linear-gradient(135deg,rgba(217,119,6,0.12),rgba(251,191,36,0.06));border:1px solid var(--amber-border);border-radius:24px;padding:44px;text-align:center;margin-top:64px}
+    .bottom-cta h3{font-family:'Segoe UI',system-ui,sans-serif;font-size:1.6rem;font-weight:800;color:var(--white);margin-bottom:10px}
+    .bottom-cta p{color:var(--grey);max-width:480px;margin:0 auto 24px;line-height:1.8}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .cta-primary{background:linear-gradient(135deg,var(--amber-d),#b45309);color:white;padding:0.8rem 2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.9rem;transition:transform 0.2s;box-shadow:0 4px 20px rgba(217,119,6,0.3)}
+    .cta-primary:hover{transform:translateY(-2px)}
+    .cta-secondary{background:transparent;border:1px solid var(--border);color:var(--lgrey);padding:0.8rem 2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.9rem;transition:border-color 0.2s}
+    .cta-secondary:hover{border-color:var(--amber);color:var(--amber)}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2.5rem 5%;text-align:center}
+    .footer-brand{font-family:'Segoe UI',system-ui,sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--amber),#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .footer-links{display:flex;justify-content:center;gap:1.4rem;flex-wrap:wrap;margin:1rem 0}
+    .footer-links a{color:var(--grey);text-decoration:none;font-size:0.8rem;transition:color 0.2s}
+    .footer-links a:hover{color:var(--amber)}
+    .footer-copy{font-size:0.73rem;color:var(--grey)}
+
+    .fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s}
+    .fade-up.vis{opacity:1;transform:none}
+
+    @media(max-width:650px){
+      .two-col{grid-template-columns:1fr}
+      .hero-stats{gap:1.5rem}
+      .nav-series{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-series">
+    <span>Day 20 · 90 Days of Decoding</span>
+  </div>
+  <a href="/" class="nav-back">← All Posts</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner fade-up">
+    <div class="hero-badge"><div class="dot"></div>Day 20 · Breaking AI Story · March 2026</div>
+    <div class="hero-icon">🔑</div>
+    <h1 class="hero-title">Sam Altman Just Handed<br/>the Keys to <span class="grad">Someone Else</span></h1>
+    <p class="hero-sub">On March 24, 2026, the man who built ChatGPT told his team he is no longer in charge of keeping it safe. A new model called Spud is almost ready. And the real reason behind all of it will surprise you.</p>
+    <div class="hero-meta">
+      <span class="meta-chip highlight">🔥 Breaking · March 24, 2026</span>
+      <span class="meta-chip">⏱ 10 min read</span>
+      <span class="meta-chip">8 Chapters</span>
+      <span class="meta-chip">💡 Jargon Decoded</span>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="num">$730B</span><span class="lbl">OpenAI Valuation</span></div>
+      <div class="stat"><span class="num">2</span><span class="lbl">New Safety Leads</span></div>
+      <div class="stat"><span class="num">Spud</span><span class="lbl">Next OpenAI Model</span></div>
+      <div class="stat"><span class="num">Weeks</span><span class="lbl">Until Spud Launches</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 1</span>
+    <h2 class="ch-title">The Announcement That Stopped the Tech World</h2>
+  </div>
+
+  <p class="fade-up">It was a Tuesday. March 24, 2026. And inside OpenAI — the company behind ChatGPT, the most used AI tool on the planet — Sam Altman called a staff meeting and said something that nobody expected.</p>
+
+  <p class="fade-up">He told his team that from that day forward, <strong>he would no longer be directly overseeing the company's safety and security teams.</strong></p>
+
+  <p class="fade-up">Let that land for a moment. Sam Altman is not just the CEO of OpenAI. He is arguably the most powerful person in the AI world right now. He has been the face of every safety conversation, every government hearing, every public debate about whether AI is going to help or hurt the world. And now he was saying: someone else will handle that.</p>
+
+  <p class="fade-up">The same week, he also announced something else — something that had been secretly cooking inside OpenAI for months. A new AI model, nicknamed <strong>Spud</strong>, had just finished its training. And it was coming. Very soon. Within weeks.</p>
+
+  <p class="fade-up">Two giant news stories, same day. So what is actually going on? Let's decode it — chapter by chapter.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"A very powerful model will come out within a few weeks. The whole team believes this model can meaningfully accelerate the overall economy."</p>
+    <span class="attrib">— Sam Altman, to OpenAI staff, March 24, 2026</span>
+  </div>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 2</span>
+    <h2 class="ch-title">Why Sam Altman and Safety Were Always a Complicated Story</h2>
+  </div>
+
+  <p class="fade-up">To understand why this matters, you need a little bit of history. And it is genuinely one of the most dramatic stories in modern tech.</p>
+
+  <p class="fade-up">OpenAI was founded in 2015 as a non-profit. Its entire purpose was to build AI that was safe and beneficial for all of humanity. Safety was not a side feature — it was the whole reason the company existed. Sam Altman was part of that founding team.</p>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <div class="tl-dot">🏢</div>
+      <div class="tl-content">
+        <div class="tl-year">2015</div>
+        <div class="tl-bold">OpenAI Founded as a Non-Profit</div>
+        <div class="tl-text">Mission: build safe AI for humanity. Backed by Elon Musk, Sam Altman, and others. Safety is the whole point.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">💸</div>
+      <div class="tl-content">
+        <div class="tl-year">2019–2022</div>
+        <div class="tl-bold">The For-Profit Shift</div>
+        <div class="tl-text">OpenAI becomes a "capped profit" company. Microsoft invests billions. The tension between safety and speed begins to build.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🔥</div>
+      <div class="tl-content">
+        <div class="tl-year">November 2023</div>
+        <div class="tl-bold">The Board Fires Sam Altman</div>
+        <div class="tl-text">OpenAI's own board removes Altman, citing concerns about AI safety and transparency. Employees revolt. He is reinstated within five days. The safety team starts to fracture.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🚪</div>
+      <div class="tl-content">
+        <div class="tl-year">May 2024</div>
+        <div class="tl-bold">Safety Leaders Walk Out</div>
+        <div class="tl-text">Ilya Sutskever and Jan Leike — the two leaders of OpenAI's safety "superalignment" team — resign. Leike says publicly that OpenAI was prioritising "shiny products" over safety research. The entire superalignment team is disbanded.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🏛️</div>
+      <div class="tl-content">
+        <div class="tl-year">September 2024</div>
+        <div class="tl-bold">Altman Removed from Safety Committee</div>
+        <div class="tl-text">OpenAI creates an independent Safety and Security Committee. Altman and the board chair step down from it. A university professor takes the chair instead. "Independent governance" becomes the promise.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🔑</div>
+      <div class="tl-content">
+        <div class="tl-year">March 24, 2026</div>
+        <div class="tl-bold">Altman Steps Back from All Safety Oversight</div>
+        <div class="tl-text">The announcement we're decoding today. Safety goes to Mark Chen. Security goes to Greg Brockman. Sam focuses on building and funding infrastructure at scale.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="fade-up">So this is not a one-day story. It is the end of a chapter that has been building for years. Every time there was a conflict between "move fast" and "be careful," OpenAI inched a little further in one direction. And on March 24, that direction became official.</p>
+
+  <!-- CHAPTER 3 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 3</span>
+    <h2 class="ch-title">What "Safety" Actually Means at an AI Company</h2>
+  </div>
+
+  <p class="fade-up">Before we go further, let's decode some terms. Because this story is full of words that sound important but never get explained properly.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-tag">🔤 Term Decoded</div>
+    <div class="jargon-title">AI Safety</div>
+    <p>At a company like OpenAI, "safety" means making sure the AI doesn't do harmful things. This includes preventing it from helping someone build a weapon, generating content that hurts people, or behaving in ways that humans did not intend. It is the team whose job is to ask: "What could go wrong?" before releasing something to the world.</p>
+  </div>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-tag">🔤 Term Decoded</div>
+    <div class="jargon-title">Alignment</div>
+    <p>Alignment is about making sure AI systems do what humans actually want — not just what they are technically asked to do. Think of it like training a new employee. You don't just want them to follow every instruction literally. You want them to understand the spirit behind the instructions and behave sensibly even in situations nobody planned for.</p>
+  </div>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-tag">🔤 Term Decoded</div>
+    <div class="jargon-title">Security vs Safety — What's the Difference?</div>
+    <p>"Safety" is about what the AI model itself does — its behaviour, its outputs, its values. "Security" is about protecting the systems and infrastructure around the AI from external attacks — hackers, data breaches, attempts to manipulate or steal the technology. Think of safety as the rules inside the building, and security as the locks on the doors.</p>
+  </div>
+
+  <p class="fade-up">So when we say Sam Altman stepped back from both, we are saying he is no longer the person making decisions about either what the AI does — or how it is protected from the outside world.</p>
+
+  <!-- CHAPTER 4 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 4</span>
+    <h2 class="ch-title">Who Is Taking Over — And Should We Trust Them?</h2>
+  </div>
+
+  <p class="fade-up">This is the question everyone was asking on March 24. Altman is stepping back — fine. But who exactly is stepping up? And are they the right people for this?</p>
+
+  <div class="person-card fade-up">
+    <div class="person-avatar">🧠</div>
+    <div>
+      <div class="person-name">Mark Chen</div>
+      <div class="person-role">Chief Research Officer · Now Owns Safety</div>
+      <p>Mark Chen is one of the most respected researchers inside OpenAI. He led the teams that built DALL-E (the AI image generator), Codex (the code-writing AI that became GitHub Copilot), and GPT-4's visual capabilities. He became Chief Research Officer in 2025. He is now the person responsible for safety — meaning all the work on making sure OpenAI's models behave properly falls under him. He is not a newcomer. He has been inside the walls of OpenAI from almost the very beginning.</p>
+    </div>
+  </div>
+
+  <div class="person-card fade-up">
+    <div class="person-avatar">🏗️</div>
+    <div>
+      <div class="person-name">Greg Brockman</div>
+      <div class="person-role">President of OpenAI · Now Owns Security</div>
+      <p>Greg Brockman is one of the co-founders of OpenAI. He was there on day one. After a brief sabbatical in 2024, he returned as President and leads the scaling of OpenAI's technical infrastructure — the actual computers, servers, and systems that run the AI. Security now falls under him, which makes logical sense given that security is deeply tied to the infrastructure he already oversees.</p>
+    </div>
+  </div>
+
+  <p class="fade-up">The picture that emerges is this: safety and security are not being handed to outsiders, or being deprioritised in the sense of being removed. They are being embedded inside the two biggest technical teams at OpenAI — research and infrastructure. The argument Altman is making is that safety should live inside the engineering work, not sit separately above it.</p>
+
+  <div class="highlight-box fade-up">
+    <div class="hb-title">🤔 But Here's the Question Everyone Is Asking</div>
+    <p>When safety sits inside the research team — the same team that is under pressure to ship the next model quickly — does it truly stay independent? When the people who build the product also judge whether the product is safe enough, who is watching the watchers? That tension is at the heart of this story, and it has no clean answer.</p>
+  </div>
+
+  <!-- CHAPTER 5 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 5</span>
+    <h2 class="ch-title">What Is "Spud"? The Model That Changes the Game</h2>
+  </div>
+
+  <p class="fade-up">On the same day as the safety announcement, Altman told his team something else. OpenAI had just completed the pre-training of its next major AI model. And they were calling it <strong>Spud</strong>.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-tag">🔤 Term Decoded</div>
+    <div class="jargon-title">Pre-Training</div>
+    <p>When an AI model is "pre-trained," it means the first and most intensive phase of teaching is done. Imagine you've spent years reading every book, article, and website on the internet and your brain has absorbed all of it. That's pre-training — the raw foundation. After pre-training comes fine-tuning, testing, safety evaluation, and then public release. So "pre-training complete" means: the main work is done, and the finish line is close.</p>
+  </div>
+
+  <p class="fade-up">Nobody outside OpenAI knows exactly what Spud is yet. Is it GPT-6? Is it GPT-5.5? Altman deliberately did not say. What he did say was that it is <strong>"a very strong model"</strong> and that it could <strong>"meaningfully accelerate the overall economy."</strong> He expected it to be released publicly within a few weeks of that announcement.</p>
+
+  <div class="highlight-box fade-up">
+    <div class="hb-title">🥔 Why Is It Called Spud?</div>
+    <p>Inside big tech companies, major projects get internal codenames to keep things secret — and to avoid leaks before they're ready. "Spud" is just a potato. OpenAI has a history of choosing simple, mundane codenames precisely so they don't attract attention. The name means nothing. The model, however, appears to mean everything.</p>
+  </div>
+
+  <p class="fade-up">The same week Spud was announced, OpenAI also quietly shut down Sora — its AI video generator that launched with enormous fanfare in 2024, and even had a $1 billion partnership deal being negotiated with Disney. That deal is now dead. The Sora app is being switched off entirely. Why? Because Sora consumes enormous amounts of computing power. And OpenAI needs every scrap of that power for Spud and the models that come after it.</p>
+
+  <p class="fade-up">It is a stark illustration of priorities. A product that was making headlines a year ago — gone. In AI, today's sensation can become tomorrow's distraction remarkably fast.</p>
+
+  <!-- CHAPTER 6 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 6</span>
+    <h2 class="ch-title">Why Infrastructure Is Now the Most Important Thing in AI</h2>
+  </div>
+
+  <p class="fade-up">Here is the part of the story that does not get enough attention. Why is Sam Altman stepping away from safety? Not because he doesn't care. But because, in his view, right now there is something even more urgent — and it is not a software problem. It is a construction problem.</p>
+
+  <p class="fade-up">Building advanced AI today requires an almost incomprehensible amount of physical hardware. We're talking about massive buildings the size of several football fields, filled with tens of thousands of computers running day and night. These buildings consume more electricity than small cities. They need to be cooled with water or liquid systems to prevent them from overheating. And they need to be built at a pace that the construction industry has never seen before.</p>
+
+  <div class="jargon-box fade-up">
+    <div class="jargon-tag">🔤 Term Decoded</div>
+    <div class="jargon-title">AI Infrastructure / Data Centers</div>
+    <p>Infrastructure, in the AI context, means all the physical stuff that AI needs to exist and run. This includes data centers (giant buildings packed with computers), chips (the specific processors that AI runs on — Nvidia makes the most important ones), power supply (enormous amounts of electricity), cooling systems (to stop the chips from melting), and supply chains (the global network of factories and shipping routes that get all this hardware to where it's needed). Without infrastructure, there is no AI.</p>
+  </div>
+
+  <p class="fade-up">OpenAI, as of early 2026, <strong>does not own a single data center</strong>. It relies entirely on partners — Microsoft, Amazon, Oracle — to provide the physical computing power it needs. That is a remarkable vulnerability for a $730 billion company. And Altman knows it.</p>
+
+  <p class="fade-up">In February 2026, OpenAI raised <strong>$110 billion</strong> in a single funding round — the largest private fundraise in the history of any company. Amazon put in $50 billion. Nvidia put in $30 billion. SoftBank put in $30 billion. The company's target is to spend <strong>$600 billion on computing infrastructure by 2030</strong>. Those are not technology numbers. They are national infrastructure numbers.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Anything at this scale — it's just like so much stuff goes wrong."</p>
+    <span class="attrib">— Sam Altman, at BlackRock's Infrastructure Summit, March 2026</span>
+  </div>
+
+  <p class="fade-up">He was talking about the Stargate project — OpenAI's flagship data center complex being built in Abilene, Texas. A severe weather event had temporarily knocked it offline. Supply chains were causing delays. Deadlines were slipping. This is why Altman himself needs to be focused on infrastructure. Because nobody else at OpenAI has the relationships, the fundraising credibility, and the political access to make deals at that scale happen.</p>
+
+  <div class="highlight-box fade-up">
+    <div class="hb-title">⚡ The Simple Way to Think About It</div>
+    <p>Imagine you are running a bakery that has suddenly become the most popular in the world. Millions of people want your bread. But you don't have enough ovens. Your suppliers are running out of flour. Your electricity bill has become so large it threatens to bankrupt you. In that situation — do you focus on the recipe, or do you focus on getting more ovens built? Altman is choosing the ovens. And he believes that if the ovens are not built fast enough, it doesn't matter how good the recipe is.</p>
+  </div>
+
+  <!-- CHAPTER 7 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 7</span>
+    <h2 class="ch-title">Is This Good or Bad? The Honest Verdict</h2>
+  </div>
+
+  <p class="fade-up">Honest question. Honest answer. The truth is: this is both. At the same time. And anyone telling you it's entirely one or the other is probably selling you something.</p>
+
+  <div class="two-col fade-up">
+    <div class="col-card green-card">
+      <span class="col-label">✅ The Case That This is Fine</span>
+      <p>Mark Chen is genuinely excellent — a researcher who has been inside the safety conversations from the beginning. Greg Brockman is a co-founder who has always cared about the mission. Embedding safety inside research, rather than above it, might actually produce better outcomes because the people doing the safety work are the same ones who understand the models most deeply. And if OpenAI loses the infrastructure race to a competitor who cares less about safety, the world ends up worse off anyway.</p>
+    </div>
+    <div class="col-card red-card">
+      <span class="col-label">⚠️ The Case That This Is Concerning</span>
+      <p>Every single time safety has been restructured at OpenAI, it has come with a story about how the new structure is actually better. And every single time, independent researchers have left shortly after, citing pressure to move fast over move carefully. Safety teams that report to people who are also judged on how fast they ship products face a built-in conflict of interest. The pattern here is hard to ignore.</p>
+    </div>
+  </div>
+
+  <p class="fade-up">What makes this moment genuinely strange is that Altman himself seems to be aware of it. Just one day after the announcement, on March 25, he posted publicly that <strong>"AI will also present new threats to society"</strong> and that <strong>"no company can sufficiently mitigate these on their own."</strong> He simultaneously stepped away from safety oversight — and warned the world that the risks from AI are too large for any single company to handle.</p>
+
+  <p class="fade-up">That is not hypocrisy, exactly. It might be the most honest thing he has ever said. He might genuinely believe both things at the same time: that infrastructure is the most urgent priority right now, and that safety is an unsolved problem that goes beyond any one company's capacity to fix. The two things can coexist. But holding both simultaneously requires a level of nuance that a five-second news headline will never give you.</p>
+
+  <!-- CHAPTER 8 -->
+  <div class="chapter-opener fade-up">
+    <span class="ch-num">Chapter 8</span>
+    <h2 class="ch-title">What This Means for You — And What to Watch Next</h2>
+  </div>
+
+  <p class="fade-up">Here is the practical takeaway from everything above.</p>
+
+  <p class="fade-up">In the next few weeks, you will almost certainly hear about a new OpenAI model launching. That is Spud — though it may well be released under a different name entirely. If Altman's words hold up, it could be the most capable AI model that has ever been released to the public. That means the tools you use — ChatGPT, Copilot, and anything else powered by OpenAI technology — will get significantly more powerful, probably overnight.</p>
+
+  <p class="fade-up">The safety change is slower-moving and harder to see in your daily life. You will not notice a difference in how ChatGPT behaves next week because of this restructuring. What you might notice, over months and years, is whether the safety commitments that OpenAI makes in public continue to match what actually happens inside the product. That is the thing worth watching.</p>
+
+  <p class="fade-up">What is also worth watching — and this is the bigger picture — is the infrastructure race itself. The companies that win the AI era will not be the ones with the cleverest ideas. They will be the ones who can build enough physical computing capacity, fast enough, in the right places. That is an old story, actually. It is the same story that decided who won the industrial revolution, the railroad age, and the internet age. In every era, the infrastructure builders eventually become the most powerful players.</p>
+
+  <p class="fade-up">Altman has clearly read that history. Whether the move he is making is wise, reckless, or both — the scale of it is extraordinary. A man running a $730 billion AI company is choosing to spend his time managing construction projects, supply chains, and billion-dollar fundraising deals. Because he believes, with everything he has, that <strong>whoever builds the biggest engine wins the race.</strong></p>
+
+  <div class="verdict fade-up">
+    <span class="v-icon">🔑</span>
+    <div class="v-title">The One-Sentence Decode</div>
+    <p>Sam Altman did not abandon safety — he handed it to two people he trusts deeply, so that he could focus on something he believes matters even more right now: building the physical infrastructure that will determine whether OpenAI still leads the AI world in 2030.</p>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="bottom-cta fade-up">
+    <h3>📬 Never Miss a Decode</h3>
+    <p>This is Day 20 of 90. Every day, one topic decoded in plain English — no jargon, no hype, just the honest story behind the headlines.</p>
+    <div class="cta-btns">
+      <a href="/#subscribe" class="cta-primary">Subscribe Free →</a>
+      <a href="/" class="cta-secondary">← Back to All Posts</a>
+    </div>
+  </div>
+
+</div><!-- end article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day2-history-of-ai-decodeai.html">Day 2</a>
+    <a href="day3-what-is-ai-decodeai.html">Day 3</a>
+    <a href="day4-machine-learning-decodeai.html">Day 4</a>
+    <a href="day5-neural-networks-decodeai.html">Day 5</a>
+    <a href="day6-apple-google-siri-decodeai.html">Day 6</a>
+    <a href="day7-large-language-models-decodeai.html">Day 7</a>
+    <a href="day8-suryakumar-yadav-decodeai.html">Day 8</a>
+    <a href="day9-ai-art-prompt-challenge-decodeai.html">Day 9</a>
+    <a href="day10-ai-deleted-data-decodeai.html">Day 10</a>
+    <a href="day11-mira-murati-thinking-machines-nvidia-decodeai.html">Day 11</a>
+    <a href="day12-nvidia-ai-chips-electricity-space-decodeai.html">Day 12</a>
+    <a href="day13-meta-avocado-delay-zuckerberg-decodeai.html">Day 13</a>
+    <a href="day14-atlassian-ai-layoffs-decodeai.html">Day 14</a>
+    <a href="day15-war-ai-crisis-decodeai.html">Day 15</a>
+    <a href="day16-meta-metaverse-nft-collapse-decodeai.html">Day 16</a>
+    <a href="day17-terafab-musk-jensen-chip-war-decodeai.html">Day 17</a>
+    <a href="day18-anthropic-pentagon-ai-ethics-court-decodeai.html">Day 18</a>
+    <a href="day19-claude-computer-use-decodeai.html">Day 19</a>
+    <a href="day20-sam-altman-safety-spud-openai-decodeai.html">Day 20</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+  </div>
+  <p class="footer-copy">© 2026 DecodeWithAni · decodewithani.com · Decoding life, one topic at a time</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
