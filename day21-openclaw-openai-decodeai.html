@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Lobster That Beat OpenAI — Day 21 | DecodeWithAni</title>
+  <meta name="description" content="One Austrian developer. A weekend project. Anthropic's lawyers. Then Zuckerberg, Nadella, and Altman all calling at once. The full story of OpenClaw — the open-source AI agent that changed everything."/>
+  <style>
+    :root {
+      --accent: #f97316;
+      --accent-light: #fb923c;
+      --accent-glow: rgba(249,115,22,0.18);
+      --accent-border: rgba(249,115,22,0.3);
+      --bg: #0d0d1a;
+      --bg2: #111118;
+      --bg3: #1a1a28;
+      --bg4: #1e1e30;
+      --border: #2a2a42;
+      --white: #ffffff;
+      --grey: #9ca3af;
+      --lgrey: #d1d5db;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --green: #6ee7b7;
+      --blue: #60a5fa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--lgrey);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.85;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,13,26,0.93); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 60px;
+    }
+    .nav-brand {
+      font-size: 1rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+    .nav-right a { color: var(--grey); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .nav-right a:hover { color: var(--accent); }
+    .nav-back {
+      background: rgba(249,115,22,0.1); border: 1px solid var(--accent-border);
+      color: var(--accent)!important; padding: 0.3rem 1rem;
+      border-radius: 20px; font-weight: 600!important;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 90% 65% at 50% 0%, rgba(249,115,22,0.14) 0%, transparent 65%), var(--bg);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black, transparent);
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(249,115,22,0.1); border: 1px solid var(--accent-border);
+      color: var(--accent); padding: 0.38rem 1.2rem; border-radius: 30px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 1.8rem; position: relative; z-index: 1;
+    }
+    .hero-eyebrow .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.75)} }
+    .hero-lobster {
+      font-size: 88px; margin-bottom: 20px; position: relative; z-index: 1;
+      filter: drop-shadow(0 0 40px rgba(249,115,22,0.5));
+      animation: float 3.8s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6.5vw, 4.6rem);
+      font-weight: 900; color: var(--white); line-height: 1.06;
+      max-width: 820px; margin-bottom: 0.7rem;
+      letter-spacing: -2px; position: relative; z-index: 1;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.1rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 1.1rem; position: relative; z-index: 1;
+    }
+    .hero-desc {
+      font-size: 1.02rem; color: var(--grey);
+      max-width: 580px; line-height: 1.9; margin-bottom: 2.4rem;
+      position: relative; z-index: 1;
+    }
+    .hero-stats {
+      display: flex; gap: 2.8rem; flex-wrap: wrap; justify-content: center;
+      padding-top: 2.2rem; border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .hstat .num {
+      font-size: 1.9rem; font-weight: 900; display: block;
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hstat .lbl { font-size: 0.68rem; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-hint {
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      color: rgba(249,115,22,0.4); font-size: 18px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* CONTENT */
+    .content { max-width: 760px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* CHAPTER OPENER */
+    .chapter-opener {
+      margin: 72px 0 36px; padding: 0;
+      display: flex; align-items: flex-start; gap: 20px;
+    }
+    .chapter-num {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); background: rgba(249,115,22,0.1);
+      border: 1px solid var(--accent-border);
+      padding: 6px 14px; border-radius: 20px; white-space: nowrap; margin-top: 6px;
+    }
+    .chapter-title {
+      font-size: clamp(1.45rem, 3.5vw, 2rem);
+      font-weight: 900; color: var(--white); line-height: 1.18;
+    }
+    .chapter-title span {
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* PROSE */
+    p { margin-bottom: 1.4rem; font-size: 1.02rem; color: var(--lgrey); }
+    p:last-child { margin-bottom: 0; }
+
+    /* PULL QUOTE */
+    .pull-quote {
+      margin: 36px 0; padding: 28px 32px;
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(135deg, rgba(249,115,22,0.07), rgba(251,191,36,0.03));
+      border-radius: 0 14px 14px 0;
+    }
+    .pull-quote p {
+      font-size: 1.18rem; font-weight: 700; color: var(--white);
+      line-height: 1.6; margin: 0; font-style: italic;
+    }
+    .pull-quote cite {
+      display: block; margin-top: 10px;
+      font-size: 0.78rem; color: var(--accent); font-weight: 600;
+      font-style: normal; letter-spacing: 1px;
+    }
+
+    /* JARGON BOX */
+    .jargon-box {
+      margin: 28px 0; padding: 22px 26px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      border-radius: 0 0 14px 14px;
+    }
+    .jargon-label {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: block;
+    }
+    .jargon-box h4 { font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .jargon-box p { font-size: 0.92rem; color: var(--grey); margin: 0; }
+
+    /* STAT CARDS */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 32px 0; }
+    .stat-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 20px; text-align: center;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--accent-border); }
+    .stat-card .val {
+      font-size: 1.8rem; font-weight: 900; display: block;
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .stat-card .desc { font-size: 0.78rem; color: var(--grey); line-height: 1.45; }
+
+    /* TIMELINE */
+    .timeline { margin: 32px 0; display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 20px; padding-bottom: 28px; position: relative; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 44px; }
+    .tl-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent-border), 0 0 16px rgba(249,115,22,0.35);
+      flex-shrink: 0; z-index: 1;
+    }
+    .tl-line { flex: 1; width: 2px; background: var(--border); margin-top: 4px; }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-date { font-size: 0.7rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .tl-title { font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+    .tl-desc { font-size: 0.88rem; color: var(--grey); line-height: 1.6; }
+
+    /* USE CASE CARDS */
+    .use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .uc-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .uc-card:hover { border-color: var(--accent-border); transform: translateY(-3px); }
+    .uc-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+    .uc-title { font-size: 0.92rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .uc-desc { font-size: 0.82rem; color: var(--grey); line-height: 1.6; }
+    .uc-money { font-size: 0.75rem; font-weight: 700; color: var(--accent); margin-top: 8px; display: block; }
+
+    /* BIDDER CARDS */
+    .bidder-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 28px 0; }
+    .bidder-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 18px; text-align: center;
+    }
+    .bidder-card.winner { border-color: var(--accent-border); background: rgba(249,115,22,0.06); }
+    .bidder-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .bidder-name { font-size: 0.9rem; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+    .bidder-offer { font-size: 0.75rem; color: var(--grey); line-height: 1.5; }
+    .bidder-result { font-size: 0.72rem; font-weight: 700; margin-top: 8px; display: block; }
+    .bidder-card.winner .bidder-result { color: var(--accent); }
+    .bidder-card:not(.winner) .bidder-result { color: var(--grey); }
+
+    /* WARNING BOX */
+    .warning-box {
+      margin: 28px 0; padding: 24px 28px;
+      background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.25);
+      border-left: 4px solid var(--red); border-radius: 0 14px 14px 0;
+    }
+    .warning-box .warn-label {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 8px; display: block;
+    }
+    .warning-box h4 { font-size: 1rem; font-weight: 800; color: #fca5a5; margin-bottom: 8px; }
+    .warning-box p { font-size: 0.9rem; color: var(--grey); margin: 0; line-height: 1.7; }
+
+    /* FUTURE GRID */
+    .future-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .future-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px;
+    }
+    .future-card .f-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .future-card .f-title { font-size: 0.9rem; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+    .future-card .f-desc { font-size: 0.82rem; color: var(--grey); line-height: 1.6; }
+
+    /* VERDICT */
+    .verdict {
+      margin: 48px 0 0; padding: 36px 32px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(251,191,36,0.05));
+      border: 1px solid var(--accent-border);
+      border-radius: 20px; text-align: center;
+    }
+    .verdict-label {
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+    }
+    .verdict h3 { font-size: 1.5rem; font-weight: 900; color: var(--white); margin-bottom: 12px; line-height: 1.25; }
+    .verdict p { font-size: 0.97rem; color: var(--grey); line-height: 1.85; max-width: 540px; margin: 0 auto; }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* CTA */
+    .cta-section {
+      text-align: center; padding: 72px 24px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(251,191,36,0.05));
+      border-top: 1px solid rgba(249,115,22,0.15);
+    }
+    .cta-section h3 { font-size: 1.6rem; font-weight: 900; color: var(--white); margin-bottom: 10px; }
+    .cta-section p { color: var(--grey); margin-bottom: 28px; font-size: 0.95rem; }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), #d97706);
+      color: white; padding: 0.9rem 2.4rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 1rem;
+      box-shadow: 0 4px 24px rgba(249,115,22,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(249,115,22,0.5); }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center;
+    }
+    .footer-brand {
+      font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap; margin: 1rem 0; }
+    .footer-links a { color: var(--grey); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 0.5rem; }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s, transform 0.65s; }
+    .fade-up.vis { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .use-cases, .bidder-row, .future-grid { grid-template-columns: 1fr; }
+      .chapter-opener { flex-direction: column; gap: 10px; }
+      .hero-stats { gap: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-right">
+    <a href="/">Home</a>
+    <a href="/#blog" class="nav-back">← All Posts</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow"><div class="dot"></div>Day 21 · AI Agents · The Big Story</div>
+  <div class="hero-lobster">🦞</div>
+  <h1>The <span class="grad">Lobster</span> That<br/>Beat OpenAI</h1>
+  <p class="hero-sub">And how one Austrian developer changed the future of AI — with a weekend project.</p>
+  <p class="hero-desc">One burned-out founder. One side project. Three rebrands in five days. Zuckerberg, Nadella, and Sam Altman all calling at once. The full story of OpenClaw — decoded.</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="num">247K</span><span class="lbl">GitHub Stars</span></div>
+    <div class="hstat"><span class="num">2M+</span><span class="lbl">Weekly Users</span></div>
+    <div class="hstat"><span class="num">60</span><span class="lbl">Days to OpenAI</span></div>
+    <div class="hstat"><span class="num">3</span><span class="lbl">Names in 5 Days</span></div>
+  </div>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 1</span>
+    <h2 class="chapter-title">The Man Who Built a <span>Billion-Device</span> Company — and Then Burned Out</h2>
+  </div>
+
+  <p class="fade-up">Peter Steinberger is not a household name. But you have almost certainly used something he built.</p>
+
+  <p class="fade-up">For thirteen years, this Austrian software developer ran a company called PSPDFKit — a PDF toolkit used inside apps made by Apple, Dropbox, and SAP. If you have ever opened a PDF inside another app and it just worked — smooth, clean, no crashing — there is a good chance Peter's code was quietly doing the work. By the time Insight Partners invested $116 million in 2021, PSPDFKit's code was running on nearly one billion devices worldwide.</p>
+
+  <p class="fade-up">And then Peter walked away.</p>
+
+  <p class="fade-up">Not because the company failed. Not because he was forced out. He stepped back because after thirteen years of building, the exhaustion had become something deeper than tiredness. Founders call it burnout, but that word doesn't fully capture what it actually feels like — the specific kind of emptiness that comes from giving everything you have to something, and realising you have nothing left to give.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"He spent three years away from tech. Dealing with burnout. Rediscovering what it felt like to be a person, not just a founder."</p>
+  </div>
+
+  <p class="fade-up">Three years of quiet. Three years of not shipping, not building, not reading engineering blogs. And then, slowly, curiosity crept back in. Not about PDFs. About something entirely new — AI agents, the idea that an artificial intelligence could not just answer your questions, but actually do things for you.</p>
+
+  <p class="fade-up">So he started tinkering. No product roadmap. No investors. No team. Just a man in Vienna, building something because he wanted to see if it was possible.</p>
+
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 2</span>
+    <h2 class="chapter-title">The <span>Weekend Project</span> That Became the Most Talked-About Software in the World</h2>
+  </div>
+
+  <p class="fade-up">The first version was embarrassingly simple. Peter called it "WhatsApp Relay." It let him send a message to an AI through WhatsApp and have the AI actually do things — clear his inbox, book a restaurant, check him in for a flight, adjust his smart home temperature. Instead of going to ChatGPT and asking it questions, he wanted an assistant that lived inside his phone and quietly handled his life.</p>
+
+  <p class="fade-up">It worked. Surprisingly well. So he open-sourced it in November 2025 under the name Clawdbot — a nod to Anthropic's AI model Claude, which Peter was using to power it. He posted about it on social media and went to bed.</p>
+
+  <p class="fade-up">He woke up to chaos.</p>
+
+  <div class="stat-row fade-up">
+    <div class="stat-card"><span class="val">60K+</span><span class="desc">GitHub stars in the first 72 hours</span></div>
+    <div class="stat-card"><span class="val">40+</span><span class="desc">Countries contributing code within a week</span></div>
+    <div class="stat-card"><span class="val">12</span><span class="desc">Languages the README was translated into — by volunteers</span></div>
+    <div class="stat-card"><span class="val">2M</span><span class="desc">People using it every week within weeks</span></div>
+  </div>
+
+  <p class="fade-up">Developers all over the world started building with it, forking it, improving it, translating it. Nobody asked them to. Nobody paid them to. The project was doing something that the biggest AI labs in the world — with their armies of engineers and billion-dollar budgets — had failed to do: it was giving ordinary people an AI that actually did things, not just talked about them.</p>
+
+  <p class="fade-up">Then Anthropic's lawyers arrived.</p>
+
+  <p class="fade-up">The name "Clawdbot" was too close to "Claude" for Anthropic's comfort. A trademark complaint arrived. Peter, playing entirely by the rules, renamed the project to "Moltbot" on January 27, 2026 — keeping the crustacean identity alive. Three days later, after deciding that Moltbot "never quite rolled off the tongue," he renamed it one final time: <strong style="color: var(--white);">OpenClaw</strong>.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Anthropic's lawyers sent the letter. OpenAI sent the offer."</p>
+    <cite>— The irony the entire tech industry couldn't stop talking about</cite>
+  </div>
+
+  <p class="fade-up">The project that had been named after Anthropic's own AI, and then forced to rename itself by Anthropic, was about to become Anthropic's biggest competitor's most valuable new hire.</p>
+
+
+  <!-- CHAPTER 3 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 3</span>
+    <h2 class="chapter-title">What Is <span>OpenClaw</span>? — Plain English, Zero Jargon</h2>
+  </div>
+
+  <p class="fade-up">Here is the simplest way to understand what OpenClaw is, and why it is different from every AI tool you have used before.</p>
+
+  <p class="fade-up">Every AI you have ever used — ChatGPT, Claude, Gemini, Siri — works the same basic way. You go to them. You ask a question. They give you an answer. You copy that answer, go to another app, and do something with it yourself. The AI talks. You do the work.</p>
+
+  <p class="fade-up">OpenClaw reverses that completely.</p>
+
+  <div class="jargon-box fade-up">
+    <span class="jargon-label">🔑 Term Decoded</span>
+    <h4>AI Agent</h4>
+    <p>An AI that doesn't just answer questions — it takes actions. It can open apps, send emails, fill forms, read your calendar, move files, and complete multi-step tasks on your behalf. An AI agent does things. A regular chatbot just says things. Think of the difference between a GPS that tells you how to drive versus a self-driving car that actually drives you there.</p>
+  </div>
+
+  <p class="fade-up">OpenClaw installs on your own computer or a small home server. It connects to an AI brain — whichever one you prefer, whether that's Claude, GPT-5, Gemini, or DeepSeek. And then it lives inside your messaging apps — WhatsApp, Telegram, Slack, Discord, Signal — like a very capable contact in your phone.</p>
+
+  <p class="fade-up">You send it a message. It acts.</p>
+
+  <p class="fade-up">"Book me a table at the Italian place for Saturday at 8." It opens your browser, finds the restaurant, checks availability, and reserves the table.</p>
+
+  <p class="fade-up">"Clear my inbox from last week." It reads your emails, archives the promotional ones, flags the important ones, and summarises what needs your attention.</p>
+
+  <p class="fade-up">"What did I spend on food last month?" It reads your bank statements, adds up the relevant transactions, and sends you the number — broken down by category if you want.</p>
+
+  <div class="jargon-box fade-up">
+    <span class="jargon-label">🔑 Term Decoded</span>
+    <h4>Open-Source</h4>
+    <p>Software where the entire code is published publicly for anyone to read, use, modify, or improve — completely free. It is the opposite of a product owned by one company with a locked-up recipe. Open-source is like a recipe book that any chef in the world can read, cook from, and improve. OpenClaw being open-source is a big part of why it spread so fast — thousands of developers worldwide could pick it up and build with it immediately.</p>
+  </div>
+
+  <p class="fade-up">One more thing that makes OpenClaw different from every previous attempt at this kind of AI: it runs on your own device. Your data stays on your machine. It does not live on some company's server, being processed and stored somewhere you cannot see. That combination — powerful enough to actually get things done, private enough to trust with your personal life — is exactly what the world had been waiting for.</p>
+
+
+  <!-- CHAPTER 4 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 4</span>
+    <h2 class="chapter-title">How Real People Are Using It — <span>and the Money They're Making</span></h2>
+  </div>
+
+  <p class="fade-up">It is one thing to describe what a technology can do. It is another to see what happens when millions of people actually get their hands on it and start finding uses nobody anticipated.</p>
+
+  <p class="fade-up">Here is what the OpenClaw community started building almost immediately.</p>
+
+  <div class="use-cases fade-up">
+    <div class="uc-card">
+      <span class="uc-icon">☕</span>
+      <div class="uc-title">The Morning Briefing Business</div>
+      <p class="uc-desc">Freelancers and small business owners set OpenClaw to run at 7 AM every day. It reads their calendar, checks their email, scans the news relevant to their industry, and sends a personalised briefing to their phone before their alarm goes off. Some people now charge clients for this as a service — setting up and managing AI briefing systems for busy executives.</p>
+      <span class="uc-money">💰 Service price: $200–500/month per client</span>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">📱</span>
+      <div class="uc-title">The Social Media Engine</div>
+      <p class="uc-desc">Content creators discovered they could connect OpenClaw to every platform at once — LinkedIn, Instagram, Bluesky, TikTok, Threads. They write one idea in plain language, and the agent reformats it for each platform's rules and character limits, then schedules and posts everything automatically. Some agencies are running this for ten clients simultaneously.</p>
+      <span class="uc-money">💰 Agency charge: $800–2,000/month per client</span>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">🏪</span>
+      <div class="uc-title">The 24/7 Customer Support Agent</div>
+      <p class="uc-desc">Local businesses — restaurants, salons, repair shops — connected OpenClaw to their WhatsApp business number. It answers customer questions, books appointments, handles returns enquiries, and escalates genuinely complex cases to the owner. No more missing messages at midnight.</p>
+      <span class="uc-money">💰 Setup + management: $300–800/month per business</span>
+    </div>
+    <div class="uc-card">
+      <span class="uc-icon">💻</span>
+      <div class="uc-title">The Developer's DevOps Assistant</div>
+      <p class="uc-desc">Software developers connected OpenClaw to their codebases and deployment systems. They can now type "run the tests" or "deploy to staging" into Telegram and it happens — no terminal, no SSH access, no switching contexts. For solo developers managing multiple projects, this alone saves hours every week.</p>
+      <span class="uc-money">💰 Personal productivity value: estimated 6+ hours/week saved</span>
+    </div>
+  </div>
+
+  <p class="fade-up">The pattern across all of these is the same: OpenClaw does not replace what people do. It does the boring, repetitive, time-consuming parts — so people can focus on the parts that actually need a human brain.</p>
+
+  <p class="fade-up">A new category of freelancer emerged almost overnight: the "OpenClaw consultant." People charging other people to set up, configure, and maintain personalised AI agent systems. Many are making more money from this than from their previous full-time jobs.</p>
+
+
+  <!-- CHAPTER 5 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 5</span>
+    <h2 class="chapter-title">Zuckerberg Called. Nadella Called. <span>Then Altman Called.</span></h2>
+  </div>
+
+  <p class="fade-up">By early February 2026, OpenClaw was the most talked-about repository on GitHub. It had broken speed records for open-source adoption. It had 2 million weekly users. And it had done something that OpenAI, Microsoft, and Meta — three of the most powerful technology companies on the planet — had each tried and failed to do: build an AI agent that ordinary people actually wanted to use every day.</p>
+
+  <p class="fade-up">So the phone calls started.</p>
+
+  <div class="bidder-row fade-up">
+    <div class="bidder-card">
+      <span class="bidder-icon">🔵</span>
+      <div class="bidder-name">Mark Zuckerberg</div>
+      <p class="bidder-offer">Meta had just spent $14.3 billion on AI infrastructure. They had acquired Manus AI and Limitless AI. They wanted OpenClaw and its creator too.</p>
+      <span class="bidder-result">❌ Peter said no</span>
+    </div>
+    <div class="bidder-card">
+      <span class="bidder-icon">🪟</span>
+      <div class="bidder-name">Satya Nadella</div>
+      <p class="bidder-offer">Microsoft's CEO called Peter directly. Microsoft already owned GitHub, where OpenClaw lived, and already had a deep relationship with OpenAI. They wanted the agent layer too.</p>
+      <span class="bidder-result">❌ Peter said no</span>
+    </div>
+    <div class="bidder-card winner">
+      <span class="bidder-icon">⚡</span>
+      <div class="bidder-name">Sam Altman</div>
+      <p class="bidder-offer">OpenAI's CEO made one promise that the others had not: the project stays open-source. Forever. Peter's non-negotiable condition — met without hesitation.</p>
+      <span class="bidder-result">✅ Peter said yes</span>
+    </div>
+  </div>
+
+  <p class="fade-up">On February 15, 2026, Sam Altman posted two sentences on social media. Peter Steinberger was joining OpenAI. And OpenClaw would move to an independent open-source foundation that OpenAI would back and sponsor.</p>
+
+  <p class="fade-up">No press release. No fanfare. Just two tweets. But the signal was unmistakable.</p>
+
+  <div class="jargon-box fade-up">
+    <span class="jargon-label">🔑 Term Decoded</span>
+    <h4>Acqui-hire</h4>
+    <p>A word that combines "acquisition" and "hire." It describes what happens when a large company buys a small company or project mainly to get the talented person behind it — not necessarily to own the product itself. The code might stay open-source or be shut down, but the person with the vision now works for the big company. OpenAI did not buy OpenClaw the product. They hired Peter Steinberger the creator — and paid for his work to live inside a foundation they support.</p>
+  </div>
+
+  <p class="fade-up">The $30 million figure that circulated on social media was a myth. No price was ever disclosed because this was not a traditional acquisition — no company changed hands. What happened was simpler and more interesting: the most valuable AI company in the world decided that the future of AI depended on people who could build what Peter had built, and they made sure one of them was on their team.</p>
+
+
+  <!-- CHAPTER 6 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 6</span>
+    <h2 class="chapter-title">Why Peter Said <span>Yes to OpenAI</span></h2>
+  </div>
+
+  <p class="fade-up">When the most powerful people in technology are all calling you at once, the decision should be obvious — go with the biggest cheque. That is how most people assume these conversations work.</p>
+
+  <p class="fade-up">Peter's decision was based on something else entirely.</p>
+
+  <p class="fade-up">For a man who had spent thirteen years building something he controlled, handing his work over to a company that would then lock it down was not something he was willing to do. The whole reason OpenClaw had spread to 40 countries in a week, been translated into 12 languages without anyone being asked, and attracted 2 million users without a dollar of marketing spend — was because it was open. Anyone could use it. Anyone could improve it. Anyone could build on it.</p>
+
+  <p class="fade-up">Meta's offer would have made Peter rich, but Meta has a long history of acquiring open tools and closing them off. Microsoft might have let OpenClaw live — but their interest was more about the threat it posed to their own agent products than in nurturing what it had become.</p>
+
+  <p class="fade-up">Sam Altman's offer came with a single, unconditional promise: the project stays open-source. That was enough.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"He chose OpenAI because they agreed to keep the project open-source — his non-negotiable condition. The irony here is thick: OpenClaw was one of the biggest drivers of paying API traffic to Anthropic, since most users ran it on Claude."</p>
+  </div>
+
+  <p class="fade-up">There is another layer to this story that the tech industry could not stop talking about. OpenClaw, the project that Anthropic's trademark lawyers had forced to change its name, had — through that very act — been pushed into the arms of Anthropic's biggest competitor. Had Anthropic simply let the name "Clawdbot" stand, Peter might never have connected with Sam Altman before the deal.</p>
+
+  <p class="fade-up">David Heinemeier Hansson, the creator of Ruby on Rails, one of the most important software frameworks ever built, called Anthropic's trademark enforcement "customer hostile." The story of one legal letter changing the direction of the AI industry is the kind of thing that people will be writing case studies about for years.</p>
+
+
+  <!-- CHAPTER 7 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 7</span>
+    <h2 class="chapter-title">The <span>Dark Side</span> Nobody Wants to Talk About</h2>
+  </div>
+
+  <p class="fade-up">OpenClaw is remarkable. It is also genuinely dangerous if handled carelessly. This is not a caveat buried at the bottom of the manual — it is something OpenClaw's own team says loudly and openly.</p>
+
+  <p class="fade-up">When you install OpenClaw and run the setup, before anything works, the software shows you a series of security warnings. It tells you, clearly, that this agent can access your local files, execute commands on your computer, read your messages, and take actions on your behalf. It asks you to confirm that you understand this. It is, in effect, a consent form for giving an AI meaningful access to your digital life.</p>
+
+  <div class="warning-box fade-up">
+    <span class="warn-label">⚠️ Direct Warning from OpenClaw's Own Team</span>
+    <h4>"If you can't understand how to run a command line, this is far too dangerous of a project for you to use safely."</h4>
+    <p>— Shadow, one of OpenClaw's core maintainers, posted this warning in the project's official Discord. It is not marketing material. It is a genuine caution from the people who built the thing.</p>
+  </div>
+
+  <p class="fade-up">In early 2026, Cisco's AI security research team tested a third-party "skill" — think of it as a plugin, an add-on that extends what OpenClaw can do — and found something alarming. The skill was performing data exfiltration and prompt injection without the user's knowledge. In plain English: it was quietly copying the user's files and sending them somewhere else, while also manipulating the AI's responses in hidden ways. The user had no idea.</p>
+
+  <div class="jargon-box fade-up">
+    <span class="jargon-label">🔑 Term Decoded</span>
+    <h4>Prompt Injection</h4>
+    <p>A type of attack where hidden instructions are inserted into the text that an AI agent reads — instructions that make the agent behave in ways the user never intended or approved. Imagine hiring an assistant and someone secretly slipping a note into their instructions saying "also email all documents to this address." The assistant follows both sets of instructions, but the user only knowingly gave one of them.</p>
+  </div>
+
+  <p class="fade-up">The Chinese government took the security concerns seriously enough to restrict state-run enterprises and government agencies from running OpenClaw on office computers — citing national security. At the same time, Chinese tech giant Tencent launched a full suite of OpenClaw-based products on WeChat for ordinary consumers. The same technology, deemed too risky for government computers, was simultaneously being deployed to hundreds of millions of phones.</p>
+
+  <p class="fade-up">This tension — between incredible capability and real risk — is not unique to OpenClaw. It is the central question of the entire AI agent era. When you give an AI the ability to act in the world on your behalf, you are also giving it the ability to act in ways you did not intend. The more powerful the agent, the higher the stakes of getting that wrong.</p>
+
+  <p class="fade-up">The honest answer is that OpenClaw, right now, is a tool for people who understand what they are doing. The vision — where something like this is safe and usable by everyone — is what Peter Steinberger is now at OpenAI to build.</p>
+
+
+  <!-- CHAPTER 8 -->
+  <div class="chapter-opener fade-up">
+    <span class="chapter-num">Chapter 8</span>
+    <h2 class="chapter-title">The <span>Future Picture</span> — What This All Actually Means</h2>
+  </div>
+
+  <p class="fade-up">Step back from the drama of the acquisition, the three rebrands, the trademark dispute, and the bidding war — and look at what this story is actually about.</p>
+
+  <p class="fade-up">For the last three years, the defining image of AI has been a chat window. You type. It replies. You type again. That is the interaction model the entire industry has been building around. It is useful. It is impressive. But it is fundamentally still just a very fast, very knowledgeable thing that answers questions.</p>
+
+  <p class="fade-up">OpenClaw — and everything it has set in motion — represents the end of that era. The battle being fought now is not over which chatbot gives the best answers. It is over which company builds the layer of software that sits between the AI model and your real life, and actually does things on your behalf.</p>
+
+  <div class="future-grid fade-up">
+    <div class="future-card">
+      <span class="f-icon">🤖</span>
+      <div class="f-title">Agents for Everyone</div>
+      <p class="f-desc">Peter's stated mission at OpenAI is to bring agents to people who cannot currently set them up. The next version of OpenClaw should not require a command line — it should work for anyone with a phone.</p>
+    </div>
+    <div class="future-card">
+      <span class="f-icon">🌐</span>
+      <div class="f-title">The Open Foundation</div>
+      <p class="f-desc">OpenClaw now lives inside an independent open-source foundation backed by OpenAI. The code stays free. The community stays global. The development accelerates with OpenAI resources behind it.</p>
+    </div>
+    <div class="future-card">
+      <span class="f-icon">⚔️</span>
+      <div class="f-title">The Agent Wars Begin</div>
+      <p class="f-desc">Meta has Manus AI. Microsoft has Copilot. Anthropic has Claude Cowork. Google has Project Astra. OpenAI now has OpenClaw's creator. The race to own the agent layer of AI is the defining tech battle of 2026.</p>
+    </div>
+    <div class="future-card">
+      <span class="f-icon">🔐</span>
+      <div class="f-title">The Safety Problem</div>
+      <p class="f-desc">The Cisco security findings and China's government ban are not blips — they are the central engineering challenge of the agent era. How do you give AI the power to act while ensuring it only acts the way you intended?</p>
+    </div>
+  </div>
+
+  <p class="fade-up">The acquisition of OpenClaw's creator by OpenAI is part of a pattern that defined the first two months of 2026. In December 2025, Nvidia acquired Groq — a company focused on making AI run faster. In January 2026, Meta invested $14.3 billion in Scale AI — a company focused on the quality of data used to train AI. And in February 2026, OpenAI hired the man who proved that AI agents could actually work in the real world.</p>
+
+  <p class="fade-up">The hyperscalers are not competing on AI anymore — they are competing on the infrastructure that lets AI operate at scale. And the person who built the most compelling proof-of-concept for that infrastructure is now inside the company that is furthest along in the race.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"He called the future 'extremely multi-agent.' A world where multiple AI agents work together on your behalf — one handling your email, one managing your calendar, one watching the news, one monitoring your finances — all talking to each other and to you."</p>
+    <cite>— Peter Steinberger, describing what OpenClaw is building toward</cite>
+  </div>
+
+  <p class="fade-up">Whether OpenAI lets that vision become real — or whether the commercial pressures of a $500 billion company slowly reshape what OpenClaw was into something more profitable and less open — is the question the entire developer community is now watching closely.</p>
+
+  <p class="fade-up">History has seen this story before. A scrappy open-source project goes viral. The biggest company in its industry buys the creator. The community holds its breath. Sometimes the technology gets absorbed and made better at a scale the original team could never have achieved alone. Sometimes it gets quietly buried while the acquirer focuses on other priorities.</p>
+
+  <p class="fade-up">What makes this time feel different is the non-negotiable clause. The promise Sam Altman made — that the code stays open, that the foundation stays independent — is on the record. In a world where every major AI company is trying to pull the agent layer under their own roof, Peter Steinberger managed to walk into the most powerful of them all and leave the door open behind him.</p>
+
+  <!-- VERDICT -->
+  <div class="verdict fade-up">
+    <span class="verdict-label">🦞 The Decode — What This Means For You</span>
+    <h3>The chatbot era is ending. The agent era is beginning.</h3>
+    <p>OpenClaw is not just a cool piece of software. It is the clearest signal yet that AI is moving from talking to doing. The question for everyone — individuals, businesses, governments — is no longer "how do I use AI to answer my questions?" It is "how do I make sure the AI acting on my behalf is acting the way I actually want?" That question is going to define the next five years of technology. And a burned-out Austrian developer, tinkering in Vienna on a weekend, just became the person at the centre of the answer.</p>
+  </div>
+
+</div><!-- /content -->
+
+<hr class="divider"/>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h3>📬 New Decode Every Day</h3>
+  <p>90 days of honest, plain English decodes — AI, tech, and the world around you. Never miss one.</p>
+  <a href="/#subscribe" class="cta-btn">Follow Along Free →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day2-history-of-ai-decodeai.html">Day 2</a>
+    <a href="day3-what-is-ai-decodeai.html">Day 3</a>
+    <a href="day4-machine-learning-decodeai.html">Day 4</a>
+    <a href="day5-neural-networks-decodeai.html">Day 5</a>
+    <a href="day6-apple-google-siri-decodeai.html">Day 6</a>
+    <a href="day7-large-language-models-decodeai.html">Day 7</a>
+    <a href="day8-suryakumar-yadav-decodeai.html">Day 8</a>
+    <a href="day9-ai-art-prompt-challenge-decodeai.html">Day 9</a>
+    <a href="day10-ai-deleted-data-decodeai.html">Day 10</a>
+    <a href="day11-mira-murati-thinking-machines-nvidia-decodeai.html">Day 11</a>
+    <a href="day12-nvidia-ai-chips-electricity-space-decodeai.html">Day 12</a>
+    <a href="day13-meta-avocado-delay-zuckerberg-decodeai.html">Day 13</a>
+    <a href="day14-atlassian-ai-layoffs-decodeai.html">Day 14</a>
+    <a href="day15-war-ai-crisis-decodeai.html">Day 15</a>
+    <a href="day16-meta-metaverse-nft-collapse-decodeai.html">Day 16</a>
+    <a href="day17-terafab-musk-jensen-chip-war-decodeai.html">Day 17</a>
+    <a href="day18-anthropic-pentagon-ai-ethics-court-decodeai.html">Day 18</a>
+    <a href="day19-claude-computer-use-decodeai.html">Day 19</a>
+    <a href="day20-sam-altman-safety-spud-ai-race-decodeai.html">Day 20</a>
+    <a href="day21-openclaw-openai-decodeai.html">Day 21</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+  </div>
+  <p class="footer-copy">© 2026 DecodeWithAni · decodewithani.com · Decoding life, one topic at a time</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
