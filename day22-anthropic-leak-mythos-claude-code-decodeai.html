@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 22 — The Safety Lab That Couldn't Lock Its Own Door | DecodeWithAni</title>
+  <meta name="description" content="Two leaks. Five days. 3,000 files. Half a million lines of code. A secret model called Mythos. A hidden agent called KAIROS. And a $380 billion company heading for an IPO. The full story — decoded."/>
+  <style>
+    :root{--accent:#ef4444;--accent-d:#dc2626;--accent-l:rgba(239,68,68,0.12);--accent-b:rgba(239,68,68,0.25);--bg:#0d0d1a;--bg2:#121225;--bg3:#1a1a2e;--bg4:#1e1e3a;--border:#2a2a4a;--white:#ffffff;--grey:#9ca3af;--lgrey:#d1d5db;--purple:#a78bfa;--blue:#60a5fa;--green:#6ee7b7;--amber:#fcd34d;--red:#fca5a5}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--lgrey);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.85}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent-d);border-radius:3px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,26,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:56px}
+    .nav-brand{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--accent),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-links{display:flex;gap:1.5rem;align-items:center}
+    .nav-links a{color:var(--grey);text-decoration:none;font-size:0.82rem;transition:color 0.2s}
+    .nav-links a:hover{color:var(--accent)}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden;background:radial-gradient(ellipse 100% 70% at 50% 0%,rgba(239,68,68,0.18) 0%,transparent 65%),var(--bg)}
+    .hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(239,68,68,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(239,68,68,0.03) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-l);border:1px solid var(--accent-b);color:var(--accent);padding:0.4rem 1.2rem;border-radius:30px;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem}
+    .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+    .hero-icon{font-size:80px;margin-bottom:20px;filter:drop-shadow(0 0 32px rgba(239,68,68,0.4));animation:float 3.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    .hero h1{font-size:clamp(2rem,6vw,3.8rem);font-weight:900;color:var(--white);line-height:1.08;max-width:820px;margin-bottom:1rem;letter-spacing:-1.5px}
+    .hero h1 .grad{background:linear-gradient(135deg,var(--accent),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:1.05rem;color:var(--grey);max-width:600px;line-height:1.8;margin-bottom:2.5rem}
+    .hero-stats{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
+    .hero-stat{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px 24px;min-width:130px;text-align:center}
+    .hero-stat .num{font-size:1.6rem;font-weight:900;display:block;background:linear-gradient(135deg,var(--accent),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-stat .lbl{font-size:0.68rem;color:var(--grey);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
+
+    /* CONTENT */
+    .content{max-width:780px;margin:0 auto;padding:60px 24px 80px}
+
+    /* CHAPTER OPENER */
+    .chapter{margin:64px 0 32px;padding:28px 0 18px;border-top:1px solid var(--border);position:relative}
+    .chapter::before{content:'';position:absolute;top:-1px;left:0;width:60px;height:2px;background:var(--accent)}
+    .chapter-num{font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+    .chapter-title{font-size:1.6rem;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:6px}
+    .chapter-desc{font-size:0.88rem;color:var(--grey);font-style:italic}
+
+    /* PROSE */
+    .content p{font-size:1.02rem;margin-bottom:1.4rem;color:var(--lgrey)}
+    .content strong{color:var(--white);font-weight:700}
+
+    /* PULL QUOTE */
+    .pull-quote{border-left:3px solid var(--accent);padding:20px 24px;margin:32px 0;background:var(--accent-l);border-radius:0 14px 14px 0}
+    .pull-quote p{font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0;line-height:1.6;font-style:italic}
+    .pull-quote .attr{font-size:0.78rem;color:var(--grey);font-style:normal;margin-top:8px;display:block}
+
+    /* STAT CARDS */
+    .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:28px 0}
+    .stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+    .stat-card .sc-num{font-size:1.5rem;font-weight:900;display:block;background:linear-gradient(135deg,var(--accent),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-card .sc-lbl{font-size:0.75rem;color:var(--grey);margin-top:4px;display:block}
+
+    /* JARGON */
+    .jargon{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin:24px 0}
+    .jargon-title{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+    .jargon p{font-size:0.92rem;color:var(--lgrey);margin-bottom:0;line-height:1.7}
+
+    /* TIMELINE */
+    .timeline{margin:28px 0;padding-left:24px;border-left:2px solid var(--border)}
+    .tl-item{margin-bottom:22px;position:relative}
+    .tl-item::before{content:'';position:absolute;left:-29px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+    .tl-date{font-size:0.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;display:block}
+    .tl-text{font-size:0.95rem;color:var(--lgrey);line-height:1.7}
+
+    /* PRODUCT CARDS */
+    .product-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:28px;margin:24px 0;position:relative;overflow:hidden}
+    .product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#f87171)}
+    .pc-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-l);border:1px solid var(--accent-b);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+    .pc-title{font-size:1.2rem;font-weight:900;color:var(--white);margin-bottom:8px}
+    .pc-desc{font-size:0.95rem;color:var(--lgrey);line-height:1.8;margin-bottom:12px}
+    .pc-detail{font-size:0.85rem;color:var(--grey);line-height:1.7;padding-top:12px;border-top:1px solid var(--border)}
+
+    /* COMPARISON TABLE */
+    .comparison{margin:28px 0;overflow-x:auto}
+    .comparison table{width:100%;border-collapse:collapse;font-size:0.88rem}
+    .comparison th{background:var(--bg3);color:var(--white);font-weight:700;padding:12px 16px;text-align:left;border-bottom:2px solid var(--accent)}
+    .comparison td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--lgrey)}
+    .comparison tr:hover td{background:rgba(239,68,68,0.04)}
+
+    /* SCENARIO */
+    .scenario{background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(248,113,113,0.04));border:1px solid var(--accent-b);border-radius:18px;padding:28px;margin:28px 0}
+    .scenario-title{font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:12px}
+    .scenario p{font-size:0.95rem;color:var(--lgrey);line-height:1.8;margin-bottom:10px}
+
+    /* STOCK IMPACT */
+    .stock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:24px 0}
+    .stock-chip{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+    .stock-name{font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:4px}
+    .stock-drop{font-size:1.1rem;font-weight:900;color:var(--accent)}
+    .stock-note{font-size:0.68rem;color:var(--grey);margin-top:2px}
+
+    /* VERDICT */
+    .verdict{background:linear-gradient(135deg,rgba(239,68,68,0.1),rgba(248,113,113,0.05));border:1px solid var(--accent-b);border-radius:20px;padding:32px;margin:36px 0}
+    .verdict-title{font-size:1.3rem;font-weight:900;color:var(--white);margin-bottom:12px}
+    .verdict p{font-size:0.98rem;color:var(--lgrey);line-height:1.8;margin-bottom:10px}
+
+    /* CTA */
+    .end-cta{text-align:center;padding:60px 20px;border-top:1px solid var(--border);margin-top:48px}
+    .end-cta h2{font-size:1.6rem;font-weight:900;color:var(--white);margin-bottom:10px}
+    .end-cta p{color:var(--grey);font-size:0.95rem;margin-bottom:20px}
+    .end-cta a{background:linear-gradient(135deg,var(--accent-d),#f87171);color:white;padding:0.8rem 2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.95rem;transition:transform 0.2s;display:inline-block}
+    .end-cta a:hover{transform:translateY(-2px)}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 5%;text-align:center}
+    .footer-brand{font-size:1rem;font-weight:800;margin-bottom:0.4rem;background:linear-gradient(135deg,var(--accent),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .footer-links{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin:0.8rem 0}
+    .footer-links a{color:var(--grey);text-decoration:none;font-size:0.78rem;transition:color 0.2s}
+    .footer-links a:hover{color:var(--accent)}
+    .footer-copy{font-size:0.72rem;color:var(--grey);margin-top:0.4rem}
+
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s,transform 0.6s}
+    .fade-up.vis{opacity:1;transform:translateY(0)}
+
+    @media(max-width:600px){
+      .hero h1{font-size:2rem}
+      .hero-stats{gap:10px}
+      .hero-stat{min-width:100px;padding:14px 16px}
+      .stat-row{grid-template-columns:1fr 1fr}
+      .stock-grid{grid-template-columns:1fr 1fr}
+      .nav-links a:not(:last-child){display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">DecodeWithAni</a>
+  <div class="nav-links">
+    <a href="/">← Home</a>
+    <a href="day21-openclaw-openai-decodeai.html">← Day 21</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge"><div class="dot"></div>Day 22 · April 1, 2026</div>
+  <div class="hero-icon">🔓</div>
+  <h1>The Safety Lab That Couldn't <span class="grad">Lock Its Own Door</span></h1>
+  <p class="hero-sub">Two leaks. Five days. 3,000 files. Half a million lines of code. A secret model called Mythos. A hidden always-on agent called KAIROS. And a $380 billion company heading for an IPO. The full story — and everything that was found inside.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">~3,000</span><span class="lbl">Files Exposed</span></div>
+    <div class="hero-stat"><span class="num">512K</span><span class="lbl">Lines of Code</span></div>
+    <div class="hero-stat"><span class="num">$380B</span><span class="lbl">Company Valuation</span></div>
+    <div class="hero-stat"><span class="num">5 Days</span><span class="lbl">Between Leaks</span></div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- CH1 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 1</span>
+    <h2 class="chapter-title">The Door Was Open the Whole Time</h2>
+    <p class="chapter-desc">How a forgotten setting exposed the biggest AI safety company's secrets to the world.</p>
+  </div>
+
+  <p class="fade-up">Anthropic is the company behind Claude — the AI chatbot that millions of people use every day. It was founded in 2021 by former members of OpenAI, the company that made ChatGPT. And from the very beginning, Anthropic built its entire identity around one word: <strong>safety</strong>.</p>
+
+  <p class="fade-up">They said they'd be different. More careful. More responsible. The "safety-first AI lab" — that's how the world knew them. And for five years, that reputation held. Investors poured in $67 billion. Eight of the ten biggest companies on earth signed contracts with them. The entire brand was built on trust.</p>
+
+  <p class="fade-up">Then, on March 26, 2026, two cybersecurity researchers discovered something astonishing.</p>
+
+  <p class="fade-up">Anthropic's content management system — that's just the software used to manage their blog and website — had a simple setting error. All uploaded files were set to <strong>"public"</strong> by default. Nobody had changed it to private. That meant roughly 3,000 internal files — draft blog posts, internal images, PDFs, planning documents — were sitting on the open internet, visible to anyone who knew where to look.</p>
+
+  <p class="fade-up">This wasn't a hack. No one broke in. No one cracked a password or exploited some sophisticated vulnerability. Someone at one of the most well-funded AI companies on the planet simply forgot to flip a switch.</p>
+
+  <div class="pull-quote fade-up">
+    <p>"Human error in the configuration of our content management system."</p>
+    <span class="attr">— Anthropic spokesperson, responding to Fortune's report</span>
+  </div>
+
+  <p class="fade-up">The researchers who found it — Roy Paz from a cybersecurity company called LayerX Security, and Alexandre Pauwels from the University of Cambridge — notified Fortune magazine. Fortune reviewed the documents and contacted Anthropic. Within hours, the company pulled the public access.</p>
+
+  <p class="fade-up">But the damage was already done. Because among those 3,000 exposed files was a draft blog post that was never supposed to see the light of day. A blog post announcing a model so powerful that even the company building it sounded scared.</p>
+
+  <!-- CH2 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 2</span>
+    <h2 class="chapter-title">The Model Nobody Was Supposed to See</h2>
+    <p class="chapter-desc">Inside Claude Mythos — the most powerful AI model Anthropic has ever built.</p>
+  </div>
+
+  <p class="fade-up">The draft blog post was written as if it were ready to publish. It had headings, a planned publication date, and the careful language of a product announcement. It described a model called <strong>Claude Mythos</strong>.</p>
+
+  <p class="fade-up">To understand why this matters, you need to know how Anthropic currently labels its AI models. Think of it like T-shirt sizes. Right now, they sell three tiers: <strong>Haiku</strong> (the smallest and cheapest), <strong>Sonnet</strong> (the middle option, good enough for most tasks), and <strong>Opus</strong> (the biggest and smartest, but also the most expensive).</p>
+
+  <p class="fade-up">Mythos isn't a new version of any of those. It's a <strong>brand new tier above Opus</strong> — bigger, smarter, more powerful than anything the company has ever released. The internal codename for this new tier is <strong>Capybara</strong>. The draft blog post described it as "larger and more intelligent than our Opus models — which were, until now, our most powerful."</p>
+
+  <div class="jargon fade-up">
+    <span class="jargon-title">🔓 Jargon Decoded — Model Tiers</span>
+    <p>Think of AI models like car engines. <strong>Haiku</strong> is a small, fuel-efficient engine — fast and cheap. <strong>Sonnet</strong> is a mid-range engine — balanced for everyday use. <strong>Opus</strong> is a V8 — powerful but expensive. <strong>Mythos/Capybara</strong> is a jet engine — something in a completely different category, built for tasks no previous model could handle.</p>
+  </div>
+
+  <p class="fade-up">The draft made several specific claims about Mythos that sent shockwaves through the tech industry:</p>
+
+  <div class="stat-row fade-up">
+    <div class="stat-card"><span class="sc-num">Above Opus</span><span class="sc-lbl">New Highest Tier</span></div>
+    <div class="stat-card"><span class="sc-num">Dramatic</span><span class="sc-lbl">Score Improvements</span></div>
+    <div class="stat-card"><span class="sc-num">Very Expensive</span><span class="sc-lbl">To Run & Serve</span></div>
+    <div class="stat-card"><span class="sc-num">Early Access</span><span class="sc-lbl">Already Testing</span></div>
+  </div>
+
+  <p class="fade-up">Compared to Opus 4.6 — their previous best — the draft said Mythos achieves "dramatically higher scores" on tests of software coding, academic reasoning, and cybersecurity. The company described it as "by far the most powerful AI model we've ever developed."</p>
+
+  <p class="fade-up">But what made the industry truly nervous wasn't the performance. It was the <strong>cybersecurity section</strong>.</p>
+
+  <p class="fade-up">The draft warned — in Anthropic's own words — that Mythos is "currently far ahead of any other AI model in cyber capabilities" and that it "presages an upcoming wave of models that can exploit vulnerabilities in ways that far outpace the efforts of defenders."</p>
+
+  <p class="fade-up">Read that again. The company building this model was warning the world that it could help attackers find and exploit weaknesses in software faster than any human security team could fix them. And that other companies would soon build similar models.</p>
+
+  <p class="fade-up">Their plan? Release Mythos first to cybersecurity defense companies, giving the good guys a head start before the technology became widely available. A phased rollout, starting through an invite-only system on their developer platform.</p>
+
+  <p class="fade-up">Also buried in the leaked files: details of a private CEO retreat planned at an 18th-century English countryside manor, where Anthropic's CEO Dario Amodei was scheduled to present Mythos to potential enterprise customers in person. The kind of event where a handshake over dinner could mean a multi-million-dollar deal.</p>
+
+  <p class="fade-up">Anthropic confirmed the leak was real. A spokesperson told Fortune they're "developing a general purpose model with meaningful advances in reasoning, coding, and cybersecurity" and are "being deliberate about how we release it."</p>
+
+  <p class="fade-up">Two things they were less deliberate about: the name. The researchers found two versions of the same blog post — one called the model "Mythos," the other called it "Capybara." Even the subtitle of the Capybara version accidentally still read "Claude Mythos." The company was apparently still deciding what to call it.</p>
+
+  <!-- CH3 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 3</span>
+    <h2 class="chapter-title">Five Days Later, It Happened Again</h2>
+    <p class="chapter-desc">How 512,000 lines of source code ended up on the public internet — by accident.</p>
+  </div>
+
+  <p class="fade-up">If the Mythos leak was embarrassing, what happened next was devastating.</p>
+
+  <p class="fade-up">On March 31, 2026 — just five days after the CMS incident — Anthropic released a routine software update for Claude Code, their popular AI coding assistant. Claude Code is a tool that software developers use to write, fix, and manage code with help from AI. It had exploded in popularity. By February 2026, it was pulling in $2.5 billion a year in revenue — one of the fastest-growing developer tools in history.</p>
+
+  <p class="fade-up">But version 2.1.88 of Claude Code contained something it wasn't supposed to: a 59.8 megabyte file called a <strong>source map</strong>.</p>
+
+  <div class="jargon fade-up">
+    <span class="jargon-title">🔓 Jargon Decoded — Source Map</span>
+    <p>When software companies build a product, they write the original code in a clean, readable format. Before shipping it to users, they compress it into a smaller, scrambled version (so it loads faster and is harder to read). A <strong>source map</strong> is like a decoder ring — it maps the scrambled version back to the clean original. It's meant only for internal debugging. Shipping it to the public is like accidentally publishing the blueprint to your entire product.</p>
+  </div>
+
+  <p class="fade-up">At 4:23 AM Eastern Time, a blockchain security intern named <strong>Chaofan Shou</strong> spotted the file. He posted the discovery on X (formerly Twitter), complete with a download link. Within hours, the entire codebase was mirrored across GitHub and analyzed by thousands of developers around the world.</p>
+
+  <p class="fade-up">The scale was enormous: roughly <strong>512,000 lines of code across approximately 1,900 files</strong>. The complete internal architecture of one of the most commercially important AI products in the world — laid bare for anyone to study, copy, or exploit.</p>
+
+  <p class="fade-up">Anthropic called it "a release packaging issue caused by human error, not a security breach." They confirmed no customer data or model weights were exposed. But for the second time in five days, the safety-first AI company had accidentally published its own secrets.</p>
+
+  <p class="fade-up">And here's where it gets even more painful: <strong>this exact same mistake had happened before</strong>. A nearly identical source-map leak occurred with an earlier version of Claude Code back in February 2025 — more than a year earlier. The same kind of debugging file, shipped to the public by accident.</p>
+
+  <p class="fade-up">There's a likely explanation for how it happened this time. Claude Code is built on a tool called Bun (a JavaScript runtime that Anthropic actually acquired at the end of last year). A bug in Bun — filed on March 11, still open and unfixed at the time of the leak — causes source maps to be served in production mode even when they're supposed to be disabled. If that bug caused the leak, then Anthropic's own toolchain shipped a known defect that exposed their own product's source code.</p>
+
+  <!-- CH4 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 4</span>
+    <h2 class="chapter-title">The Products Nobody Was Supposed to See</h2>
+    <p class="chapter-desc">Inside the leaked source code: KAIROS, Dream Mode, Buddy, Undercover Mode, and more.</p>
+  </div>
+
+  <p class="fade-up">The Mythos leak was a marketing secret getting out early. The Claude Code source leak was something far more consequential — a look inside the engine room of a company planning the next generation of AI tools. Developers who analyzed the code found a roadmap of unreleased products and features that paint a clear picture of where Anthropic is heading.</p>
+
+  <p class="fade-up">Here's everything that was found inside — and what each product is built to do.</p>
+
+  <!-- KAIROS -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">🧠 Unreleased Feature</span>
+    <div class="pc-title">KAIROS — The Always-On Background Agent</div>
+    <p class="pc-desc">This is the biggest product reveal from the leak. KAIROS is a mode hidden inside Claude Code that turns the AI from something you talk to into something that <strong>works while you're not even looking</strong>.</p>
+    <p class="pc-desc">Right now, every AI coding tool works the same way: you ask a question, it answers. You close the window, it stops. KAIROS changes that. It allows Claude Code to keep running in the background, even when the developer is idle — sleeping, commuting, in a meeting, whatever.</p>
+    <div class="pc-detail">
+      <strong>What it does in the background:</strong> KAIROS runs something called <strong>autoDream</strong> — a process where the AI reviews everything it has learned about a project, merges scattered observations, removes contradictions from its own memory, and converts vague assumptions into clear facts. Think of it as the AI tidying up its own desk while you're away, so when you come back, it's sharper and more accurate than when you left. It can also run tasks, fix errors it discovers, and even send you push notifications when something needs your attention.
+    </div>
+  </div>
+
+  <!-- DREAM MODE -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">💤 Unreleased Feature</span>
+    <div class="pc-title">Dream Mode — Nightly Memory Cleaning</div>
+    <p class="pc-desc">Connected to KAIROS, Dream Mode is like a "sleep cycle" for the AI. Every AI model has a problem: the longer a conversation goes, the more confused it gets. Important details from the beginning of a session get pushed out by newer information. Engineers call this "context entropy" — but in plain English, the AI's memory just gets messy.</p>
+    <p class="pc-desc">Dream Mode solves this. It's a process called "nightly memory distillation" — the AI reviews its entire memory, keeps what matters, discards what doesn't, and reorganizes everything into a clean structure. The code reveals a three-layer memory system, far more sophisticated than the simple "remember or forget" approach other AI tools use.</p>
+    <div class="pc-detail">
+      <strong>Why it matters:</strong> Current AI coding tools "forget" things mid-session, forcing developers to repeat themselves. Dream Mode means the AI could potentially maintain perfect context across days or weeks of working on the same project. That's a genuine leap from anything on the market today.
+    </div>
+  </div>
+
+  <!-- COORDINATOR MODE -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">🔄 Unreleased Feature</span>
+    <div class="pc-title">Coordinator Mode — The AI Boss</div>
+    <p class="pc-desc">The leaked code reveals a feature that turns Claude into an <strong>orchestrator</strong> — a manager that coordinates multiple AI "workers" at the same time. Instead of one AI doing one task, Coordinator Mode spawns parallel agents to tackle complex problems simultaneously.</p>
+    <div class="pc-detail">
+      <strong>What it means in practice:</strong> Imagine asking Claude Code to build a full website. Instead of doing everything one step at a time, Coordinator Mode would assign one agent to build the front page, another to write the database code, another to handle security testing — all at once, with the coordinator keeping everything aligned. It's the difference between one employee and an entire team, all inside a single tool.
+    </div>
+  </div>
+
+  <!-- BUDDY -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">🐾 Hidden Feature</span>
+    <div class="pc-title">Buddy — The AI Tamagotchi</div>
+    <p class="pc-desc">This one is delightful. Buried in the code is a complete virtual pet companion system called <strong>Buddy</strong>. It features 18 different species, rarity tiers, and stats including something called <strong>CHAOS</strong> and <strong>SNARK</strong>. It was designed to live in your terminal — the command-line window developers use all day.</p>
+    <div class="pc-detail">
+      <strong>Why it exists:</strong> This is almost certainly an April Fools' joke — the rollout window was coded for April 1–7, literally the day after the code leaked. But it also tells us something about Anthropic's strategy: they're trying to make Claude Code feel like a companion you enjoy spending time with, not just a tool you use. Building personality and "stickiness" into a coding assistant is a product strategy play, even when it's wrapped in a joke.
+    </div>
+  </div>
+
+  <!-- UNDERCOVER MODE -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">🕵️ Controversial Feature</span>
+    <div class="pc-title">Undercover Mode — The Stealth Contributor</div>
+    <p class="pc-desc">This is the most controversial thing found in the leak. A file called <strong>undercover.ts</strong> — about 90 lines of code — implements a mode that strips all traces of AI involvement when Claude Code contributes to public code repositories.</p>
+    <p class="pc-desc">The instructions in the code are blunt: <em>"You are operating UNDERCOVER in a PUBLIC/OPEN-SOURCE repository. Your commit messages, PR titles, and PR bodies MUST NOT contain ANY Anthropic-internal information. Do not blow your cover."</em></p>
+    <div class="pc-detail">
+      <strong>What this means:</strong> When Anthropic employees use Claude Code to contribute to open-source projects, this mode automatically removes any mention of Claude, Anthropic, or internal codenames from the public record. The code writes itself, and the AI covers its own tracks. It's designed to prevent internal information from leaking — ironic, given what just happened. But it also means that open-source code contributions that look like they were written by a human developer may actually have been written by AI, with no way for the community to know.
+    </div>
+  </div>
+
+  <!-- ANTI-DISTILLATION -->
+  <div class="product-card fade-up">
+    <span class="pc-badge">🛡️ Defense Mechanism</span>
+    <div class="pc-title">Anti-Distillation — Poisoning the Copycats</div>
+    <p class="pc-desc">Deep in the code is a flag called <strong>ANTI_DISTILLATION_CC</strong>. When activated, Claude Code injects <strong>fake tools</strong> into its own responses.</p>
+    <p class="pc-desc">Why? Because competitors sometimes try to record and copy another AI's behavior to train their own models — a process called "distillation." By inserting fictional tool descriptions into its outputs, Claude Code poisons any dataset a competitor might try to extract from it. It's like a restaurant putting a fake recipe on the table in case a rival chef is watching through the window.</p>
+    <div class="pc-detail">
+      <strong>The catch:</strong> Now that the code is public, anyone can see exactly how this defense works and find ways around it. One analysis concluded that "anyone serious about distilling from Claude Code traffic would find the workarounds in about an hour of reading the source." The real protection, the analyst noted, was probably legal — not technical.
+    </div>
+  </div>
+
+  <!-- CH5 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 5</span>
+    <h2 class="chapter-title">Wall Street Panicked</h2>
+    <p class="chapter-desc">How a draft blog post about an AI model crashed cybersecurity stocks around the world.</p>
+  </div>
+
+  <p class="fade-up">On the morning of March 27, 2026 — one day after the Mythos leak — the stock market opened to a scene that had never happened before. An AI model announcement, from a company that isn't even publicly traded yet, directly caused cybersecurity stocks to collapse.</p>
+
+  <p class="fade-up">The reason: investors read the leaked draft's warning that Mythos is "far ahead of any other AI model in cyber capabilities" and drew a terrifying conclusion. If an AI can find and exploit software vulnerabilities faster than human security teams can patch them, then every cybersecurity company's entire business model — built on catching threats that humans create — might become obsolete.</p>
+
+  <div class="stock-grid fade-up">
+    <div class="stock-chip"><div class="stock-name">CrowdStrike</div><div class="stock-drop">↓ 7%</div><div class="stock-note">CRWD</div></div>
+    <div class="stock-chip"><div class="stock-name">Palo Alto</div><div class="stock-drop">↓ 6%</div><div class="stock-note">PANW</div></div>
+    <div class="stock-chip"><div class="stock-name">Zscaler</div><div class="stock-drop">↓ 4.5%</div><div class="stock-note">ZS</div></div>
+    <div class="stock-chip"><div class="stock-name">Okta</div><div class="stock-drop">↓ 7%</div><div class="stock-note">OKTA</div></div>
+    <div class="stock-chip"><div class="stock-name">SentinelOne</div><div class="stock-drop">↓ 6%</div><div class="stock-note">NYSE: S</div></div>
+    <div class="stock-chip"><div class="stock-name">Tenable</div><div class="stock-drop">↓ 9%</div><div class="stock-note">TENB</div></div>
+    <div class="stock-chip"><div class="stock-name">iShares Cyber ETF</div><div class="stock-drop">↓ 4.5%</div><div class="stock-note">Sector ETF</div></div>
+    <div class="stock-chip"><div class="stock-name">Netskope</div><div class="stock-drop">↓ 7%</div><div class="stock-note">Recent IPO</div></div>
+  </div>
+
+  <p class="fade-up">The iShares Cybersecurity ETF — an index fund that tracks the entire cybersecurity sector — hit its lowest level since November 2023, down over 21% for the year. Billions of dollars in market value evaporated in a single morning.</p>
+
+  <p class="fade-up">One Wall Street analyst put it bluntly: Mythos has the potential to "elevate any ordinary hacker into a nation-state adversary." That's not hyperbole from a blogger — that was Stifel's Adam Borg, writing to institutional investors.</p>
+
+  <p class="fade-up">Raymond James warned that traditional cybersecurity approaches — methods that depend on known threat patterns, human-written rules, and previous attack data — "could be pressured as AI enables continuous discovery of unknown exploits that outpace traditional detection methods."</p>
+
+  <p class="fade-up">Not everyone agreed. CrowdStrike's CEO, George Kurtz, defended his company's position in a LinkedIn post, arguing that an AI model that can scan code doesn't replace an entire security platform. Palo Alto's CEO said he was "confused" by the market's reaction. But the numbers didn't lie — the market had made its judgment, and it was brutal.</p>
+
+  <p class="fade-up">This was, by most accounts, <strong>the first time an AI model announcement directly moved cybersecurity stock prices</strong>. A new precedent for the industry.</p>
+
+  <!-- CH6 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 6</span>
+    <h2 class="chapter-title">The IPO That's Watching Everything</h2>
+    <p class="chapter-desc">A $380 billion company, heading for public markets, just had its worst week.</p>
+  </div>
+
+  <p class="fade-up">To understand the full weight of what happened, you need to know where Anthropic stands right now as a business. And the numbers are staggering.</p>
+
+  <div class="stat-row fade-up">
+    <div class="stat-card"><span class="sc-num">$380B</span><span class="sc-lbl">Valuation (Feb 2026)</span></div>
+    <div class="stat-card"><span class="sc-num">$19B</span><span class="sc-lbl">Annual Revenue Run Rate</span></div>
+    <div class="stat-card"><span class="sc-num">$67B+</span><span class="sc-lbl">Total Funding Raised</span></div>
+    <div class="stat-card"><span class="sc-num">Q4 2026</span><span class="sc-lbl">Target IPO Window</span></div>
+  </div>
+
+  <p class="fade-up">Anthropic is targeting an IPO — an initial public offering, the moment a private company starts selling shares on the stock market — <strong>as early as October 2026</strong>. Reports suggest they could raise over $60 billion, which would make it one of the largest technology IPOs in history. Goldman Sachs, JPMorgan, and Morgan Stanley are in early discussions as potential underwriters.</p>
+
+  <div class="jargon fade-up">
+    <span class="jargon-title">🔓 Jargon Decoded — IPO</span>
+    <p>An <strong>IPO (Initial Public Offering)</strong> is when a private company starts selling its shares to the general public on a stock exchange. Before an IPO, only private investors and employees own shares. After an IPO, anyone can buy a piece of the company. It's how tech companies "go public" — and it's usually the single biggest financial event in a company's life.</p>
+  </div>
+
+  <p class="fade-up">The timing of these leaks could not have been worse. When a company is preparing for an IPO, it's supposed to be polishing its story — demonstrating control, maturity, operational discipline. Instead, Anthropic just demonstrated that it couldn't keep 3,000 files private and couldn't prevent half a million lines of code from shipping to a public website.</p>
+
+  <p class="fade-up">The revenue trajectory, though, tells a different story. Anthropic's revenue has been growing at roughly 10x per year — from about $1 billion at the start of 2025 to a reported $19 billion annualized run rate by March 2026. Among U.S. businesses, Anthropic's share of combined enterprise AI spending against OpenAI has jumped from roughly 10% at the start of 2025 to over 65% by February 2026. Eight Fortune 10 companies are customers.</p>
+
+  <p class="fade-up">Some observers have pointed out an uncomfortable possibility: whether intentional or not, the leak functioned like a free advertising campaign. The draft's framing of Mythos as a generational leap in AI capability read, to some, more like investor communications than engineering notes. Every potential IPO buyer now knows that Anthropic has a model more powerful than anything on the market, and that they're being careful about releasing it. That's a compelling story for Wall Street.</p>
+
+  <p class="fade-up">Was it deliberate? The most likely answer is no — the code leak included embarrassing details like 250,000 wasted API calls per day from a known bug, and a virtual pet Easter egg that clearly wasn't ready for public viewing. Leaking your own inefficiencies is not the mark of a deliberate marketing strategy. More likely: this was compounding human error across multiple systems, hitting at the worst possible time.</p>
+
+  <!-- CH7 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 7</span>
+    <h2 class="chapter-title">The Cyber Arms Race Just Got Real</h2>
+    <p class="chapter-desc">What this means for the world — not just investors and developers.</p>
+  </div>
+
+  <p class="fade-up">Step back from the stock prices and the IPO drama, and the bigger picture is sobering.</p>
+
+  <p class="fade-up">Anthropic isn't some startup exaggerating its product to raise money. Their internal documents — written for themselves, not for investors — said their own model is so good at finding and exploiting security holes in software that it could reshape the entire cybersecurity landscape. And then they couldn't keep their own documents secure.</p>
+
+  <p class="fade-up">This isn't the first time powerful AI and real-world harm have collided. Anthropic previously documented a case where <strong>a Chinese state-sponsored group used Claude Code to conduct an espionage campaign targeting roughly 30 organizations</strong>, with AI handling 80–90% of the operation. In an earlier security test, Claude was turned into what researchers called "a malware factory" within eight hours.</p>
+
+  <p class="fade-up">Mythos, by all internal accounts, makes everything that came before look slow. And Anthropic's own assessment is that it represents the beginning, not the end, of a wave. Other companies will build similar models. The tools will get more powerful, faster.</p>
+
+  <p class="fade-up">Anthropic's response — releasing Mythos first to cybersecurity defense companies to give them a head start — is probably the most responsible thing they could do. But it raises a question that nobody in the industry has answered convincingly: what happens when the offense permanently outpaces the defense?</p>
+
+  <div class="scenario fade-up">
+    <div class="scenario-title">The Arms Race Analogy</div>
+    <p>Think about it like this. Imagine someone invented a tool that could find every unlocked door and window in every building in a city, in seconds. The responsible thing to do is give that tool to the police first, so they can warn people to lock up. But you also know that within a year, ten other people will build the same tool. And some of them won't give it to the police first.</p>
+    <p>That's roughly where AI cybersecurity stands in April 2026.</p>
+  </div>
+
+  <p class="fade-up">Meanwhile, the leaked code also reveals that even Anthropic's own products have weaknesses. Security researchers have already noted that with the full source code now public, attackers can study exactly how Claude Code processes data, handles commands, and applies safety filters — then try to bypass them. One analysis warned that "instead of brute-forcing attacks, adversaries can now study and target exactly how data flows through Claude Code's internal systems."</p>
+
+  <p class="fade-up">The competitive intelligence cost is equally significant. Every hidden feature — KAIROS, Coordinator Mode, the anti-distillation mechanisms, the three-layer memory architecture — is now visible to every competitor. Cursor, Copilot, and Windsurf can study Anthropic's strategy and react. You can rewrite code. You can't un-leak a roadmap.</p>
+
+  <!-- CH8 -->
+  <div class="chapter fade-up">
+    <span class="chapter-num">Chapter 8</span>
+    <h2 class="chapter-title">The Verdict</h2>
+    <p class="chapter-desc">What does this actually mean for you?</p>
+  </div>
+
+  <div class="verdict fade-up">
+    <div class="verdict-title">Three Things That Matter</div>
+
+    <p><strong>1. "Safety" has more than one meaning — and the gap is showing.</strong> Anthropic does genuinely important research on making sure powerful AI systems behave responsibly. That work is real and respected. But "AI safety" (making sure a model doesn't do harmful things) and "operational security" (making sure you don't accidentally publish your own files) are two very different disciplines. Being excellent at one doesn't guarantee competence at the other. Every company considering a contract with an AI provider will now be asking harder questions about basic operational hygiene — not just about how smart the model is.</p>
+
+    <p><strong>2. The products inside the leak are genuinely impressive — and genuinely coming.</strong> KAIROS, Dream Mode, Coordinator Mode — these aren't concepts or ideas on a whiteboard. They're engineered features, gated behind feature flags, waiting to be turned on. The future of AI coding tools isn't "a smarter chatbot." It's a persistent, background-running agent that manages its own memory, coordinates teams of sub-agents, and works while you sleep. That future is closer than most people realize — the scaffolding is already built.</p>
+
+    <p><strong>3. The cyber arms race is real, and it affects everyone.</strong> You don't need to be a developer or a cybersecurity professional to be affected by this. Every app you use, every bank you trust, every hospital that stores your records — they all run on software. When an AI model can find holes in that software faster than humans can patch them, the risk isn't theoretical. Anthropic knows this. Their own internal documents say as much. The question is whether the defenses can keep pace — and right now, the honest answer is: maybe not.</p>
+  </div>
+
+  <div class="timeline fade-up">
+    <div class="tl-item">
+      <span class="tl-date">March 11, 2026</span>
+      <div class="tl-text">A Bun bug that causes source maps to leak in production is filed — it remains unfixed</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">March 26, 2026</span>
+      <div class="tl-text">Researchers discover ~3,000 files exposed in Anthropic's CMS, including the Mythos draft blog post</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">March 27, 2026</span>
+      <div class="tl-text">Fortune publishes the story — cybersecurity stocks crash, with CrowdStrike down 7% and the iShares Cyber ETF hitting its lowest since November 2023</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">March 31, 2026</span>
+      <div class="tl-text">Claude Code v2.1.88 ships with a source map file — 512,000 lines of code are mirrored within hours, revealing KAIROS, Buddy, Undercover Mode, and more</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">April 1, 2026</span>
+      <div class="tl-text">Anthropic confirms the code leak, calling it "human error." The Buddy companion system's planned rollout window was April 1–7 — one day too late</div>
+    </div>
+  </div>
+
+  <p class="fade-up">The company that built its entire reputation on being more careful, more responsible, more safety-conscious than everyone else in AI — left the door open. Twice. In five days.</p>
+
+  <p class="fade-up">The products inside are extraordinary. The model they're building may be the most powerful AI the world has seen. The revenue is growing faster than almost any company in tech history, and an IPO that could reshape public markets is months away.</p>
+
+  <p class="fade-up">But this week will be remembered for a simpler lesson: <strong>the hardest part of safety isn't building brilliant AI systems. It's remembering to check the lock on the front door.</strong></p>
+
+  <!-- CTA -->
+  <div class="end-cta fade-up">
+    <h2>📬 Never Miss a Decode</h2>
+    <p>90 days of clear, honest writing. One decode a day. No jargon. No paywall.</p>
+    <a href="/#subscribe">Subscribe Free →</a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">DecodeWithAni</div>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="day1-welcome-decodeai.html">Day 1</a>
+    <a href="day21-openclaw-openai-decodeai.html">Day 21</a>
+    <a href="/#blog">All Posts</a>
+    <a href="https://kkaniruddha.github.io/ai-tools-cheatsheet" target="_blank">AI Tools</a>
+  </div>
+  <p class="footer-copy">© 2026 DecodeWithAni · decodewithani.com · Decoding life, one topic at a time</p>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
